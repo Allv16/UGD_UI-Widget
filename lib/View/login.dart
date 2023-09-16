@@ -28,30 +28,29 @@ class _LoginViewState extends State<LoginView> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              inputForm((p0) {
-                if (p0 == null || p0.isEmpty) {
-                  return 'username tidak boleh kosong';
-                }
-                return null;
-              },
+              InputForm(
+                  validasi: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'username tidak boleh kosong';
+                    }
+                    return null;
+                  },
                   controller: usernameController,
                   hintTxt: "Username",
-                  helperTxt: "Inputkan User yang telah didaftar",
+                  helperTxt: "Input Username",
                   iconData: Icons.person),
-              inputForm2((p0) {
-                if (p0 == null || p0.isEmpty) {
-                  return 'password kosong';
-                }
-                return null;
-              },
+              InputForm(
+                  validasi: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'password kosong';
+                    }
+                    return null;
+                  },
                   password: true,
                   controller: passwordController,
                   hintTxt: "Password",
-                  helperTxt: "Inputkan Password",
+                  helperTxt: "Minimal 5 digit password",
                   iconData: Icons.password),
-
-                  
-                 
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
