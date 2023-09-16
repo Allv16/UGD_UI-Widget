@@ -40,7 +40,7 @@ class _LoginViewState extends State<LoginView> {
                   iconData: Icons.person),
               inputForm((p0) {
                 if (p0 == null || p0.isEmpty) {
-                  return 'username tidak boleh kosong';
+                  return 'password kosong';
                 }
                 return null;
               },
