@@ -38,7 +38,7 @@ class _LoginViewState extends State<LoginView> {
                   hintTxt: "Username",
                   helperTxt: "Inputkan User yang telah didaftar",
                   iconData: Icons.person),
-              inputForm((p0) {
+              inputForm2((p0) {
                 if (p0 == null || p0.isEmpty) {
                   return 'password kosong';
                 }
@@ -49,6 +49,9 @@ class _LoginViewState extends State<LoginView> {
                   hintTxt: "Password",
                   helperTxt: "Inputkan Password",
                   iconData: Icons.password),
+
+                  
+                 
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
