@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 
-
 class InputForm extends StatefulWidget {
   final Function(String?) validasi;
   final TextEditingController controller;
@@ -29,7 +28,7 @@ class _InputFormState extends State<InputForm> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 20, right: 20,top: 10),
+      padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
       child: SizedBox(
         child: TextFormField(
           validator: (value) => widget.validasi(value),
@@ -62,24 +61,27 @@ class _InputFormState extends State<InputForm> {
   }
 }
 
-Padding inputForm2(Function(String?) validasi, {required TextEditingController controller,
-required String hintTxt, required String helperTxt, required IconData iconData, bool password = false}) {
+Padding inputForm2(Function(String?) validasi,
+    {required TextEditingController controller,
+    required String hintTxt,
+    required String helperTxt,
+    required IconData iconData,
+    bool password = false}) {
   return Padding(
     padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
     child: SizedBox(
-      child : TextFormField(
-        validator: (value) => validasi(value),
-        autofocus: true,
-        controller: controller,
-        obscureText: password,
-        decoration: InputDecoration(
-          hintText: hintTxt,
-          border: const OutlineInputBorder(),
-          helperText: helperTxt,
-          prefixIcon: Icon(iconData),
-        ),
-      )
+        child: TextFormField(
+      validator: (value) => validasi(value),
+      autofocus: true,
+      controller: controller,
+      obscureText: password,
+      decoration: InputDecoration(
+        hintText: hintTxt,
+        border: const OutlineInputBorder(),
+        helperText: helperTxt,
+        prefixIcon: Icon(iconData),
       ),
+    )),
   );
 }
 
@@ -99,7 +101,7 @@ class _DatePickerState extends State<DatePicker> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 20,right: 20, top: 10),
+      padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
       child: SizedBox(
         child: TextFormField(
           autofocus: true,
@@ -123,7 +125,7 @@ class _DatePickerState extends State<DatePicker> {
               setState(() {
                 _date.text = DateFormat('yyyy-MM-dd').format(pickedDate);
               });
-            }else{
+            } else {
               setState(() {
                 erorDate = 'Please select a date';
               });
