@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ugd_ui_widget/View/login.dart';
 
 void main() {
-  RunApp(const MainApp());
+  runApp(const MainApp());
 }
 
 class MainApp extends StatelessWidget {

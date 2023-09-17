@@ -26,17 +26,6 @@ class _RegisterViewState extends State<RegisterView> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-<<<<<<< Updated upstream
-              inputForm(((p0) {
-                if (p0 == null || p0.isEmpty) {
-                  return 'Username Tidak Boleh Kosong';
-                }
-                if (p0.toLowerCase() == 'anjing') {
-                  return 'Tidak Boleh Menggunakan kata kasar';
-                }
-                return null;
-              }),
-=======
               inputForm2(
                 (p0) {
                   if(p0 ==null || p0.isEmpty){
@@ -47,22 +36,10 @@ class _RegisterViewState extends State<RegisterView> {
                   }
                   return null;
                 },
->>>>>>> Stashed changes
                   controller: usernameController,
                   hintTxt: "Username",
                   helperTxt: "Ucup Surucup",
                   iconData: Icons.person),
-<<<<<<< Updated upstream
-              inputForm(((p0) {
-                if (p0 == null || p0.isEmpty) {
-                  return 'Email tidak boleh kosong';
-                }
-                if (!p0.contains('@')) {
-                  return 'Email harus menggunakan @';
-                }
-                return null;
-              }),
-=======
 
               DatePicker(
                 
@@ -78,53 +55,15 @@ class _RegisterViewState extends State<RegisterView> {
                   }
                   return null;
                 }),
->>>>>>> Stashed changes
                   controller: emailController,
                   hintTxt: "Email",
                   helperTxt: "ucup@gmail.com",
                   iconData: Icons.email),
-<<<<<<< Updated upstream
-              inputForm(((p0) {
-                if (p0 == null || p0.isEmpty) {
-                  return 'Password tidak boleh kosong';
-                }
-                if (p0.length < 5) {
-                  return 'Password minimal 5 digit';
-                }
-                return null;
-              }),
-                  controller: passwordController,
-                  hintTxt: "Password",
-                  helperTxt: "xxxxxxx",
-                  iconData: Icons.password,
-                  password: true),
-              inputForm(((p0) {
-                if (p0 == null || p0.isEmpty) {
-                  return 'Nomor Telepon tidak boleh kosong';
-                }
-                return null;
-              }),
-                  controller: notelpController,
-                  hintTxt: "No Telp",
-                  helperTxt: "085156644229",
-                  iconData: Icons.phone_android),
-              ElevatedButton(
-                  onPressed: () {
-                    if (_formKey.currentState!.validate()) {
-                      Map<String, dynamic> formData = {};
-                      formData['username'] = usernameController.text;
-                      formData['password'] = passwordController.text;
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => LoginView(data: formData)));
-=======
 
               InputForm(
                   validasi: (value) {
                     if (value == null || value.isEmpty) {
                       return 'password kosong';
->>>>>>> Stashed changes
                     }
                     return null;
                   },
