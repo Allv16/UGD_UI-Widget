@@ -26,32 +26,56 @@ class _RegisterViewState extends State<RegisterView> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              inputForm2((p0) {
-                if (p0 == null || p0.isEmpty) {
-                  return 'Username Tidak Boleh Kosong';
-                }
-                if (p0.toLowerCase() == 'anjing') {
-                  return 'Tidak Boleh mengginakan kata kasar';
-                }
-                return null;
-              },
+              InputForm(
+                  validasi: (p0) {
+                    if (p0 == null || p0.isEmpty) {
+                      return 'Username Tidak Boleh Kosong';
+                    }
+                    if (p0.toLowerCase() == 'anjing') {
+                      return 'Tidak Boleh mengginakan kata kasar';
+                    }
+                    return null;
+                  },
                   controller: usernameController,
                   hintTxt: "Username",
-                  helperTxt: "Ucup Surucup",
+                  helperTxt: "ex: JohnDoe",
                   iconData: Icons.person),
-              DatePicker(),
-              inputForm2(((p0) {
-                if (p0 == null || p0.isEmpty) {
-                  return 'Email tidak boleh kosong';
-                }
-                if (!p0.contains('@')) {
-                  return 'Email harus menggunakan @';
-                }
-                return null;
-              }),
+              DatePicker(
+                  validasi: ((value) {
+                    if (value == null || value.isEmpty) {
+                      return "Pilih tanggal lahir!";
+                    }
+                    return null;
+                  }),
+                  controller: tglLahirController,
+                  hintTxt: "Tanggal Lahir",
+                  helperTxt: "ex: 2022-06-12",
+                  iconData: Icons.calendar_today),
+              InputForm(
+                  validasi: ((p0) {
+                    if (p0 == null || p0.isEmpty) {
+                      return 'Nomor Telepon tidak boleh kosong';
+                    }
+
+                    return null;
+                  }),
+                  controller: notelpController,
+                  hintTxt: "No Telp",
+                  helperTxt: "ex: 085154433118",
+                  iconData: Icons.phone_android),
+              InputForm(
+                  validasi: ((p0) {
+                    if (p0 == null || p0.isEmpty) {
+                      return 'Email tidak boleh kosong';
+                    }
+                    if (!p0.contains('@')) {
+                      return 'Email harus menggunakan @';
+                    }
+                    return null;
+                  }),
                   controller: emailController,
                   hintTxt: "Email",
-                  helperTxt: "ucup@gmail.com",
+                  helperTxt: "ex: john@hospital.com",
                   iconData: Icons.email),
               InputForm(
                   validasi: (value) {
@@ -63,19 +87,8 @@ class _RegisterViewState extends State<RegisterView> {
                   password: true,
                   controller: passwordController,
                   hintTxt: "Password",
-                  helperTxt: "Minimal 5 digit password",
+                  helperTxt: "must use 5 or more character",
                   iconData: Icons.password),
-              inputForm2(((p0) {
-                if (p0 == null || p0.isEmpty) {
-                  return 'Nomor Telepon tidak boleh kosong';
-                }
-
-                return null;
-              }),
-                  controller: notelpController,
-                  hintTxt: "No Telp",
-                  helperTxt: "082123456789",
-                  iconData: Icons.phone_android),
               ElevatedButton(
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
