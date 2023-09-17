@@ -32,7 +32,7 @@ class _InputFormState extends State<InputForm> {
       child: SizedBox(
         child: TextFormField(
           validator: (value) => widget.validasi(value),
-          autofocus: true,
+          autofocus: false,
           controller: widget.controller,
           obscureText: widget.password && !isPasswordVisible,
           decoration: InputDecoration(
@@ -86,17 +86,26 @@ Padding inputForm2(Function(String?) validasi,
 }
 
 class DatePicker extends StatefulWidget {
-  const DatePicker({
-    Key? key,
-  }) : super(key: key);
+  final Function(String?) validasi;
+  final TextEditingController controller;
+  final String hintTxt;
+  final String helperTxt;
+  final IconData iconData;
+
+  DatePicker({
+    required this.validasi,
+    required this.controller,
+    required this.hintTxt,
+    required this.helperTxt,
+    required this.iconData,
+  });
 
   @override
-  State<DatePicker> createState() => _DatePickerState();
+  _DatePickerState createState() => _DatePickerState();
 }
 
 class _DatePickerState extends State<DatePicker> {
-  TextEditingController _date = TextEditingController();
-  String? erorDate;
+  String? errorDate;
 
   @override
   Widget build(BuildContext context) {
@@ -104,30 +113,32 @@ class _DatePickerState extends State<DatePicker> {
       padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
       child: SizedBox(
         child: TextFormField(
-          autofocus: true,
-          controller: _date,
+          readOnly: true,
+          validator: (value) => widget.validasi(value),
+          autofocus: false,
+          controller: widget.controller,
           decoration: InputDecoration(
             border: const OutlineInputBorder(),
-            prefixIcon: Icon(Icons.calendar_today_rounded),
-            labelText: "Select Date",
-            helperText: "yyyy-MM-dd",
-            errorText: erorDate,
+            prefixIcon: Icon(widget.iconData),
+            labelText: widget.hintTxt,
+            helperText: widget.helperTxt,
           ),
           onTap: () async {
-            DateTime? pickedDate = await showDatePicker(
+            final DateTime? pickedDate = await showDatePicker(
               context: context,
               initialDate: DateTime.now(),
-              firstDate: DateTime(2000),
-              lastDate: DateTime(2101),
+              firstDate: DateTime(1900),
+              lastDate: DateTime(2100),
             );
 
             if (pickedDate != null) {
               setState(() {
-                _date.text = DateFormat('yyyy-MM-dd').format(pickedDate);
+                widget.controller.text =
+                    DateFormat('yyyy-MM-dd').format(pickedDate);
               });
             } else {
               setState(() {
-                erorDate = 'Please select a date';
+                widget.controller.text = '';
               });
             }
           },
