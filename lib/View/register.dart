@@ -15,6 +15,7 @@ class _RegisterViewState extends State<RegisterView> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   TextEditingController notelpController = TextEditingController();
+  TextEditingController tglLahirController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +26,7 @@ class _RegisterViewState extends State<RegisterView> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+<<<<<<< Updated upstream
               inputForm(((p0) {
                 if (p0 == null || p0.isEmpty) {
                   return 'Username Tidak Boleh Kosong';
@@ -34,10 +36,23 @@ class _RegisterViewState extends State<RegisterView> {
                 }
                 return null;
               }),
+=======
+              inputForm2(
+                (p0) {
+                  if(p0 ==null || p0.isEmpty){
+                    return 'Username Tidak Boleh Kosong';
+                  }
+                  if(p0.toLowerCase() == 'anjing'){
+                    return 'Tidak Boleh mengginakan kata kasar';
+                  }
+                  return null;
+                },
+>>>>>>> Stashed changes
                   controller: usernameController,
                   hintTxt: "Username",
                   helperTxt: "Ucup Surucup",
                   iconData: Icons.person),
+<<<<<<< Updated upstream
               inputForm(((p0) {
                 if (p0 == null || p0.isEmpty) {
                   return 'Email tidak boleh kosong';
@@ -47,10 +62,28 @@ class _RegisterViewState extends State<RegisterView> {
                 }
                 return null;
               }),
+=======
+
+              DatePicker(
+                
+              ),
+
+              inputForm2(
+                ((p0) {
+                  if(p0 ==null || p0.isEmpty){
+                    return 'Email tidak boleh kosong';
+                  }
+                  if(!p0.contains('@')){
+                    return 'Email harus menggunakan @';
+                  }
+                  return null;
+                }),
+>>>>>>> Stashed changes
                   controller: emailController,
                   hintTxt: "Email",
                   helperTxt: "ucup@gmail.com",
                   iconData: Icons.email),
+<<<<<<< Updated upstream
               inputForm(((p0) {
                 if (p0 == null || p0.isEmpty) {
                   return 'Password tidak boleh kosong';
@@ -85,9 +118,45 @@ class _RegisterViewState extends State<RegisterView> {
                           context,
                           MaterialPageRoute(
                               builder: (_) => LoginView(data: formData)));
+=======
+
+              InputForm(
+                  validasi: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'password kosong';
+>>>>>>> Stashed changes
                     }
+                    return null;
                   },
-                  child: const Text('Register'))
+                  password: true,
+                  controller: passwordController,
+                  hintTxt: "Password",
+                  helperTxt: "Minimal 5 digit password",
+                  iconData: Icons.password),
+
+
+              inputForm2(
+                ((p0) {
+                  if(p0 ==null || p0.isEmpty){
+                    return 'Nomor Telepon tidak boleh kosong';
+                  }
+                  
+                  return null;
+                }),
+                  controller: notelpController,
+                  hintTxt: "No Telp",
+                  helperTxt: "082123456789",
+                  iconData: Icons.phone_android),
+              ElevatedButton(
+                onPressed: () {
+                  if (_formKey.currentState!.validate()){
+                    Map<String,dynamic> formData = {};
+                    formData['username'] = usernameController.text;
+                    formData['password'] = passwordController.text;
+                    Navigator.push(context, MaterialPageRoute(builder: (_) => LoginView(data: formData ,)));
+                  }
+                },
+                child: const Text('Register'))
             ],
           ),
         ),
