@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:ugd_ui_widget/View/profile.dart';
-import 'package:ugd_ui_widget/View/view_list.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});

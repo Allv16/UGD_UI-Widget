@@ -1,9 +1,12 @@
-# TUBES PBP - TOPIK 
+# TUBES PBP - TOPIK
 
 ## Anggota Kelompok / Kontributor
-- ASJ (NPM 200710541)
-- OTNIEL (NPM XXXXXXX)
-- ....
+
+- Yohanes Alvian Wijaya Irawan (NPM 210711047)
+- Andreas Margono (NPM 210711135)
+- Rhema Stella (NPM 210711071)
+- Kristina Adine (NPM 210711102)
+- Sebastian Gautama (NPM 210711172)
 
 ## Deskripsi Project
 
@@ -11,9 +14,8 @@ Membuat sebuah aplikasi LMS sederhana yang berbasis di Android menggunakan bahas
 
 ### UGD 2
 
-- Enhance Register Page : alert dialog 
-- Enhance Login Page :  eye toggle , toast
+- Enhance Register Page : alert dialog
+- Enhance Login Page : eye toggle , toast
 - Enhance Every transaction/action with toast
 - Apply Grid at home page
 - Profile page with tab
-
