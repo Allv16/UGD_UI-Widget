@@ -26,6 +26,16 @@ class _RegisterViewState extends State<RegisterView> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+              const Text(
+                "Register",
+                style: TextStyle(
+                    color: Colors.lightBlue,
+                    fontSize: 40,
+                    fontWeight: FontWeight.w800),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
               InputForm(
                   validasi: (p0) {
                     if (p0 == null || p0.isEmpty) {
@@ -81,6 +91,9 @@ class _RegisterViewState extends State<RegisterView> {
                   validasi: (value) {
                     if (value == null || value.isEmpty) {
                       return 'password kosong';
+                    }
+                    if (value.length < 5) {
+                      return 'password must be 5 or more characters';
                     }
                     return null;
                   },
