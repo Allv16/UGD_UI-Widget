@@ -108,12 +108,21 @@ class _RegisterViewState extends State<RegisterView> {
                       Map<String, dynamic> formData = {};
                       formData['username'] = usernameController.text;
                       formData['password'] = passwordController.text;
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => LoginView(
-                                    data: formData,
-                                  )));
+                      showDialog(
+                          context: context,
+                          builder: (_) => AlertDialog(
+                                title: Text("Register Success!"),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () => Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (_) => LoginView(
+                                                    data: formData,
+                                                  ))),
+                                      child: Text("OK"))
+                                ],
+                              ));
                     }
                   },
                   child: const Text('Register'))

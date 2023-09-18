@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ugd_ui_widget/component/form_component.dart';
 import 'package:ugd_ui_widget/View/home.dart';
 import 'package:ugd_ui_widget/View/register.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 
 class LoginView extends StatefulWidget {
   final Map? data;
@@ -81,6 +82,7 @@ class _LoginViewState extends State<LoginView> {
                                       usernameController.text &&
                                   dataForm['password'] ==
                                       passwordController.text) {
+                                showToastMessage("Login Successful");
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -141,3 +143,12 @@ class _LoginViewState extends State<LoginView> {
     );
   }
 }
+
+void showToastMessage(msg) => Fluttertoast.showToast(
+      msg: msg,
+      toastLength: Toast.LENGTH_SHORT,
+      gravity: ToastGravity.BOTTOM,
+      backgroundColor: Colors.green,
+      textColor: Colors.grey[200],
+      fontSize: 15.0,
+    );
