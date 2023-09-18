@@ -23,88 +23,110 @@ class _LoginViewState extends State<LoginView> {
     Map? dataForm = widget.data;
     return Scaffold(
       body: SafeArea(
-        child: Form(
-          key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              InputForm(
-                  validasi: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'username tidak boleh kosong';
-                    }
-                    return null;
-                  },
-                  controller: usernameController,
-                  hintTxt: "Username",
-                  helperTxt: "Input Username",
-                  iconData: Icons.person),
-              InputForm(
-                  validasi: (value) {
-                    if (value == null || value.isEmpty) {
-                      return 'password kosong';
-                    }
-                    return null;
-                  },
-                  password: true,
-                  controller: passwordController,
-                  hintTxt: "Password",
-                  helperTxt: "Minimal 5 digit password",
-                  iconData: Icons.password),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Text(
+              "Login",
+              style: TextStyle(
+                  color: Colors.lightBlue,
+                  fontSize: 40,
+                  fontWeight: FontWeight.w800),
+            ),
+            const SizedBox(
+              height: 100,
+            ),
+            Form(
+              key: _formKey,
+              child: Column(
                 children: [
-                  // tombol login
-                  ElevatedButton(
-                      onPressed: () {
-                        if (_formKey.currentState!.validate()) {
-                          if (dataForm!['username'] ==
-                                  usernameController.text &&
-                              dataForm['password'] == passwordController.text) {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (_) => const HomeView()));
-                          } else {
-                            showDialog(
-                              context: context,
-                              builder: (_) => AlertDialog(
-                                title: const Text('Password Salah'),
-                                content: TextButton(
-                                  onPressed: () => pushRegister(context),
-                                  child: const Text('Daftar Disini !!'),
-                                ),
-                                actions: <Widget>[
-                                  TextButton(
-                                    onPressed: () =>
-                                        Navigator.pop(context, 'Cancel'),
-                                    child: const Text('Cancel'),
-                                  ),
-                                  TextButton(
-                                    onPressed: () =>
-                                        Navigator.pop(context, 'OK'),
-                                    child: const Text('OK'),
-                                  ),
-                                ],
-                              ),
-                            );
-                          }
+                  InputForm(
+                    validasi: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'username tidak boleh kosong';
+                      }
+                      return null;
+                    },
+                    controller: usernameController,
+                    hintTxt: "Username",
+                    helperTxt: "Input Username",
+                    iconData: Icons.person,
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
+                  InputForm(
+                      validasi: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'password kosong';
                         }
+                        return null;
                       },
-                      child: const Text('login')),
+                      password: true,
+                      controller: passwordController,
+                      hintTxt: "Password",
+                      helperTxt: "Minimal 5 digit password",
+                      iconData: Icons.password),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      // tombol login
+                      ElevatedButton(
+                          onPressed: () {
+                            if (_formKey.currentState!.validate()) {
+                              if (dataForm!['username'] ==
+                                      usernameController.text &&
+                                  dataForm['password'] ==
+                                      passwordController.text) {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (_) => const HomeView()));
+                              } else {
+                                showDialog(
+                                  context: context,
+                                  builder: (_) => AlertDialog(
+                                    title: const Text('Password Salah'),
+                                    content: TextButton(
+                                      onPressed: () => pushRegister(context),
+                                      child: const Text('Daftar Disini !!'),
+                                    ),
+                                    actions: <Widget>[
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.pop(context, 'Cancel'),
+                                        child: const Text('Cancel'),
+                                      ),
+                                      TextButton(
+                                        onPressed: () =>
+                                            Navigator.pop(context, 'OK'),
+                                        child: const Text('OK'),
+                                      ),
+                                    ],
+                                  ),
+                                );
+                              }
+                            }
+                          },
+                          child: const Text('login')),
 
-                  TextButton(
-                      onPressed: () {
-                        Map<String, dynamic> formData = {};
-                        formData['username'] = usernameController.text;
-                        formData['password'] = passwordController.text;
-                        pushRegister(context);
-                      },
-                      child: const Text("Belum punya akun ?")),
+                      TextButton(
+                          onPressed: () {
+                            Map<String, dynamic> formData = {};
+                            formData['username'] = usernameController.text;
+                            formData['password'] = passwordController.text;
+                            pushRegister(context);
+                          },
+                          child: const Text("Belum punya akun ?")),
+                    ],
+                  )
                 ],
-              )
-            ],
-          ),
+              ),
+            ),
+          ],
         ),
       ),
     );
