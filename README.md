@@ -1,4 +1,4 @@
-# TUBES PBP - TOPIK
+# TUBES PBP - Hospital
 
 ## Anggota Kelompok / Kontributor
 
@@ -10,12 +10,11 @@
 
 ## Deskripsi Project
 
-Membuat sebuah aplikasi LMS sederhana yang berbasis di Android menggunakan bahasa pemrograman Kotlin, API CI4, dan menggunakan MySQL untuk penyimpanan data. Aplikasi ini memiliki 1 role user, yaitu mahasiswa. Pada aplikasi ini, mahasiswa dapat melihat kelas/ matakuliah yang diikutinnya, dan melakukan transaksi CRUD untuk todolist dan spama/keaktifan. Proyek ini dibuat untuk memenuhi tugas matakuliah Pemrograman Berbasis Platform.....
+Membuat aplikasi dengan tema Hospital. Aplikasi ini merupakan penerapan dari hasil pembelajaran di modul UI & Widget 1 & 2. Project ini dibuat untuk memenuhi Tugas Besar Pemrograman Berbasis Platform. 
 
-### UGD 2
+### UGD 1
 
-- Enhance Register Page : alert dialog
+- Enhance Register Page : eye toogle, alert dialog
 - Enhance Login Page : eye toggle , toast
-- Enhance Every transaction/action with toast
-- Apply Grid at home page
+- Apply Grid at home page (click profile)
 - Profile page with tab
