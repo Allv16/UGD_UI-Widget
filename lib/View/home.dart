@@ -16,7 +16,7 @@ class _HomeViewState extends State<HomeView> {
       borderRadius: BorderRadius.circular(24.0),
       child: Center(
         child: Padding(
-          padding: const EdgeInsets.all(5.0),
+          padding: const EdgeInsets.all(2.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -26,11 +26,11 @@ class _HomeViewState extends State<HomeView> {
                   Material(
                       borderRadius: BorderRadius.circular(24.0),
                       child: Padding(
-                        padding: const EdgeInsets.all(15.0),
+                        padding: const EdgeInsets.all(5.0),
                         child: Image.asset(
                           gambar,
-                          width: 55,
-                          height: 55,
+                          width: 45,
+                          height: 45,
                         ),
                       )),
                   Padding(
@@ -38,7 +38,7 @@ class _HomeViewState extends State<HomeView> {
                       child: Text(text,
                           style: TextStyle(
                             color: Color(color),
-                            fontSize: 20.0,
+                            fontSize: 15.0,
                           )))
                 ],
               )
@@ -55,6 +55,7 @@ class _HomeViewState extends State<HomeView> {
       backgroundColor: Colors.grey[100],
       body: SafeArea(
         child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
           child: Padding(
             padding: const EdgeInsets.all(20.0),
             child: Column(
@@ -192,6 +193,9 @@ class _HomeViewState extends State<HomeView> {
                     menuBox("images/medicine.png", "Consultation", 0xFF00ACC1),
                     menuBox("images/medicine.png", "Ambulance", 0xFF00ACC1),
                     menuBox("images/medicine.png", "Nurse", 0xFF00ACC1),
+                    menuBox("images/medicine.png", "First Aid", 0xFF00ACC1),
+                    menuBox("images/medicine.png", "First Aid", 0xFF00ACC1),
+                    menuBox("images/medicine.png", "First Aid", 0xFF00ACC1),
                     menuBox("images/medicine.png", "First Aid", 0xFF00ACC1),
                   ],
                 ),
