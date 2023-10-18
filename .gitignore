@@ -43,7 +43,11 @@ app.*.map.json
 /android/app/release
 =======
 =======
+<<<<<<< HEAD
 >>>>>>> 0149ccd (Initial commit)
+=======
+>>>>>>> 0149ccd35c12d12f8b49ca3a9b8f11e048a868a7
+>>>>>>> ba5a1ca22c282d3b0180dcd366e82d621ddc6704
 # See https://www.dartlang.org/guides/libraries/private-files
 
 # Files and directories created by pub
@@ -70,4 +74,8 @@ doc/api/
 *.js.map
 
 .flutter-plugins
+<<<<<<< HEAD
 .flutter-plugins-dependencies
+=======
+.flutter-plugins-dependencies
+>>>>>>> ba5a1ca22c282d3b0180dcd366e82d621ddc6704

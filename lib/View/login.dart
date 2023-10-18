@@ -28,7 +28,7 @@ class _LoginViewState extends State<LoginView> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Text(
-              "Login",
+              "login",
               style: TextStyle(
                   color: Colors.lightBlue,
                   fontSize: 40,
