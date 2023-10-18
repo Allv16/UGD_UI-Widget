@@ -71,7 +71,7 @@ class _HomeViewState extends State<HomeView> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Hi Alvian!",
+                            "Hi all!",
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w400,
