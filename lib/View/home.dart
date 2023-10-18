@@ -9,6 +9,41 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+
+  int _selectedIndex = 0;
+
+  void _onItemTapped(int index) {
+    if (index == 0) { 
+      _selectedIndex = 0;
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomeView(),
+        ),
+      );
+    } else if (index == 1) {
+      _selectedIndex = 1; 
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Profile(),
+        ),
+      );
+    } else if (index == 2) {
+      _selectedIndex = 2; 
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Profile(),
+        ),
+      );
+    } else {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
+  }
+
   Material menuBox(String gambar, String text, int color) {
     return Material(
       color: Colors.white,
@@ -203,6 +238,25 @@ class _HomeViewState extends State<HomeView> {
             ),
           ),
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.book),
+            label: 'Booking',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle),
+            label: 'Profile',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.cyan[600],
+        onTap: _onItemTapped,
       ),
     );
   }

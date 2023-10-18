@@ -1,15 +1,55 @@
 import 'package:flutter/material.dart';
+import 'package:ugd_ui_widget/View/home.dart';
 
-class Profile extends StatelessWidget {
+class Profile extends StatefulWidget {
+  @override
+  _ProfileState createState() => _ProfileState();
+}
+
+class _ProfileState extends State<Profile> {
+  int _selectedIndex = 2;
+
+  void _onItemTapped(int index) {
+    if (index == 0) { 
+      _selectedIndex = 0;
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomeView(),
+        ),
+      );
+    } else if (index == 1) {
+      _selectedIndex = 2;
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Profile(),
+        ),
+      );
+    } else if (index == 2) {
+      _selectedIndex = 2;
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => Profile(),
+        ),
+      );
+    } else {
+      setState(() {
+        _selectedIndex = 2;
+      });
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 5,
-        child: Scaffold(
-          appBar: AppBar(
-            title: const Text('P R O F I L E'),
-          ),
-          body: Column(
+      length: 5,
+      child: Scaffold(
+        appBar: AppBar(
+          title: const Text('P R O F I L E'),
+        ),
+        body: Column(
             children: [
               const TabBar(
                 labelColor: Colors.black,
@@ -170,6 +210,26 @@ class Profile extends StatelessWidget {
               )
             ],
           ),
-        ));
+        bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.book),
+            label: 'Booking',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle),
+            label: 'Profile',
+          ),
+        ],
+        onTap: _onItemTapped,
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.cyan[600],
+      ),
+      ),
+    );
   }
 }
