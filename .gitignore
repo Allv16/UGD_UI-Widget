@@ -1,5 +1,3 @@
-<<<<<<< HEAD
-# Miscellaneous
 *.class
 *.log
 *.pyc
@@ -44,6 +42,8 @@ app.*.map.json
 /android/app/profile
 /android/app/release
 =======
+=======
+>>>>>>> 0149ccd (Initial commit)
 # See https://www.dartlang.org/guides/libraries/private-files
 
 # Files and directories created by pub
@@ -71,4 +71,3 @@ doc/api/
 
 .flutter-plugins
 .flutter-plugins-dependencies
->>>>>>> 0149ccd (Initial commit)
