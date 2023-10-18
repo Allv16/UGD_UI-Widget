@@ -55,9 +55,14 @@ class _RegisterViewState extends State<RegisterView> {
                     helperTxt: "ex: JohnDoe",
                     iconData: Icons.person),
                 DatePicker(
-                    validasi: ((value) {
-                      if (value == null || value.isEmpty) {
+                    validasi: ((String? selectedDate) {
+                      DateTime now = DateTime.now();
+                      if (selectedDate == null || selectedDate.isEmpty) {
                         return "Pilih tanggal lahir!";
+                      }
+                      DateTime? selectedDateTime = DateTime.tryParse(selectedDate);
+                      if (selectedDateTime?.isAfter(now) ?? false) {
+                        return 'Tanggal yang dimasukkan tidak boleh lebih dari sekarang';
                       }
                       return null;
                     }),
@@ -70,7 +75,9 @@ class _RegisterViewState extends State<RegisterView> {
                       if (p0 == null || p0.isEmpty) {
                         return 'Nomor Telepon tidak boleh kosong';
                       }
-
+                      if (p0.length < 11) {
+                        return 'Nomor telepon harus memiliki setidaknya 11 digit!';
+                      }
                       return null;
                     }),
                     controller: notelpController,
