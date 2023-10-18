@@ -74,8 +74,4 @@ doc/api/
 *.js.map
 
 .flutter-plugins
-<<<<<<< HEAD
 .flutter-plugins-dependencies
-=======
-.flutter-plugins-dependencies
->>>>>>> ba5a1ca22c282d3b0180dcd366e82d621ddc6704
