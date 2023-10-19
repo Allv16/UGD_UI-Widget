@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ugd_ui_widget/View/reservation_form.dart';
 
 class MyReservation extends StatefulWidget {
   const MyReservation({super.key});
@@ -15,6 +16,17 @@ class _MyReservationState extends State<MyReservation> {
         title: Text('My Reservation'),
         centerTitle: true,
         leading: Icon(Icons.arrow_back_ios_new_rounded),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () => {
+          Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ReservationForm(),
+              ))
+        },
+        child: Icon(Icons.add),
+        backgroundColor: Colors.lightBlue,
       ),
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),

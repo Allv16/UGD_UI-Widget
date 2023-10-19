@@ -15,10 +15,15 @@ class MainApp extends StatelessWidget {
       title: 'WeCare',
       theme: ThemeData(
           colorScheme: ColorScheme.fromSeed(
-        seedColor: Colors.blue,
-        brightness: Brightness.light,
-        primary: const Color(0xFF1B90B8),
-      )),
+            seedColor: Colors.blue,
+            brightness: Brightness.light,
+            primary: const Color(0xFF1B90B8),
+          ),
+          elevatedButtonTheme: ElevatedButtonThemeData(
+              style: ButtonStyle(
+            backgroundColor:
+                MaterialStateProperty.all<Color>(const Color(0xFF1B90B8)),
+          ))),
       home: const MyReservation(),
     );
   }
