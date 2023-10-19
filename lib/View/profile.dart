@@ -199,7 +199,7 @@ class _ProfileState extends State<Profile> {
                               fit: BoxFit.cover,
                             ),
                           ),
-                          const Text('\nSebastian Gautama' '\nNPM : 210711172',
+                          const Text('\nSabastian Gautama' '\nNPM : 210711172',
                               style: TextStyle(fontSize: 25),
                               textAlign: TextAlign.center),
                         ],
