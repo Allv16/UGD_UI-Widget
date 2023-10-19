@@ -17,6 +17,11 @@ class _EditProfileViewState extends State<EditProfileView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Edit Profile'),
+        centerTitle: true,
+        leading: const Icon(Icons.arrow_back_ios_new_rounded),
+      ),
       body: SafeArea(
         child: Form(
           key: _formKey,
@@ -24,16 +29,6 @@ class _EditProfileViewState extends State<EditProfileView> {
             physics: const BouncingScrollPhysics(),
             child: Column(
               children: [
-                const SizedBox(
-                  height: 100,
-                ),
-                const Text(
-                  "Edit Profile",
-                  style: TextStyle(
-                      color: Colors.lightBlue,
-                      fontSize: 40,
-                      fontWeight: FontWeight.w800),
-                ),
                 const SizedBox(
                   height: 30,
                 ),
@@ -62,30 +57,39 @@ class _EditProfileViewState extends State<EditProfileView> {
                     hintTxt: "No Telp",
                     helperTxt: "ex: 085154433118",
                     iconData: Icons.phone_android),
+                const SizedBox(
+                  height: 400,
+                ),
                 ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        Map<String, dynamic> formData = {};
-                        formData['username'] = usernameController.text;
-                        formData['notelp'] = notelpController.text;
-                        showDialog(
-                            context: context,
-                            builder: (_) => AlertDialog(
-                                  title: Text("Edit Success!"),
-                                  actions: [
-                                    TextButton(
-                                        onPressed: () => Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (_) => LoginView(
-                                                      data: formData,
-                                                    ))),
-                                        child: Text("EDIT"))
-                                  ],
-                                ));
-                      }
-                    },
-                    child: const Text('Edit'))
+                  onPressed: () {
+                    if (_formKey.currentState!.validate()) {
+                      Map<String, dynamic> formData = {};
+                      formData['username'] = usernameController.text;
+                      formData['notelp'] = notelpController.text;
+                      showDialog(
+                          context: context,
+                          builder: (_) => AlertDialog(
+                                title: const Text("Edit Success!"),
+                                actions: [
+                                  TextButton(
+                                      onPressed: () => Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (_) => LoginView(
+                                                    data: formData,
+                                                  ))),
+                                      child: const Text("EDIT"))
+                                ],
+                              ));
+                    }
+                  },
+                  style: ElevatedButton.styleFrom(
+                    minimumSize: const Size(376, 50),
+                  ),
+                  child: const Text('Edit',
+                      style:
+                          TextStyle(fontSize: 22, fontWeight: FontWeight.bold)),
+                )
               ],
             ),
           ),
