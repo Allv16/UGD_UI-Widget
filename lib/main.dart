@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ugd_ui_widget/View/login.dart';
+import 'package:ugd_ui_widget/View/profile.dart';
+import 'package:ugd_ui_widget/model/user.dart';
 
 void main() {
   runApp(const MainApp());

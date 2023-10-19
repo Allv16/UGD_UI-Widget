@@ -3,6 +3,8 @@ import 'package:ugd_ui_widget/component/form_component.dart';
 import 'package:ugd_ui_widget/View/home.dart';
 import 'package:ugd_ui_widget/View/register.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ugd_ui_widget/database/sql_helper_user.dart';
 
 class LoginView extends StatefulWidget {
   final Map? data;
@@ -15,6 +17,36 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   final _formKey = GlobalKey<FormState>();
+  int userID = -1;
+
+  //cek user ada gakkkk
+  Future<bool> UserAdaGak (String username, String password) async {
+    final IDuser = await SQLHelperUser.cariUser(username, password);
+
+    if (IDuser != -1){
+      userID = IDuser; //kalau IDuser ketemu, masukin ke userID
+      return true;
+    } else {
+      return false;
+    }
+  }
+
+  //ambil data user
+  Future<void> ambilData (int id) async{
+    final user = await SQLHelperUser.getUserID(userID);
+
+    if (user != null) {
+      final prefs = await SharedPreferences.getInstance(); // untuk save data-data user
+
+      prefs.setString('id', user['id']);
+      prefs.setString('username', user['username']);
+      prefs.setString('email', user['email']);
+      prefs.setString('noTelp', user['noTelp']);
+      prefs.setString('tglLahir', user['tglLahir']);
+    } else {
+      print('user tidak ditemukan'); 
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,13 +108,11 @@ class _LoginViewState extends State<LoginView> {
                     children: [
                       // tombol login
                       ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
                             if (_formKey.currentState!.validate()) {
-                              if (dataForm!['username'] ==
-                                      usernameController.text &&
-                                  dataForm['password'] ==
-                                      passwordController.text) {
+                              if (await UserAdaGak(usernameController.text, passwordController.text)){
                                 showToastMessage("Login Successful");
+                                await ambilData(userID);
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -120,7 +150,7 @@ class _LoginViewState extends State<LoginView> {
                             Map<String, dynamic> formData = {};
                             formData['username'] = usernameController.text;
                             formData['password'] = passwordController.text;
-                            pushRegister(context);
+                            pushRegister(context);    
                           },
                           child: const Text("Belum punya akun ?")),
                     ],
@@ -152,3 +182,4 @@ void showToastMessage(msg) => Fluttertoast.showToast(
       textColor: Colors.grey[200],
       fontSize: 15.0,
     );
+

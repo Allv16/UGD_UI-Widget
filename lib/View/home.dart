@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ugd_ui_widget/View/profile.dart';
+import 'package:ugd_ui_widget/View/profileEdit.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -97,15 +98,15 @@ class _HomeViewState extends State<HomeView> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Profile(),
-                              ), // Replace ViewListPage() with your actual page widget
+                                builder: (context) => ProfileView(),
+                              ), 
                             );
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               CircleAvatar(
-                                radius: 50, // Adjust the radius as needed
+                                radius: 50,
                                 backgroundImage:
                                     AssetImage('images/medicine.png'),
                               ),
@@ -125,7 +126,6 @@ class _HomeViewState extends State<HomeView> {
                   decoration: BoxDecoration(
                       color: Colors.grey[300],
                       borderRadius: BorderRadius.circular(15)),
-                  // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables
                   child: Row(children: [
                     const Icon(
                       Icons.search,
@@ -146,7 +146,6 @@ class _HomeViewState extends State<HomeView> {
                   decoration: BoxDecoration(
                       color: Colors.cyan[600],
                       borderRadius: BorderRadius.circular(15)),
-                  // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -171,7 +170,6 @@ class _HomeViewState extends State<HomeView> {
                 SizedBox(
                   height: 50,
                 ),
-                //What do you need?
                 Text(
                   "What do you need?",
                   style: TextStyle(
@@ -183,7 +181,7 @@ class _HomeViewState extends State<HomeView> {
                   height: 30,
                 ),
                 GridView.count(
-                  crossAxisCount: 3, // 3 columns
+                  crossAxisCount: 3, 
                   crossAxisSpacing: 10.0,
                   mainAxisSpacing: 10.0,
                   shrinkWrap: true,

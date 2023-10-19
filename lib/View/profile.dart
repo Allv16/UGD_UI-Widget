@@ -1,175 +1,98 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'profileEdit.dart';
 
-class Profile extends StatelessWidget {
+class ProfileView extends StatefulWidget {
+  const ProfileView({Key? key}) : super(key: key);
+
+  @override
+  _ProfileViewState createState() => _ProfileViewState();
+}
+
+class _ProfileViewState extends State<ProfileView> {
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController noTelpController = TextEditingController();
+
+  @override
+  void initState() {
+    super.initState();
+    loadUserData();
+  }
+
+  Future<void> loadUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? username = prefs.getString('username');
+    String? email = prefs.getString('email');
+    String? noTelp = prefs.getString('noTelp');
+
+    setState(() {
+      usernameController.text = username ?? '';
+      emailController.text = email ?? '';
+      noTelpController.text = noTelp != null ? noTelp.toString() : '';
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
-    return DefaultTabController(
-        length: 5,
-        child: Scaffold(
-          appBar: AppBar(
-            title: const Text('P R O F I L E'),
-          ),
-          body: Column(
-            children: [
-              const TabBar(
-                labelColor: Colors.black,
-                tabs: [
-                  Tab(
-                    icon: Icon(
-                      Icons.person,
-                      color: Colors.black,
-                    ),
-                    text: 'Alvian',
-                  ),
-                  Tab(
-                    icon: Icon(
-                      Icons.person,
-                      color: Colors.black,
-                    ),
-                    text: 'Andreas',
-                  ),
-                  Tab(
-                    icon: Icon(
-                      Icons.person,
-                      color: Colors.black,
-                    ),
-                    text: 'Stella',
-                  ),
-                  Tab(
-                    icon: Icon(
-                      Icons.person,
-                      color: Colors.black,
-                    ),
-                    text: 'Kristin',
-                  ),
-                  Tab(
-                    icon: Icon(
-                      Icons.person,
-                      color: Colors.black,
-                    ),
-                    text: 'Sebastian',
-                  ),
-                ],
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Profile'),
+      ),
+      body: Padding(
+        padding: const EdgeInsets.all(16.0),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            ClipOval(// untuk mengatur bentuk gambar jd bulat
+              child: Image.asset(
+                'images/stel.jpg',
+                width: 200, 
+                height: 200,
+                fit: BoxFit.cover,
               ),
-              Expanded(
-                child: TabBarView(children: [
-                  //tab 1
-                  Container(
-                    color: Colors.lightBlue.shade100,
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ClipOval(
-                            child: Image.asset(
-                              'images/Alvian.jpg',
-                              width: 200,
-                              height: 200,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          const Text(
-                            '\nYohanes Alvian' '\nNPM : 210711047',
-                            style: TextStyle(fontSize: 25),
-                            textAlign: TextAlign.center,
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-
-                  //tab 2
-                  Container(
-                    color: Colors.lightBlue.shade100,
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ClipOval(
-                            child: Image.asset(
-                              'images/profile-Ayas.JPG',
-                              width: 200,
-                              height: 200,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          const Text('\nAndreas Margono' '\nNPM : 210711135',
-                              style: TextStyle(fontSize: 25),
-                              textAlign: TextAlign.center),
-                        ],
-                      ),
-                    ),
-                  ),
-                  //tab 3
-                  Container(
-                    color: Colors.lightBlue.shade100,
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ClipOval(
-                            child: Image.asset(
-                              'images/stel.jpg',
-                              width: 200,
-                              height: 200,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          const Text('\nRhema Stella' '\nNPM : 210711071',
-                              style: TextStyle(fontSize: 25),
-                              textAlign: TextAlign.center),
-                        ],
-                      ),
-                    ),
-                  ),
-                  //tab 4
-                  Container(
-                    color: Colors.lightBlue.shade100,
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ClipOval(
-                            child: Image.asset(
-                              'images/kristin.jpg',
-                              width: 200,
-                              height: 200,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          const Text('\nKristina Adine' '\nNPM : 210711102',
-                              style: TextStyle(fontSize: 25),
-                              textAlign: TextAlign.center),
-                        ],
-                      ),
-                    ),
-                  ),
-                  //tab 5
-                  Container(
-                    color: Colors.lightBlue.shade100,
-                    child: Center(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          ClipOval(
-                            child: Image.asset(
-                              'images/yiyi.JPG',
-                              width: 200,
-                              height: 200,
-                              fit: BoxFit.cover,
-                            ),
-                          ),
-                          const Text('\nSebastian Gautama' '\nNPM : 210711172',
-                              style: TextStyle(fontSize: 25),
-                              textAlign: TextAlign.center),
-                        ],
-                      ),
-                    ),
-                  ),
-                ]),
-              )
-            ],
-          ),
-        ));
+            ),
+            SizedBox(height: 20), 
+            TextFormField(
+              controller: usernameController,
+              style: TextStyle(fontSize: 20, color: Color.fromARGB(255, 30, 127, 207)),
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.person, color: const Color.fromARGB(255, 50, 50, 50)),
+              ),
+              enabled: false,
+            ),
+            TextFormField(
+              controller: emailController,
+              style: TextStyle(fontSize: 20, color: Color.fromARGB(255, 30, 127, 207)),
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.email, color: const Color.fromARGB(255, 50, 50, 50)),
+              ),
+              enabled: false,
+            ),
+            TextFormField(
+              controller: noTelpController,
+              style: TextStyle(fontSize: 20, color: Color.fromARGB(255, 30, 127, 207)),
+              decoration: InputDecoration(
+                prefixIcon: Icon(Icons.phone_android, color: const Color.fromARGB(255, 50, 50, 50)),
+              ),
+              enabled: false,
+            ),
+          ],
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () async {
+          final result = await Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => ProfileEditView()),
+          );
+          if (result != null && result) {
+            loadUserData();
+          }
+        },
+        child: Icon(Icons.edit),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
+    );
   }
 }
