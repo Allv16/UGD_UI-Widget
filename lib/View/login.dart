@@ -19,35 +19,6 @@ class _LoginViewState extends State<LoginView> {
   final _formKey = GlobalKey<FormState>();
   int userID = -1;
 
-  //cek user ada gakkkk
-  Future<bool> UserAdaGak (String username, String password) async {
-    final IDuser = await SQLHelperUser.cariUser(username, password);
-
-    if (IDuser != -1){
-      userID = IDuser; //kalau IDuser ketemu, masukin ke userID
-      return true;
-    } else {
-      return false;
-    }
-  }
-
-  //ambil data user
-  Future<void> ambilData (int id) async{
-    final user = await SQLHelperUser.getUserID(userID);
-
-    if (user != null) {
-      final prefs = await SharedPreferences.getInstance(); // untuk save data-data user
-
-      prefs.setString('id', user['id']);
-      prefs.setString('username', user['username']);
-      prefs.setString('email', user['email']);
-      prefs.setString('noTelp', user['noTelp']);
-      prefs.setString('tglLahir', user['tglLahir']);
-    } else {
-      print('user tidak ditemukan'); 
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     TextEditingController usernameController = TextEditingController();
@@ -110,9 +81,11 @@ class _LoginViewState extends State<LoginView> {
                       ElevatedButton(
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
-                              if (await UserAdaGak(usernameController.text, passwordController.text)){
+                                Map<String, dynamic> formData = {};
+                                formData['username'] = usernameController.text;
+                                formData['password'] = passwordController.text;
                                 showToastMessage("Login Successful");
-                                await ambilData(userID);
+                                await (userID);
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -141,8 +114,7 @@ class _LoginViewState extends State<LoginView> {
                                   ),
                                 );
                               }
-                            }
-                          },
+                            },
                           child: const Text('login')),
 
                       TextButton(

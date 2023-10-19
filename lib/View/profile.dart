@@ -15,25 +15,6 @@ class _ProfileViewState extends State<ProfileView> {
   TextEditingController noTelpController = TextEditingController();
 
   @override
-  void initState() {
-    super.initState();
-    loadUserData();
-  }
-
-  Future<void> loadUserData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? username = prefs.getString('username');
-    String? email = prefs.getString('email');
-    String? noTelp = prefs.getString('noTelp');
-
-    setState(() {
-      usernameController.text = username ?? '';
-      emailController.text = email ?? '';
-      noTelpController.text = noTelp != null ? noTelp.toString() : '';
-    });
-  }
-
-  @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
@@ -86,9 +67,6 @@ class _ProfileViewState extends State<ProfileView> {
             context,
             MaterialPageRoute(builder: (context) => ProfileEditView()),
           );
-          if (result != null && result) {
-            loadUserData();
-          }
         },
         child: Icon(Icons.edit),
       ),
