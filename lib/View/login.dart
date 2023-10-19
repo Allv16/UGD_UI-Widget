@@ -3,6 +3,8 @@ import 'package:ugd_ui_widget/component/form_component.dart';
 import 'package:ugd_ui_widget/View/home.dart';
 import 'package:ugd_ui_widget/View/register.dart';
 import 'package:fluttertoast/fluttertoast.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ugd_ui_widget/database/sql_helper_user.dart';
 
 class LoginView extends StatefulWidget {
   final Map? data;
@@ -15,6 +17,7 @@ class LoginView extends StatefulWidget {
 
 class _LoginViewState extends State<LoginView> {
   final _formKey = GlobalKey<FormState>();
+  int userID = -1;
 
   @override
   Widget build(BuildContext context) {
@@ -76,13 +79,13 @@ class _LoginViewState extends State<LoginView> {
                     children: [
                       // tombol login
                       ElevatedButton(
-                          onPressed: () {
+                          onPressed: () async {
                             if (_formKey.currentState!.validate()) {
-                              if (dataForm!['username'] ==
-                                      usernameController.text &&
-                                  dataForm['password'] ==
-                                      passwordController.text) {
+                                Map<String, dynamic> formData = {};
+                                formData['username'] = usernameController.text;
+                                formData['password'] = passwordController.text;
                                 showToastMessage("Login Successful");
+                                await (userID);
                                 Navigator.push(
                                     context,
                                     MaterialPageRoute(
@@ -111,8 +114,7 @@ class _LoginViewState extends State<LoginView> {
                                   ),
                                 );
                               }
-                            }
-                          },
+                            },
                           child: const Text('login')),
 
                       TextButton(
@@ -120,7 +122,7 @@ class _LoginViewState extends State<LoginView> {
                             Map<String, dynamic> formData = {};
                             formData['username'] = usernameController.text;
                             formData['password'] = passwordController.text;
-                            pushRegister(context);
+                            pushRegister(context);    
                           },
                           child: const Text("Belum punya akun ?")),
                     ],
@@ -152,3 +154,4 @@ void showToastMessage(msg) => Fluttertoast.showToast(
       textColor: Colors.grey[200],
       fontSize: 15.0,
     );
+

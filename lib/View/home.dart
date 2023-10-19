@@ -9,11 +9,10 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
-    if (index == 0) { 
+    if (index == 0) {
       _selectedIndex = 0;
       Navigator.push(
         context,
@@ -22,19 +21,19 @@ class _HomeViewState extends State<HomeView> {
         ),
       );
     } else if (index == 1) {
-      _selectedIndex = 1; 
+      _selectedIndex = 1;
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => Profile(),
+          builder: (context) => ProfileView(),
         ),
       );
     } else if (index == 2) {
-      _selectedIndex = 2; 
+      _selectedIndex = 2;
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => Profile(),
+          builder: (context) => ProfileView(),
         ),
       );
     } else {
@@ -132,15 +131,15 @@ class _HomeViewState extends State<HomeView> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => Profile(),
-                              ), // Replace ViewListPage() with your actual page widget
+                                builder: (context) => ProfileView(),
+                              ),
                             );
                           },
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
                               CircleAvatar(
-                                radius: 50, // Adjust the radius as needed
+                                radius: 50,
                                 backgroundImage:
                                     AssetImage('images/medicine.png'),
                               ),
@@ -151,7 +150,6 @@ class _HomeViewState extends State<HomeView> {
                     ],
                   ),
                 ),
-
                 SizedBox(
                   height: 20,
                 ),
@@ -160,7 +158,6 @@ class _HomeViewState extends State<HomeView> {
                   decoration: BoxDecoration(
                       color: Colors.grey[300],
                       borderRadius: BorderRadius.circular(15)),
-                  // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables
                   child: Row(children: [
                     const Icon(
                       Icons.search,
@@ -175,13 +172,11 @@ class _HomeViewState extends State<HomeView> {
                 SizedBox(
                   height: 50,
                 ),
-
                 Container(
                   padding: const EdgeInsets.all(25.0),
                   decoration: BoxDecoration(
                       color: Colors.cyan[600],
                       borderRadius: BorderRadius.circular(15)),
-                  // ignore: prefer_const_constructors, prefer_const_literals_to_create_immutables
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -202,11 +197,9 @@ class _HomeViewState extends State<HomeView> {
                         )
                       ]),
                 ),
-
                 SizedBox(
                   height: 50,
                 ),
-                //What do you need?
                 Text(
                   "What do you need?",
                   style: TextStyle(
@@ -218,7 +211,7 @@ class _HomeViewState extends State<HomeView> {
                   height: 30,
                 ),
                 GridView.count(
-                  crossAxisCount: 3, // 3 columns
+                  crossAxisCount: 3,
                   crossAxisSpacing: 10.0,
                   mainAxisSpacing: 10.0,
                   shrinkWrap: true,

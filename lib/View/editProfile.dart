@@ -20,7 +20,6 @@ class _EditProfileViewState extends State<EditProfileView> {
       appBar: AppBar(
         title: const Text('Edit Profile'),
         centerTitle: true,
-        leading: const Icon(Icons.arrow_back_ios_new_rounded),
       ),
       body: SafeArea(
         child: Form(
