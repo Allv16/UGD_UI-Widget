@@ -15,7 +15,6 @@ class _MyReservationState extends State<MyReservation> {
       appBar: AppBar(
         title: Text('My Reservation'),
         centerTitle: true,
-        leading: Icon(Icons.arrow_back_ios_new_rounded),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => {

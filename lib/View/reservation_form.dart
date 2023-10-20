@@ -10,8 +10,8 @@ class ReservationForm extends StatefulWidget {
 
 class ReservationFormState extends State<ReservationForm> {
   final _formKey = GlobalKey<FormState>();
-  TextEditingController usernameController = TextEditingController();
-  TextEditingController notelpController = TextEditingController();
+  TextEditingController dateController = TextEditingController();
+  TextEditingController timeController = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -29,36 +29,34 @@ class ReservationFormState extends State<ReservationForm> {
               SizedBox(
                 height: 15,
               ),
-              InputForm(
-                  controller: usernameController,
+              DatePicker(
+                validasi: (value) {
+                  if (value == null || value.isEmpty) {
+                    return "Date cannot be empty";
+                  }
+                },
+                controller: dateController,
+                hintTxt: "Select desired date",
+                helperTxt: "",
+                iconData: Icons.date_range_rounded,
+              ),
+              TimePicker(
                   validasi: (value) {
                     if (value == null || value.isEmpty) {
-                      return "Username cannot be empty";
-                    }
-                    if (value.contains('anjing')) {
-                      return "Username cannout contain harmful words";
+                      return "Select the desired time";
                     }
                   },
-                  hintTxt: "Username",
-                  helperTxt: "ex: JohnDoe",
-                  iconData: Icons.person),
-              InputForm(
-                  validasi: ((p0) {
-                    if (p0 == null || p0.isEmpty) {
-                      return 'Nomor Telepon tidak boleh kosong';
-                    }
-
-                    return null;
-                  }),
-                  controller: notelpController,
-                  hintTxt: "No Telp",
-                  helperTxt: "ex: 085154433118",
-                  iconData: Icons.phone_android),
+                  controller: timeController,
+                  hintTxt: "Select desired time",
+                  helperTxt: "",
+                  iconData: Icons.access_time),
               SizedBox(
                 height: 400,
               ),
               ElevatedButton(
-                onPressed: null,
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {}
+                },
                 style: ButtonStyle(
                     minimumSize:
                         MaterialStateProperty.all<Size>(const Size(360, 50))),

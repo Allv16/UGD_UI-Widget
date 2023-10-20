@@ -123,3 +123,62 @@ class _DatePickerState extends State<DatePicker> {
     );
   }
 }
+
+class TimePicker extends StatefulWidget {
+  final Function(String?) validasi;
+  final TextEditingController controller;
+  final String hintTxt;
+  final String helperTxt;
+  final IconData iconData;
+
+  TimePicker({
+    required this.validasi,
+    required this.controller,
+    required this.hintTxt,
+    required this.helperTxt,
+    required this.iconData,
+  });
+
+  @override
+  State<TimePicker> createState() => _TimePickerState();
+}
+
+class _TimePickerState extends State<TimePicker> {
+  TimeOfDay selectedTime = TimeOfDay.now();
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+      child: SizedBox(
+        child: TextFormField(
+          readOnly: true,
+          validator: (value) => widget.validasi(value),
+          autofocus: false,
+          controller: widget.controller,
+          decoration: InputDecoration(
+            border: const OutlineInputBorder(),
+            prefixIcon: Icon(widget.iconData),
+            labelText: widget.hintTxt,
+            helperText: widget.helperTxt,
+          ),
+          onTap: () async {
+            final TimeOfDay? timeOfDay = await showTimePicker(
+                context: context, initialTime: selectedTime);
+
+            if (timeOfDay != null) {
+              setState(() {
+                String formattedTime =
+                    "${timeOfDay.hour}:${timeOfDay.minute.toString().padLeft(2, '0')}";
+                widget.controller.text = formattedTime;
+              });
+            } else {
+              setState(() {
+                widget.controller.text = '';
+              });
+            }
+          },
+        ),
+      ),
+    );
+  }
+}
