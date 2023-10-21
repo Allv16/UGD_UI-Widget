@@ -55,21 +55,24 @@ class _RegisterViewState extends State<RegisterView> {
                     helperTxt: "ex: JohnDoe",
                     iconData: Icons.person),
                 DatePicker(
-                    validasi: ((String? selectedDate) {
-                      DateTime now = DateTime.now();
-                      if (selectedDate == null || selectedDate.isEmpty) {
-                        return "Pilih tanggal lahir!";
-                      }
-                      DateTime? selectedDateTime = DateTime.tryParse(selectedDate);
-                      if (selectedDateTime?.isAfter(now) ?? false) {
-                        return 'Tanggal yang dimasukkan tidak boleh lebih dari sekarang';
-                      }
-                      return null;
-                    }),
-                    controller: tglLahirController,
-                    hintTxt: "Tanggal Lahir",
-                    helperTxt: "ex: 2022-06-12",
-                    iconData: Icons.calendar_today),
+                  validasi: ((String? selectedDate) {
+                    DateTime now = DateTime.now();
+                    if (selectedDate == null || selectedDate.isEmpty) {
+                      return "Pilih tanggal lahir!";
+                    }
+                    DateTime? selectedDateTime =
+                        DateTime.tryParse(selectedDate);
+                    if (selectedDateTime?.isAfter(now) ?? false) {
+                      return 'Tanggal yang dimasukkan tidak boleh lebih dari sekarang';
+                    }
+                    return null;
+                  }),
+                  controller: tglLahirController,
+                  hintTxt: "Tanggal Lahir",
+                  helperTxt: "ex: 2022-06-12",
+                  iconData: Icons.calendar_today,
+                  selectedDate: null,
+                ),
                 InputForm(
                     validasi: ((p0) {
                       if (p0 == null || p0.isEmpty) {

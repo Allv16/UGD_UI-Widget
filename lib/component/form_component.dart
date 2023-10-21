@@ -67,6 +67,7 @@ class DatePicker extends StatefulWidget {
   final String hintTxt;
   final String helperTxt;
   final IconData iconData;
+  final String? selectedDate;
 
   DatePicker({
     required this.validasi,
@@ -74,6 +75,7 @@ class DatePicker extends StatefulWidget {
     required this.hintTxt,
     required this.helperTxt,
     required this.iconData,
+    required this.selectedDate,
   });
 
   @override
@@ -82,9 +84,16 @@ class DatePicker extends StatefulWidget {
 
 class _DatePickerState extends State<DatePicker> {
   String? errorDate;
+  DateTime dateNow = DateTime.now();
+  DateFormat customDateFormat = DateFormat('EEEE, d MMM y', 'en_US');
 
   @override
   Widget build(BuildContext context) {
+    if (widget.selectedDate != null) {
+      String dateString = widget.selectedDate!;
+      DateTime parsedDateTime = customDateFormat.parse(dateString);
+      dateNow = parsedDateTime;
+    }
     return Padding(
       padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
       child: SizedBox(
@@ -102,7 +111,7 @@ class _DatePickerState extends State<DatePicker> {
           onTap: () async {
             final DateTime? pickedDate = await showDatePicker(
               context: context,
-              initialDate: DateTime.now(),
+              initialDate: dateNow,
               firstDate: DateTime(1900),
               lastDate: DateTime(2100),
             );
@@ -110,7 +119,7 @@ class _DatePickerState extends State<DatePicker> {
             if (pickedDate != null) {
               setState(() {
                 widget.controller.text =
-                    DateFormat('yyyy-MM-dd').format(pickedDate);
+                    DateFormat('EEEE, d MMM y').format(pickedDate);
               });
             } else {
               setState(() {
@@ -130,6 +139,7 @@ class TimePicker extends StatefulWidget {
   final String hintTxt;
   final String helperTxt;
   final IconData iconData;
+  final String? startTime;
 
   TimePicker({
     required this.validasi,
@@ -137,6 +147,7 @@ class TimePicker extends StatefulWidget {
     required this.hintTxt,
     required this.helperTxt,
     required this.iconData,
+    required this.startTime,
   });
 
   @override
@@ -147,6 +158,16 @@ class _TimePickerState extends State<TimePicker> {
   TimeOfDay selectedTime = TimeOfDay.now();
   @override
   Widget build(BuildContext context) {
+    if (widget.startTime != null) {
+      String timeString = widget.startTime!;
+      List<String> timeParts = timeString.split(":");
+      int hour = int.parse(timeParts[0]);
+      int minute = int.parse(timeParts[1]);
+
+      TimeOfDay parsedTime = TimeOfDay(hour: hour, minute: minute);
+
+      selectedTime = parsedTime;
+    }
     return Padding(
       padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
       child: SizedBox(

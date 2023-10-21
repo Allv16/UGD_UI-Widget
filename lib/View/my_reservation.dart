@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ugd_ui_widget/View/reservation_form.dart';
+import 'package:ugd_ui_widget/database/sql_helper_reservation.dart';
+import 'home.dart';
+import 'profile.dart';
+
+final List<String> doctor = ['Aji', 'Caily', 'Alina', 'Bonita', 'Daisy'];
 
 class MyReservation extends StatefulWidget {
   const MyReservation({super.key});
@@ -9,6 +14,49 @@ class MyReservation extends StatefulWidget {
 }
 
 class _MyReservationState extends State<MyReservation> {
+  //for bottom nav
+  int _selectedIndex = 1;
+
+  void _onItemTapped(int index) {
+    if (index == 0) {
+      _selectedIndex = 0;
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomeView(),
+        ),
+      );
+    } else if (index == 2) {
+      _selectedIndex = 2;
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => ProfileView(),
+        ),
+      );
+    } else {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
+  }
+
+  //for data
+
+  List<Map<String, dynamic>> reservation = [];
+  void refresh() async {
+    final data = await SQLHelperReservation.getUser();
+    setState(() {
+      reservation = data;
+    });
+  }
+
+  @override
+  void initState() {
+    refresh();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,8 +69,12 @@ class _MyReservationState extends State<MyReservation> {
           Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => const ReservationForm(),
-              ))
+                builder: (context) => const ReservationForm(
+                  date: null,
+                  id: null,
+                  time: null,
+                ),
+              )).then((_) => refresh())
         },
         child: Icon(Icons.add),
         backgroundColor: Colors.lightBlue,
@@ -39,22 +91,53 @@ class _MyReservationState extends State<MyReservation> {
                   prefixIcon: const Icon(Icons.search),
                   filled: true,
                   fillColor: Colors.grey[200]),
+              onChanged: (value) async {
+                if (value.isEmpty) {
+                  refresh();
+                } else {
+                  final data = await SQLHelperReservation.getUserByName(value);
+                  setState(() {
+                    reservation = data;
+                  });
+                }
+              },
             ),
             const SizedBox(
               height: 20,
             ),
-            Expanded(
-                child: ListView.builder(
-              itemCount: 10,
-              itemBuilder: (context, index) => reservationCard(),
-            ))
+            reservation.length == 0
+                ? Text("No Reservation found")
+                : Expanded(
+                    child: ListView.builder(
+                    itemCount: reservation.length,
+                    itemBuilder: (context, index) => reservationCard(index),
+                  ))
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.book),
+            label: 'Reservation',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle),
+            label: 'Profile',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.cyan[600],
+        onTap: _onItemTapped,
       ),
     );
   }
 
-  Widget reservationCard() => Card(
+  Widget reservationCard(int index) => Card(
         color: Colors.grey[200],
         child: Padding(
           padding: const EdgeInsets.all(15),
@@ -66,31 +149,32 @@ class _MyReservationState extends State<MyReservation> {
                 width: 124,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(100),
-                  child: const Image(
-                      image: AssetImage('images/Alvian.jpg'),
+                  child: Image(
+                      image: AssetImage(
+                          'images/${reservation[index]['doctorName']}.jpg'),
                       fit: BoxFit.cover),
                 ),
               ),
               const SizedBox(
                 width: 16,
               ),
-              const Column(
+              Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Alvian Wijaya',
-                      style: TextStyle(
+                  Text(reservation[index]['doctorName'],
+                      style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
                       )),
                   Text(
-                    'Wed, 12 October 2023',
-                    style: TextStyle(fontSize: 16),
+                    reservation[index]['date'],
+                    style: const TextStyle(fontSize: 16),
                   ),
                   Text(
-                    '12:15',
-                    style: TextStyle(fontSize: 16),
+                    reservation[index]['time'],
+                    style: const TextStyle(fontSize: 16),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 15,
                   ),
                   Row(
@@ -102,7 +186,17 @@ class _MyReservationState extends State<MyReservation> {
                         radius: 20,
                         backgroundColor: Colors.blue,
                         child: IconButton(
-                          onPressed: null,
+                          onPressed: () => {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ReservationForm(
+                                    date: reservation[index]['date'],
+                                    id: reservation[index]['id'],
+                                    time: reservation[index]['time'],
+                                  ),
+                                )).then((_) => refresh())
+                          },
                           icon: Icon(
                             Icons.create_outlined,
                             color: Colors.white,
@@ -117,7 +211,10 @@ class _MyReservationState extends State<MyReservation> {
                         radius: 20,
                         backgroundColor: Colors.red,
                         child: IconButton(
-                          onPressed: null,
+                          onPressed: () => {
+                            deleteReservation(reservation[index]['id'])
+                                .then((_) => refresh())
+                          },
                           icon: Icon(
                             Icons.delete,
                             color: Colors.white,
@@ -133,4 +230,8 @@ class _MyReservationState extends State<MyReservation> {
           ),
         ),
       );
+
+  Future<void> deleteReservation(int id) async {
+    await SQLHelperReservation.deleteReservation(id);
+  }
 }

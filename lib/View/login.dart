@@ -81,40 +81,20 @@ class _LoginViewState extends State<LoginView> {
                       ElevatedButton(
                           onPressed: () async {
                             if (_formKey.currentState!.validate()) {
-                                Map<String, dynamic> formData = {};
-                                formData['username'] = usernameController.text;
-                                formData['password'] = passwordController.text;
-                                showToastMessage("Login Successful");
-                                await (userID);
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (_) => const HomeView()));
-                              } else {
-                                showDialog(
-                                  context: context,
-                                  builder: (_) => AlertDialog(
-                                    title: const Text('Password Salah'),
-                                    content: TextButton(
-                                      onPressed: () => pushRegister(context),
-                                      child: const Text('Daftar Disini !!'),
-                                    ),
-                                    actions: <Widget>[
-                                      TextButton(
-                                        onPressed: () =>
-                                            Navigator.pop(context, 'Cancel'),
-                                        child: const Text('Cancel'),
-                                      ),
-                                      TextButton(
-                                        onPressed: () =>
-                                            Navigator.pop(context, 'OK'),
-                                        child: const Text('OK'),
-                                      ),
-                                    ],
-                                  ),
-                                );
-                              }
-                            },
+                              Map<String, dynamic> formData = {};
+                              formData['username'] = usernameController.text;
+                              formData['password'] = passwordController.text;
+                              showToastMessage(
+                                  "Login Successful", Colors.green);
+                              await (userID);
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => const HomeView()));
+                            } else {
+                              showToastMessage("Login Failed", Colors.red);
+                            }
+                          },
                           child: const Text('login')),
 
                       TextButton(
@@ -122,7 +102,7 @@ class _LoginViewState extends State<LoginView> {
                             Map<String, dynamic> formData = {};
                             formData['username'] = usernameController.text;
                             formData['password'] = passwordController.text;
-                            pushRegister(context);    
+                            pushRegister(context);
                           },
                           child: const Text("Belum punya akun ?")),
                     ],
@@ -146,12 +126,11 @@ class _LoginViewState extends State<LoginView> {
   }
 }
 
-void showToastMessage(msg) => Fluttertoast.showToast(
+void showToastMessage(msg, color) => Fluttertoast.showToast(
       msg: msg,
       toastLength: Toast.LENGTH_SHORT,
       gravity: ToastGravity.BOTTOM,
-      backgroundColor: Colors.green,
+      backgroundColor: color,
       textColor: Colors.grey[200],
       fontSize: 15.0,
     );
-

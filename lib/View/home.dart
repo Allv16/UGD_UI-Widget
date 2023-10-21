@@ -13,15 +13,7 @@ class _HomeViewState extends State<HomeView> {
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
-    if (index == 0) {
-      _selectedIndex = 0;
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => HomeView(),
-        ),
-      );
-    } else if (index == 1) {
+    if (index == 1) {
       _selectedIndex = 1;
       Navigator.push(
         context,
