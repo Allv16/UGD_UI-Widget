@@ -7,9 +7,9 @@ class SQLHelperUser {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT,
         password TEXT,
-        email TEXT,
+        email TEXT UNIQUE,
         noTelp TEXT,
-        tglLahir TEXT,
+        tglLahir TEXT
       )
     """);
   }
@@ -18,8 +18,9 @@ class SQLHelperUser {
   static Future<sql.Database> db() async {
     return sql.openDatabase('user.db', version: 1,
         onCreate: (sql.Database database, int version) async {
-      await createTables(database);
-    });
+          await createTables(database);
+      }
+    );
   }
 
   //insert User
@@ -32,8 +33,13 @@ class SQLHelperUser {
       'noTelp': noTelp,
       'tglLahir' : tglLahir,
     };
-    return await db.insert('user', data);
+    try {
+      return await db.insert('user', data);
+  } catch (e) {
+      return -1;
   }
+  }
+
 
   //read user
   static Future<List<Map<String, dynamic>>> getUser() async {
@@ -93,4 +99,22 @@ class SQLHelperUser {
  
     return null;
   }
+
+  // Search user by email (username) and password
+static Future<int> loginUser(String username, String password) async {
+  final db = await SQLHelperUser.db();
+
+  List<Map<String, dynamic>> result = await db.query(
+    'user',
+    columns: ['id'],
+    where: 'username = ? AND password = ?',
+    whereArgs: [username, password],
+  );
+
+  if (result.isNotEmpty) {
+    return result.first['id'] as int;
+  }
+
+  return -1; // Return -1 if user is not found or login fails
+}
 }

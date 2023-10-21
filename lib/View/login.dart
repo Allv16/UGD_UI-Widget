@@ -18,6 +18,20 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   final _formKey = GlobalKey<FormState>();
   int userID = -1;
+  List<Map<String, dynamic>> user = [];
+
+  @override
+  void initState() {
+    refresh();
+    super.initState();
+  }
+
+  void refresh() async {
+    final data = await SQLHelperUser.getUser();
+    setState(() {
+      user = data;
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -79,29 +93,34 @@ class _LoginViewState extends State<LoginView> {
                     children: [
                       // tombol login
                       ElevatedButton(
-                          onPressed: () async {
-                            if (_formKey.currentState!.validate()) {
-                              Map<String, dynamic> formData = {};
-                              formData['username'] = usernameController.text;
-                              formData['password'] = passwordController.text;
-                              showToastMessage(
-                                  "Login Successful", Colors.green);
-                              await (userID);
+                        onPressed: () async {
+                          if (_formKey.currentState!.validate()) {
+                            String username = usernameController.text;
+                            String password = passwordController.text;
+                            int userId = await SQLHelperUser.loginUser(username, password);
+
+                            if (userId != -1) {
+                              // Login successful, userId contains the ID of the logged-in user
+                              showToastMessage("Login Successful", Colors.green);
+
+                              // Continue to the home page or another screen
                               Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (_) => const HomeView()));
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const HomeView(),
+                                ),
+                              );
                             } else {
+                              // Login failed
                               showToastMessage("Login Failed", Colors.red);
                             }
-                          },
-                          child: const Text('login')),
+                          }
+                        },
+                        child: const Text('login'),
+                      ),
 
                       TextButton(
                           onPressed: () {
-                            Map<String, dynamic> formData = {};
-                            formData['username'] = usernameController.text;
-                            formData['password'] = passwordController.text;
                             pushRegister(context);
                           },
                           child: const Text("Belum punya akun ?")),
@@ -120,7 +139,15 @@ class _LoginViewState extends State<LoginView> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (_) => const RegisterView(),
+        builder: (context) => const RegisterView(
+          title: 'REGISTER USER',
+          id: null,
+          username: null,
+          email: null,
+          password: null,
+          tglLahir: null,
+          notelp: null,
+        ),
       ),
     );
   }

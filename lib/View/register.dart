@@ -1,9 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:ugd_ui_widget/View/login.dart';
 import 'package:ugd_ui_widget/component/form_component.dart';
+import 'package:ugd_ui_widget/database/sql_helper_user.dart';
+import 'package:ugd_ui_widget/model/user.dart';
 
 class RegisterView extends StatefulWidget {
-  const RegisterView({super.key});
+  const RegisterView(
+    {super.key,
+    required this.id,
+    required this.title,
+    required this.username,
+    required this.email,
+    required this.password,
+    required this.notelp,
+    required this.tglLahir,
+    });
+
+  final String? email,username,title,password,tglLahir,notelp;
+  final int? id;
 
   @override
   State<RegisterView> createState() => _RegisterViewState();
@@ -19,6 +33,13 @@ class _RegisterViewState extends State<RegisterView> {
 
   @override
   Widget build(BuildContext context) {
+    if(widget.id != null){
+      usernameController.text = widget.username!;
+      emailController.text = widget.email!;
+      passwordController.text = widget.password!;
+      notelpController.text = widget.notelp!;
+      tglLahirController.text = widget.tglLahir!;
+    } 
     return Scaffold(
       body: SafeArea(
         child: Form(
@@ -117,11 +138,13 @@ class _RegisterViewState extends State<RegisterView> {
                     helperTxt: "must use 5 or more character",
                     iconData: Icons.password),
                 ElevatedButton(
-                    onPressed: () {
-                      if (_formKey.currentState!.validate()) {
-                        Map<String, dynamic> formData = {};
-                        formData['username'] = usernameController.text;
-                        formData['password'] = passwordController.text;
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) { 
+                        if(widget.id==null){
+                          await addUser();
+                        }else{
+                          await editUser(widget.id!);
+                        }
                         showDialog(
                             context: context,
                             builder: (_) => AlertDialog(
@@ -131,9 +154,9 @@ class _RegisterViewState extends State<RegisterView> {
                                         onPressed: () => Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (_) => LoginView(
-                                                      data: formData,
-                                                    ))),
+                                                builder: (_) => LoginView(),
+                                                ),
+                                              ),
                                         child: Text("OK"))
                                   ],
                                 ));
@@ -146,5 +169,12 @@ class _RegisterViewState extends State<RegisterView> {
         ),
       ),
     );
+  }
+  Future<void> addUser() async {
+    print('jhghjghjg');
+    await SQLHelperUser.addUser(usernameController.text,emailController.text, passwordController.text, notelpController.text, tglLahirController.text);
+  }
+  Future<void> editUser(int id) async {
+    await SQLHelperUser.editUser(id,usernameController.text, emailController.text,notelpController.text, tglLahirController.text);
   }
 }
