@@ -18,28 +18,27 @@ class SQLHelperUser {
   static Future<sql.Database> db() async {
     return sql.openDatabase('user.db', version: 1,
         onCreate: (sql.Database database, int version) async {
-          await createTables(database);
-      }
-    );
+      await createTables(database);
+    });
   }
 
   //insert User
-  static Future<int> addUser(String username, String email,String password, String noTelp, String tglLahir) async {
+  static Future<int> addUser(String username, String email, String password,
+      String noTelp, String tglLahir) async {
     final db = await SQLHelperUser.db();
     final data = {
       'username': username,
       'password': password,
       'email': email,
       'noTelp': noTelp,
-      'tglLahir' : tglLahir,
+      'tglLahir': tglLahir,
     };
     try {
       return await db.insert('user', data);
-  } catch (e) {
+    } catch (e) {
       return -1;
+    }
   }
-  }
-
 
   //read user
   static Future<List<Map<String, dynamic>>> getUser() async {
@@ -48,15 +47,15 @@ class SQLHelperUser {
   }
 
   //update user
-  static Future<int> editUser(String username, String email, String noTelp, String tglLahir) async {
+  static Future<int> editUser(
+      String username, String email, String noTelp) async {
     final db = await SQLHelperUser.db();
     final data = {
       'username': username,
-      'email': email,
       'noTelp': noTelp,
-      'tglLahir' : tglLahir,
     };
-    return await db.update('user', data, where: "email = ?", whereArgs: [email]);
+    return await db
+        .update('user', data, where: "email = ?", whereArgs: [email]);
   }
 
   //delete user
@@ -66,7 +65,7 @@ class SQLHelperUser {
   }
 
   //search user by email
-  static Future<String?> cariUser(String username, String password) async{
+  static Future<String?> cariUser(String username, String password) async {
     final db = await SQLHelperUser.db();
 
     List<Map<String, dynamic>> result = await db.query(
@@ -84,7 +83,7 @@ class SQLHelperUser {
   }
 
   //get user by email
-  static Future<Map<String, dynamic>?> getUserEmail(String? email) async{
+  static Future<Map<String, dynamic>?> getUserEmail(String? email) async {
     final db = await SQLHelperUser.db();
 
     List<Map<String, dynamic>> result = await db.query(
@@ -93,29 +92,28 @@ class SQLHelperUser {
       whereArgs: [email],
     );
 
-    if (result.isNotEmpty){
-      return result.first; 
+    if (result.isNotEmpty) {
+      return result.first;
     }
- 
+
     return null;
   }
 
   // Search user by email (username) and password
-static Future<int> loginUser(String username, String password) async {
-  final db = await SQLHelperUser.db();
+  static Future<Map> loginUser(String email, String password) async {
+    final db = await SQLHelperUser.db();
 
-  List<Map<String, dynamic>> result = await db.query(
-    'user',
-    columns: ['id'],
-    where: 'username = ? AND password = ?',
-    whereArgs: [username, password],
-  );
+    List<Map<String, dynamic>> result = await db.query(
+      'user',
+      where: 'email = ? AND password = ?',
+      whereArgs: [email, password],
+    );
 
-  if (result.isNotEmpty) {
-    return result.first['id'] as int;
-  }
+    if (result.isNotEmpty) {
+      return result.first;
+    }
 
-  return -1; // Return -1 if user is not found or login fails
+    return {'id': -1}; // Return -1 if user is not found or login fails
   }
 
   static Future<bool> isEmailUnique(String email) async {
@@ -133,6 +131,5 @@ static Future<int> loginUser(String username, String password) async {
     }
 
     return true;
-
   }
 }

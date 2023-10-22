@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ugd_ui_widget/component/form_component.dart';
 import 'package:ugd_ui_widget/database/sql_helper_reservation.dart';
 import 'dart:math';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final List<String> doctor = ['Aji', 'Caily', 'Alina', 'Bonita', 'Daisy'];
 
@@ -16,6 +17,20 @@ class ReservationForm extends StatefulWidget {
 }
 
 class ReservationFormState extends State<ReservationForm> {
+  String emailUser = "";
+  Future<void> loadUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? email = prefs.getString('email');
+    setState(() {
+      emailUser = email!;
+    });
+  }
+
+  void initState() {
+    loadUserData();
+    super.initState();
+  }
+
   final _formKey = GlobalKey<FormState>();
   TextEditingController dateController = TextEditingController();
   TextEditingController timeController = TextEditingController();
@@ -96,9 +111,8 @@ class ReservationFormState extends State<ReservationForm> {
 
   Future<void> addReservation() async {
     final String doctorName = doctor[Random().nextInt(5)];
-    final String email = "alvian@gmail.com";
     await SQLHelperReservation.addReservation(
-        dateController.text, timeController.text, doctorName, email);
+        dateController.text, timeController.text, doctorName, emailUser);
   }
 
   Future<void> editReservation() async {

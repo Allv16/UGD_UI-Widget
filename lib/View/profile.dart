@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
-import 'editProfile.dart';
+import 'package:ugd_ui_widget/View/profileEdit.dart';
+import 'home.dart';
+import 'my_reservation.dart';
+import 'login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileView extends StatefulWidget {
@@ -33,6 +36,32 @@ class _ProfileViewState extends State<ProfileView> {
       noTelpController.text = noTelp != null ? noTelp.toString() : '';
       tglLahirController.text = tgl ?? '';
     });
+  }
+
+  int _selectedIndex = 2;
+
+  void _onItemTapped(int index) {
+    if (index == 1) {
+      _selectedIndex = 1;
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => new MyReservation(),
+        ),
+      );
+    } else if (index == 0) {
+      _selectedIndex = 0;
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => HomeView(),
+        ),
+      );
+    } else {
+      setState(() {
+        _selectedIndex = index;
+      });
+    }
   }
 
   @override
@@ -104,14 +133,51 @@ class _ProfileViewState extends State<ProfileView> {
               ),
               enabled: false,
             ),
+            Padding(
+              padding: EdgeInsets.only(bottom: 24, right: 15, left: 15),
+              child: ElevatedButton(
+                onPressed: () async {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => LoginView()));
+                },
+                style: ButtonStyle(
+                    minimumSize:
+                        MaterialStateProperty.all<Size>(const Size(360, 50)),
+                    backgroundColor:
+                        MaterialStateProperty.all<Color>(Colors.red)),
+                child: Text(
+                  "Logout",
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+              ),
+            ),
           ],
         ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        items: const <BottomNavigationBarItem>[
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: 'Home',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.book),
+            label: 'Booking',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.account_circle),
+            label: 'Profile',
+          ),
+        ],
+        currentIndex: _selectedIndex,
+        selectedItemColor: Colors.cyan[600],
+        onTap: _onItemTapped,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
           final result = await Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => EditProfileView()),
+            MaterialPageRoute(builder: (context) => ProfileEditView()),
           );
           if (result != null && result) {
             loadUserData();

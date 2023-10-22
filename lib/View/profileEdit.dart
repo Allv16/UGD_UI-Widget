@@ -14,16 +14,10 @@ class _ProfileEditViewState extends State<ProfileEditView> {
   TextEditingController emailController = TextEditingController();
   TextEditingController notelpController = TextEditingController();
   TextEditingController tglLahirController = TextEditingController();
-
-  @override
-  void initState() {
-    super.initState();
-    loadUserData();
-  }
+  String emailUser = "";
 
   Future<void> loadUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    int? id = prefs.getInt('id');
     String? username = prefs.getString('username');
     String? email = prefs.getString('email');
     String? noTelp = prefs.getString('noTelp');
@@ -31,10 +25,16 @@ class _ProfileEditViewState extends State<ProfileEditView> {
 
     setState(() {
       usernameController.text = username ?? '';
-      emailController.text = email ?? '';
       notelpController.text = noTelp != null ? noTelp.toString() : '';
-      tglLahirController.text = tglLahir ?? '';
+      tglLahirController.text = tglLahir!;
+      emailUser = email!;
     });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    loadUserData();
   }
 
   @override
@@ -73,33 +73,6 @@ class _ProfileEditViewState extends State<ProfileEditView> {
                 hintTxt: "No Telp",
                 helperTxt: "ex: 085154433118",
                 iconData: Icons.phone_android),
-            InputForm(
-                validasi: ((p0) {
-                  if (p0 == null || p0.isEmpty) {
-                    return 'Email tidak boleh kosong';
-                  }
-                  if (!p0.contains('@')) {
-                    return 'Email harus menggunakan @';
-                  }
-                  return null;
-                }),
-                controller: emailController,
-                hintTxt: "Email",
-                helperTxt: "ex: john@hospital.com",
-                iconData: Icons.email),
-            DatePicker(
-              validasi: ((value) {
-                if (value == null || value.isEmpty) {
-                  return "Pilih tanggal lahir!";
-                }
-                return null;
-              }),
-              controller: tglLahirController,
-              hintTxt: "Tanggal Lahir",
-              helperTxt: "",
-              iconData: Icons.calendar_today,
-              selectedDate: tglLahirController.text,
-            ),
           ],
         ),
       ),
@@ -125,20 +98,15 @@ class _ProfileEditViewState extends State<ProfileEditView> {
   Future<void> saveEditedData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final username = usernameController.text;
-    final email = emailController.text;
     final noTelp = notelpController.text;
-    final tglLahir = tglLahirController.text;
 
     try {
       // // Save data yang udh diedit di shared pref (update lah)
       prefs.setString('username', username);
-      prefs.setString('email', email);
       prefs.setString('noTelp', noTelp);
-      prefs.setString('tglLahir', tglLahir);
 
       // Update data ke sql
-      final db =
-          await SQLHelperUser.editUser(username, email, noTelp, tglLahir);
+      await SQLHelperUser.editUser(username, emailUser, noTelp);
 
       // Pop the current screen and return to the previous screen
       Navigator.pop(context, true);

@@ -35,7 +35,7 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    TextEditingController usernameController = TextEditingController();
+    TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
 
     Map? dataForm = widget.data;
@@ -61,13 +61,13 @@ class _LoginViewState extends State<LoginView> {
                   InputForm(
                     validasi: (value) {
                       if (value == null || value.isEmpty) {
-                        return 'username tidak boleh kosong';
+                        return 'email tidak boleh kosong';
                       }
                       return null;
                     },
-                    controller: usernameController,
-                    hintTxt: "Username",
-                    helperTxt: "Input Username",
+                    controller: emailController,
+                    hintTxt: "Email",
+                    helperTxt: "Input Email",
                     iconData: Icons.person,
                   ),
                   SizedBox(
@@ -95,13 +95,23 @@ class _LoginViewState extends State<LoginView> {
                       ElevatedButton(
                         onPressed: () async {
                           if (_formKey.currentState!.validate()) {
-                            String username = usernameController.text;
+                            String email = emailController.text;
                             String password = passwordController.text;
-                            int userId = await SQLHelperUser.loginUser(
-                                username, password);
-
-                            if (userId != -1) {
+                            Map<dynamic, dynamic> loginResult =
+                                await SQLHelperUser.loginUser(email, password);
+                            print(loginResult['id']);
+                            if (loginResult['id'] != -1) {
                               // Login successful, userId contains the ID of the logged-in user
+                              //set sharedpreferenced
+                              SharedPreferences prefs =
+                                  await SharedPreferences.getInstance();
+                              prefs.setString(
+                                  'username', loginResult['username']);
+                              prefs.setString('email', loginResult['email']);
+                              prefs.setString('noTelp', loginResult['noTelp']);
+                              prefs.setString(
+                                  'tglLahir', loginResult['tglLahir']);
+
                               showToastMessage(
                                   "Login Successful", Colors.green);
 

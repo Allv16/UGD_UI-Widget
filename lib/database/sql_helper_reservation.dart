@@ -33,9 +33,10 @@ class SQLHelperReservation {
   }
 
   //read user
-  static Future<List<Map<String, dynamic>>> getUser() async {
+  static Future<List<Map<String, dynamic>>> getUser(String email) async {
     final db = await SQLHelperReservation.db();
-    return db.query('reservation');
+    return db
+        .query('reservation', where: 'userEmail LIKE ?', whereArgs: [email]);
   }
 
   static Future<List<Map<String, dynamic>>> getUserByName(String query) async {

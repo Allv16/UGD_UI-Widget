@@ -91,8 +91,13 @@ class _DatePickerState extends State<DatePicker> {
   Widget build(BuildContext context) {
     if (widget.selectedDate != null) {
       String dateString = widget.selectedDate!;
-      DateTime parsedDateTime = customDateFormat.parse(dateString);
-      dateNow = parsedDateTime;
+      print(dateString);
+      try {
+        DateTime parsedDateTime = customDateFormat.parse(dateString);
+        dateNow = parsedDateTime;
+      } catch (e) {
+        print("error parsing dateString: $e");
+      } finally {}
     }
     return Padding(
       padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
