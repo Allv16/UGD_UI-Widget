@@ -116,5 +116,23 @@ static Future<int> loginUser(String username, String password) async {
   }
 
   return -1; // Return -1 if user is not found or login fails
-}
+  }
+
+  static Future<bool> isEmailUnique(String email) async {
+    final db = await SQLHelperUser.db();
+
+    List<Map<String, dynamic>> result = await db.query(
+      'user',
+      columns: ['id'],
+      where: 'email = ?',
+      whereArgs: [email],
+    );
+
+    if (result.isNotEmpty) {
+      return false;
+    }
+
+    return true;
+
+  }
 }

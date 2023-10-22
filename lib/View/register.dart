@@ -140,12 +140,9 @@ class _RegisterViewState extends State<RegisterView> {
                 ElevatedButton(
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) { 
-                        if(widget.id==null){
+                        if(await SQLHelperUser.isEmailUnique(emailController.text) == true) {
                           await addUser();
-                        }else{
-                          await editUser(widget.id!);
-                        }
-                        showDialog(
+                          showDialog(
                             context: context,
                             builder: (_) => AlertDialog(
                                   title: Text("Register Success!"),
@@ -160,6 +157,10 @@ class _RegisterViewState extends State<RegisterView> {
                                         child: Text("OK"))
                                   ],
                                 ));
+                        }else{
+                          showToastMessage("Tidak bisa login email tidak unik", Colors.red);
+                        }
+                        
                       }
                     },
                     child: const Text('Register'))
