@@ -161,7 +161,7 @@ class _MyReservationState extends State<MyReservation> {
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(reservation[index]['doctorName'],
+                  Text('Dr. ' + reservation[index]['doctorName'],
                       style: const TextStyle(
                         fontWeight: FontWeight.bold,
                         fontSize: 24,
