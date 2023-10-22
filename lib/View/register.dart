@@ -5,8 +5,8 @@ import 'package:ugd_ui_widget/database/sql_helper_user.dart';
 import 'package:ugd_ui_widget/model/user.dart';
 
 class RegisterView extends StatefulWidget {
-  const RegisterView(
-    {super.key,
+  const RegisterView({
+    super.key,
     required this.id,
     required this.title,
     required this.username,
@@ -14,9 +14,9 @@ class RegisterView extends StatefulWidget {
     required this.password,
     required this.notelp,
     required this.tglLahir,
-    });
+  });
 
-  final String? email,username,title,password,tglLahir,notelp;
+  final String? email, username, title, password, tglLahir, notelp;
   final int? id;
 
   @override
@@ -33,13 +33,13 @@ class _RegisterViewState extends State<RegisterView> {
 
   @override
   Widget build(BuildContext context) {
-    if(widget.id != null){
+    if (widget.id != null) {
       usernameController.text = widget.username!;
       emailController.text = widget.email!;
       passwordController.text = widget.password!;
       notelpController.text = widget.notelp!;
       tglLahirController.text = widget.tglLahir!;
-    } 
+    }
     return Scaffold(
       body: SafeArea(
         child: Form(
@@ -139,28 +139,31 @@ class _RegisterViewState extends State<RegisterView> {
                     iconData: Icons.password),
                 ElevatedButton(
                     onPressed: () async {
-                      if (_formKey.currentState!.validate()) { 
-                        if(await SQLHelperUser.isEmailUnique(emailController.text) == true) {
+                      if (_formKey.currentState!.validate()) {
+                        if (await SQLHelperUser.isEmailUnique(
+                                emailController.text) ==
+                            true) {
                           await addUser();
                           showDialog(
-                            context: context,
-                            builder: (_) => AlertDialog(
-                                  title: Text("Register Success!"),
-                                  actions: [
-                                    TextButton(
-                                        onPressed: () => Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (_) => LoginView(),
+                              context: context,
+                              builder: (_) => AlertDialog(
+                                    title: Text("Register Success!"),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () => Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (_) => LoginView(),
                                                 ),
                                               ),
-                                        child: Text("OK"))
-                                  ],
-                                ));
-                        }else{
-                          showToastMessage("Tidak bisa login email tidak unik", Colors.red);
+                                          child: Text("OK"))
+                                    ],
+                                  ));
+                        } else {
+                          showToastMessage(
+                              "Tidak bisa register email tidak unik",
+                              Colors.red);
                         }
-                        
                       }
                     },
                     child: const Text('Register'))
@@ -171,11 +174,18 @@ class _RegisterViewState extends State<RegisterView> {
       ),
     );
   }
+
   Future<void> addUser() async {
-    print('jhghjghjg');
-    await SQLHelperUser.addUser(usernameController.text,emailController.text, passwordController.text, notelpController.text, tglLahirController.text);
+    await SQLHelperUser.addUser(
+        usernameController.text,
+        emailController.text,
+        passwordController.text,
+        notelpController.text,
+        tglLahirController.text);
   }
+
   Future<void> editUser(int id) async {
-    await SQLHelperUser.editUser(id,usernameController.text, emailController.text,notelpController.text, tglLahirController.text);
+    await SQLHelperUser.editUser(id, usernameController.text,
+        emailController.text, notelpController.text, tglLahirController.text);
   }
 }
