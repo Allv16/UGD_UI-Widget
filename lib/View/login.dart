@@ -3,8 +3,8 @@ import 'package:ugd_ui_widget/component/form_component.dart';
 import 'package:ugd_ui_widget/View/home.dart';
 import 'package:ugd_ui_widget/View/register.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ugd_ui_widget/database/sql_helper_user.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginView extends StatefulWidget {
   final Map? data;
@@ -97,11 +97,13 @@ class _LoginViewState extends State<LoginView> {
                           if (_formKey.currentState!.validate()) {
                             String username = usernameController.text;
                             String password = passwordController.text;
-                            int userId = await SQLHelperUser.loginUser(username, password);
+                            int userId = await SQLHelperUser.loginUser(
+                                username, password);
 
                             if (userId != -1) {
                               // Login successful, userId contains the ID of the logged-in user
-                              showToastMessage("Login Successful", Colors.green);
+                              showToastMessage(
+                                  "Login Successful", Colors.green);
 
                               // Continue to the home page or another screen
                               Navigator.push(

@@ -183,9 +183,4 @@ class _RegisterViewState extends State<RegisterView> {
         notelpController.text,
         tglLahirController.text);
   }
-
-  Future<void> editUser(int id) async {
-    await SQLHelperUser.editUser(id, usernameController.text,
-        emailController.text, notelpController.text, tglLahirController.text);
-  }
 }

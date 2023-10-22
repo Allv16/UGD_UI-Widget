@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'editProfile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({Key? key}) : super(key: key);
@@ -12,6 +13,27 @@ class _ProfileViewState extends State<ProfileView> {
   TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController noTelpController = TextEditingController();
+  TextEditingController tglLahirController = TextEditingController();
+  @override
+  void initState() {
+    super.initState();
+    loadUserData();
+  }
+
+  Future<void> loadUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? username = prefs.getString('username');
+    String? email = prefs.getString('email');
+    String? noTelp = prefs.getString('noTelp');
+    String? tgl = prefs.getString('tglLahir');
+
+    setState(() {
+      usernameController.text = username ?? '';
+      emailController.text = email ?? '';
+      noTelpController.text = noTelp != null ? noTelp.toString() : '';
+      tglLahirController.text = tgl ?? '';
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -27,7 +49,7 @@ class _ProfileViewState extends State<ProfileView> {
             ClipOval(
               // untuk mengatur bentuk gambar jd bulat
               child: Image.asset(
-                'images/stel.jpg',
+                'images/kucheng.jpeg',
                 width: 200,
                 height: 200,
                 fit: BoxFit.cover,
@@ -39,6 +61,8 @@ class _ProfileViewState extends State<ProfileView> {
               style: TextStyle(
                   fontSize: 20, color: Color.fromARGB(255, 30, 127, 207)),
               decoration: InputDecoration(
+                labelText: 'Username',
+                labelStyle: TextStyle(color: Colors.black),
                 prefixIcon: Icon(Icons.person,
                     color: const Color.fromARGB(255, 50, 50, 50)),
               ),
@@ -49,6 +73,8 @@ class _ProfileViewState extends State<ProfileView> {
               style: TextStyle(
                   fontSize: 20, color: Color.fromARGB(255, 30, 127, 207)),
               decoration: InputDecoration(
+                labelText: 'Email',
+                labelStyle: TextStyle(color: Colors.black),
                 prefixIcon: Icon(Icons.email,
                     color: const Color.fromARGB(255, 50, 50, 50)),
               ),
@@ -59,7 +85,21 @@ class _ProfileViewState extends State<ProfileView> {
               style: TextStyle(
                   fontSize: 20, color: Color.fromARGB(255, 30, 127, 207)),
               decoration: InputDecoration(
+                labelText: 'No. Telp',
+                labelStyle: TextStyle(color: Colors.black),
                 prefixIcon: Icon(Icons.phone_android,
+                    color: const Color.fromARGB(255, 50, 50, 50)),
+              ),
+              enabled: false,
+            ),
+            TextFormField(
+              controller: tglLahirController,
+              style: TextStyle(
+                  fontSize: 20, color: Color.fromARGB(255, 30, 127, 207)),
+              decoration: InputDecoration(
+                labelText: 'Tanggal Lahir',
+                labelStyle: TextStyle(color: Colors.black),
+                prefixIcon: Icon(Icons.calendar_today,
                     color: const Color.fromARGB(255, 50, 50, 50)),
               ),
               enabled: false,
@@ -73,6 +113,9 @@ class _ProfileViewState extends State<ProfileView> {
             context,
             MaterialPageRoute(builder: (context) => EditProfileView()),
           );
+          if (result != null && result) {
+            loadUserData();
+          }
         },
         child: Icon(Icons.edit),
       ),
