@@ -18,6 +18,9 @@ class _MyReservationState extends State<MyReservation> {
   //for bottom nav
   int _selectedIndex = 1;
 
+  //Email preference
+  String email = '';
+
   void _onItemTapped(int index) {
     if (index == 0) {
       _selectedIndex = 0;
@@ -48,6 +51,7 @@ class _MyReservationState extends State<MyReservation> {
     final data = await SQLHelperReservation.getUser(prefs.getString('email')!);
     setState(() {
       reservation = data;
+      email = prefs.getString('email')!;
     });
   }
 
@@ -61,7 +65,7 @@ class _MyReservationState extends State<MyReservation> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Reservation'),
+        title: Text('My Reservation $email'),
         centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton(
@@ -95,7 +99,8 @@ class _MyReservationState extends State<MyReservation> {
                 if (value.isEmpty) {
                   refresh();
                 } else {
-                  final data = await SQLHelperReservation.getUserByName(value);
+                  final data =
+                      await SQLHelperReservation.getUserByName(email, value);
                   setState(() {
                     reservation = data;
                   });
