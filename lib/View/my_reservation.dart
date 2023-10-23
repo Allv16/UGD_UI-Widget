@@ -17,7 +17,7 @@ class MyReservation extends StatefulWidget {
 class _MyReservationState extends State<MyReservation> {
   //for bottom nav
   int _selectedIndex = 1;
-
+  String _userEmail = '';
   void _onItemTapped(int index) {
     if (index == 0) {
       _selectedIndex = 0;
@@ -48,6 +48,7 @@ class _MyReservationState extends State<MyReservation> {
     final data = await SQLHelperReservation.getUser(prefs.getString('email')!);
     setState(() {
       reservation = data;
+      _userEmail = prefs.getString('email')!;
     });
   }
 
@@ -95,7 +96,8 @@ class _MyReservationState extends State<MyReservation> {
                 if (value.isEmpty) {
                   refresh();
                 } else {
-                  final data = await SQLHelperReservation.getUserByName(value);
+                  final data = await SQLHelperReservation.getUserByName(
+                      value, _userEmail);
                   setState(() {
                     reservation = data;
                   });

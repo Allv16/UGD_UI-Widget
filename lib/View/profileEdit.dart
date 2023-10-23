@@ -3,6 +3,7 @@ import 'package:ugd_ui_widget/View/profile.dart';
 import 'package:ugd_ui_widget/database/sql_helper_user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ugd_ui_widget/component/form_component.dart';
+import 'package:intl/intl.dart';
 
 class ProfileEditView extends StatefulWidget {
   @override
@@ -10,10 +11,13 @@ class ProfileEditView extends StatefulWidget {
 }
 
 class _ProfileEditViewState extends State<ProfileEditView> {
+  final _formKey = GlobalKey<FormState>();
   TextEditingController usernameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController notelpController = TextEditingController();
   TextEditingController tglLahirController = TextEditingController();
+  TextEditingController passwordController = TextEditingController();
+
   String emailUser = "";
 
   Future<void> loadUserData() async {
@@ -22,11 +26,13 @@ class _ProfileEditViewState extends State<ProfileEditView> {
     String? email = prefs.getString('email');
     String? noTelp = prefs.getString('noTelp');
     String? tglLahir = prefs.getString('tglLahir');
+    String? password = prefs.getString('password');
 
     setState(() {
       usernameController.text = username ?? '';
       notelpController.text = noTelp != null ? noTelp.toString() : '';
       tglLahirController.text = tglLahir!;
+      passwordController.text = password!;
       emailUser = email!;
     });
   }
@@ -43,50 +49,91 @@ class _ProfileEditViewState extends State<ProfileEditView> {
       appBar: AppBar(
         title: Text('Edit Profile'),
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16.0),
-        child: Column(
-          children: [
-            InputForm(
-                validasi: (p0) {
-                  if (p0 == null || p0.isEmpty) {
-                    return 'Username Tidak Boleh Kosong';
+      body: Form(
+        key: _formKey,
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            children: [
+              InputForm(
+                  validasi: (p0) {
+                    if (p0 == null || p0.isEmpty) {
+                      return 'Username Tidak Boleh Kosong';
+                    }
+                    if (p0.toLowerCase() == 'anjing') {
+                      return 'Tidak Boleh mengginakan kata kasar';
+                    }
+                    return null;
+                  },
+                  controller: usernameController,
+                  hintTxt: "Username",
+                  helperTxt: "ex: JohnDoe",
+                  iconData: Icons.person),
+              InputForm(
+                  validasi: (value) {
+                    if (value == null || value.isEmpty) {
+                      return 'password kosong';
+                    }
+                    if (value.length < 5) {
+                      return 'password must be 5 or more characters';
+                    }
+                    return null;
+                  },
+                  password: true,
+                  controller: passwordController,
+                  hintTxt: "Password",
+                  helperTxt: "must use 5 or more character",
+                  iconData: Icons.password),
+              InputForm(
+                  validasi: ((p0) {
+                    if (p0 == null || p0.isEmpty) {
+                      return 'Nomor Telepon tidak boleh kosong';
+                    }
+                    if (p0.length < 11) {
+                      return 'Nomor Telepon harus lebih dari 11 digit';
+                    }
+                    return null;
+                  }),
+                  controller: notelpController,
+                  hintTxt: "No Telp",
+                  helperTxt: "ex: 085154433118",
+                  iconData: Icons.phone_android),
+              DatePicker(
+                validasi: ((String? selectedDate) {
+                  DateTime now = DateTime.now();
+                  if (selectedDate == null || selectedDate.isEmpty) {
+                    return "Pilih tanggal lahir!";
                   }
-                  if (p0.toLowerCase() == 'anjing') {
-                    return 'Tidak Boleh mengginakan kata kasar';
+                  DateFormat inputFormat = DateFormat('EEEE, d MMM y');
+                  DateTime selectedDateTime = inputFormat.parse(selectedDate);
+                  if (selectedDateTime.isAfter(now)) {
+                    return "Tanggal tidak bisa setelah hari ini";
                   }
-                  return null;
-                },
-                controller: usernameController,
-                hintTxt: "Username",
-                helperTxt: "ex: JohnDoe",
-                iconData: Icons.person),
-            InputForm(
-                validasi: ((p0) {
-                  if (p0 == null || p0.isEmpty) {
-                    return 'Nomor Telepon tidak boleh kosong';
-                  }
-
                   return null;
                 }),
-                controller: notelpController,
-                hintTxt: "No Telp",
-                helperTxt: "ex: 085154433118",
-                iconData: Icons.phone_android),
-          ],
+                controller: tglLahirController,
+                hintTxt: "Tanggal Lahir",
+                helperTxt: "ex: 2022-06-12",
+                iconData: Icons.calendar_today,
+                selectedDate: tglLahirController.text,
+              ),
+            ],
+          ),
         ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {
-          try {
-            saveEditedData();
-            Navigator.pop(context, true);
-            final result = await Navigator.push(
-              context,
-              MaterialPageRoute(builder: (context) => ProfileView()),
-            );
-          } catch (e) {
-            print('Error: $e');
+          if (_formKey.currentState!.validate()) {
+            try {
+              saveEditedData();
+              Navigator.pop(context, true);
+              final result = await Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => ProfileView()),
+              );
+            } catch (e) {
+              print('Error: $e');
+            }
           }
         },
         child: Icon(Icons.save),
@@ -99,14 +146,19 @@ class _ProfileEditViewState extends State<ProfileEditView> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final username = usernameController.text;
     final noTelp = notelpController.text;
+    final tanggalLahir = tglLahirController.text;
+    final password = passwordController.text;
 
     try {
       // // Save data yang udh diedit di shared pref (update lah)
       prefs.setString('username', username);
       prefs.setString('noTelp', noTelp);
+      prefs.setString('password', password);
+      prefs.setString('tglLahir', tanggalLahir);
 
       // Update data ke sql
-      await SQLHelperUser.editUser(username, emailUser, noTelp);
+      await SQLHelperUser.editUser(
+          username, emailUser, noTelp, tanggalLahir, password);
 
       // Pop the current screen and return to the previous screen
       Navigator.pop(context, true);

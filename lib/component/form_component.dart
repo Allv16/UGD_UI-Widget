@@ -75,7 +75,7 @@ class DatePicker extends StatefulWidget {
     required this.hintTxt,
     required this.helperTxt,
     required this.iconData,
-    required this.selectedDate,
+    this.selectedDate,
   });
 
   @override

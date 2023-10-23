@@ -47,12 +47,14 @@ class SQLHelperUser {
   }
 
   //update user
-  static Future<int> editUser(
-      String username, String email, String noTelp) async {
+  static Future<int> editUser(String username, String email, String noTelp,
+      String tglLahir, String password) async {
     final db = await SQLHelperUser.db();
     final data = {
       'username': username,
       'noTelp': noTelp,
+      'tglLahir': tglLahir,
+      'password': password,
     };
     return await db
         .update('user', data, where: "email = ?", whereArgs: [email]);
@@ -113,7 +115,7 @@ class SQLHelperUser {
       return result.first;
     }
 
-    return {'id': -1}; // Return -1 if user is not found or login fails
+    return {'id': -1}; // if user not found
   }
 
   static Future<bool> isEmailUnique(String email) async {

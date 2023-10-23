@@ -3,6 +3,7 @@ import 'package:ugd_ui_widget/View/login.dart';
 import 'package:ugd_ui_widget/component/form_component.dart';
 import 'package:ugd_ui_widget/database/sql_helper_user.dart';
 import 'package:ugd_ui_widget/model/user.dart';
+import 'package:intl/intl.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({
@@ -76,24 +77,23 @@ class _RegisterViewState extends State<RegisterView> {
                     helperTxt: "ex: JohnDoe",
                     iconData: Icons.person),
                 DatePicker(
-                  validasi: ((String? selectedDate) {
-                    DateTime now = DateTime.now();
-                    if (selectedDate == null || selectedDate.isEmpty) {
-                      return "Pilih tanggal lahir!";
-                    }
-                    DateTime? selectedDateTime =
-                        DateTime.tryParse(selectedDate);
-                    if (selectedDateTime?.isAfter(now) ?? false) {
-                      return 'Tanggal yang dimasukkan tidak boleh lebih dari sekarang';
-                    }
-                    return null;
-                  }),
-                  controller: tglLahirController,
-                  hintTxt: "Tanggal Lahir",
-                  helperTxt: "ex: 2022-06-12",
-                  iconData: Icons.calendar_today,
-                  selectedDate: null,
-                ),
+                    validasi: ((String? selectedDate) {
+                      DateTime now = DateTime.now();
+                      if (selectedDate == null || selectedDate.isEmpty) {
+                        return "Pilih tanggal lahir!";
+                      }
+                      DateFormat inputFormat = DateFormat('EEEE, d MMM y');
+                      DateTime selectedDateTime =
+                          inputFormat.parse(selectedDate);
+                      if (selectedDateTime!.isAfter(now)) {
+                        return "Tanggal tidak bisa setelah hari ini";
+                      }
+                      return null;
+                    }),
+                    controller: tglLahirController,
+                    hintTxt: "Tanggal Lahir",
+                    helperTxt: "ex: 2022-06-12",
+                    iconData: Icons.calendar_today),
                 InputForm(
                     validasi: ((p0) {
                       if (p0 == null || p0.isEmpty) {

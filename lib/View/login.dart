@@ -67,11 +67,8 @@ class _LoginViewState extends State<LoginView> {
                     },
                     controller: emailController,
                     hintTxt: "Email",
-                    helperTxt: "Input Email",
-                    iconData: Icons.person,
-                  ),
-                  SizedBox(
-                    height: 10,
+                    helperTxt: "",
+                    iconData: Icons.email,
                   ),
                   InputForm(
                       validasi: (value) {
@@ -83,7 +80,7 @@ class _LoginViewState extends State<LoginView> {
                       password: true,
                       controller: passwordController,
                       hintTxt: "Password",
-                      helperTxt: "Minimal 5 digit password",
+                      helperTxt: "",
                       iconData: Icons.password),
                   SizedBox(
                     height: 30,
@@ -101,7 +98,6 @@ class _LoginViewState extends State<LoginView> {
                                 await SQLHelperUser.loginUser(email, password);
                             print(loginResult['id']);
                             if (loginResult['id'] != -1) {
-                              // Login successful, userId contains the ID of the logged-in user
                               //set sharedpreferenced
                               SharedPreferences prefs =
                                   await SharedPreferences.getInstance();
@@ -109,6 +105,8 @@ class _LoginViewState extends State<LoginView> {
                                   'username', loginResult['username']);
                               prefs.setString('email', loginResult['email']);
                               prefs.setString('noTelp', loginResult['noTelp']);
+                              prefs.setString(
+                                  'password', loginResult['password']);
                               prefs.setString(
                                   'tglLahir', loginResult['tglLahir']);
 
