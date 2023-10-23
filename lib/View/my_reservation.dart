@@ -65,7 +65,7 @@ class _MyReservationState extends State<MyReservation> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Reservation $email'),
+        title: Text('My Reservation'),
         centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton(
