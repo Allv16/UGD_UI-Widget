@@ -75,15 +75,42 @@ class _ProfileViewState extends State<ProfileView> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            ClipOval(
-              // untuk mengatur bentuk gambar jd bulat
-              child: Image.asset(
-                'images/kucheng.jpeg',
-                width: 200,
-                height: 200,
-                fit: BoxFit.cover,
+            Stack(children: [
+              SizedBox(
+                width: 150,
+                height: 150,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(100),
+                  child: Image.asset(
+                    'images/kucheng.jpeg',
+                    width: 160,
+                    height: 160,
+                    fit: BoxFit.cover,
+                  ),
+                ),
               ),
-            ),
+              Positioned(
+                  bottom: 0,
+                  right: 0,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  LoginView())); // ganti disini buat arahin ke camera view
+                    },
+                    child: Container(
+                      width: 35,
+                      height: 35,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(100),
+                          color: Theme.of(context).colorScheme.primary),
+                      child: const Icon(Icons.camera_alt,
+                          color: Colors.white, size: 20),
+                    ),
+                  ))
+            ]),
             SizedBox(height: 20),
             TextFormField(
               controller: usernameController,
