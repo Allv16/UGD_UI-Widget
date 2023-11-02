@@ -7,9 +7,9 @@ class SQLHelperUser {
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         username TEXT,
         password TEXT,
-        email TEXT,
+        email TEXT UNIQUE,
         noTelp TEXT,
-        tglLahir TEXT,
+        tglLahir TEXT
       )
     """);
   }
@@ -23,16 +23,21 @@ class SQLHelperUser {
   }
 
   //insert User
-  static Future<int> addUser(String username, String email,String password, String noTelp, String tglLahir) async {
+  static Future<int> addUser(String username, String email, String password,
+      String noTelp, String tglLahir) async {
     final db = await SQLHelperUser.db();
     final data = {
       'username': username,
       'password': password,
       'email': email,
       'noTelp': noTelp,
-      'tglLahir' : tglLahir,
+      'tglLahir': tglLahir,
     };
-    return await db.insert('user', data);
+    try {
+      return await db.insert('user', data);
+    } catch (e) {
+      return -1;
+    }
   }
 
   //read user
@@ -42,15 +47,17 @@ class SQLHelperUser {
   }
 
   //update user
-  static Future<int> editUser(int id, String username, String email, String noTelp, String tglLahir) async {
+  static Future<int> editUser(String username, String email, String noTelp,
+      String tglLahir, String password) async {
     final db = await SQLHelperUser.db();
     final data = {
       'username': username,
-      'email': email,
       'noTelp': noTelp,
-      'tglLahir' : tglLahir,
+      'tglLahir': tglLahir,
+      'password': password,
     };
-    return await db.update('user', data, where: "id = $id");
+    return await db
+        .update('user', data, where: "email = ?", whereArgs: [email]);
   }
 
   //delete user
@@ -59,38 +66,72 @@ class SQLHelperUser {
     return await db.delete('user', where: "id = $id");
   }
 
-  //search user by id
-  static Future<int> cariUser(String username, String password) async{
+  //search user by email
+  static Future<String?> cariUser(String username, String password) async {
     final db = await SQLHelperUser.db();
 
     List<Map<String, dynamic>> result = await db.query(
       'user',
-      columns: ['id'],
+      columns: ['email'],
       where: 'username = ? AND password =?',
       whereArgs: [username, password],
     );
 
     if (result.isNotEmpty) {
-      return result.first['id'] as int;
+      return result.first['email'] as String;
     }
 
-    return -1; //kalau user tidak ketemu
+    return null; //kalau user tidak ketemu
   }
 
-  //get user by id
-  static Future<Map<String, dynamic>?> getUserID(int id) async{
+  //get user by email
+  static Future<Map<String, dynamic>?> getUserEmail(String? email) async {
     final db = await SQLHelperUser.db();
 
     List<Map<String, dynamic>> result = await db.query(
       'user',
-      where: 'id = ?',
-      whereArgs: [id],
+      where: 'email = ?',
+      whereArgs: [email],
     );
 
-    if (result.isNotEmpty){
-      return result.first; 
+    if (result.isNotEmpty) {
+      return result.first;
     }
- 
+
     return null;
+  }
+
+  // Search user by email (username) and password
+  static Future<Map> loginUser(String email, String password) async {
+    final db = await SQLHelperUser.db();
+
+    List<Map<String, dynamic>> result = await db.query(
+      'user',
+      where: 'email = ? AND password = ?',
+      whereArgs: [email, password],
+    );
+
+    if (result.isNotEmpty) {
+      return result.first;
+    }
+
+    return {'id': -1}; // if user not found
+  }
+
+  static Future<bool> isEmailUnique(String email) async {
+    final db = await SQLHelperUser.db();
+
+    List<Map<String, dynamic>> result = await db.query(
+      'user',
+      columns: ['id'],
+      where: 'email = ?',
+      whereArgs: [email],
+    );
+
+    if (result.isNotEmpty) {
+      return false;
+    }
+
+    return true;
   }
 }

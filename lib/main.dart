@@ -25,7 +25,7 @@ class MainApp extends StatelessWidget {
             backgroundColor:
                 MaterialStateProperty.all<Color>(const Color(0xFF1B90B8)),
           ))),
-      home: const HomeView(),
+      home: const LoginView(),
     );
   }
 }

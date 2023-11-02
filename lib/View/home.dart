@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:ugd_ui_widget/View/profile.dart';
 import 'my_reservation.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -10,6 +11,20 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  String username1 = "";
+  void initState() {
+    super.initState();
+    loadUserData();
+  }
+
+  Future<void> loadUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? username = prefs.getString('username');
+    setState(() {
+      username1 = username!;
+    });
+  }
+
   int _selectedIndex = 0;
 
   void _onItemTapped(int index) {
@@ -18,7 +33,7 @@ class _HomeViewState extends State<HomeView> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => MyReservation(),
+          builder: (context) => new MyReservation(),
         ),
       );
     } else if (index == 2) {
@@ -98,7 +113,7 @@ class _HomeViewState extends State<HomeView> {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Hi all!",
+                            "Hi $username1!",
                             style: TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.w400,
@@ -134,7 +149,7 @@ class _HomeViewState extends State<HomeView> {
                               CircleAvatar(
                                 radius: 50,
                                 backgroundImage:
-                                    AssetImage('images/medicine.png'),
+                                    AssetImage('images/kucheng.jpeg'),
                               ),
                             ],
                           ),

@@ -1,9 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:ugd_ui_widget/View/login.dart';
 import 'package:ugd_ui_widget/component/form_component.dart';
+import 'package:ugd_ui_widget/database/sql_helper_user.dart';
+import 'package:ugd_ui_widget/model/user.dart';
+import 'package:intl/intl.dart';
 
 class RegisterView extends StatefulWidget {
-  const RegisterView({super.key});
+  const RegisterView({
+    super.key,
+    required this.id,
+    required this.title,
+    required this.username,
+    required this.email,
+    required this.password,
+    required this.notelp,
+    required this.tglLahir,
+  });
+
+  final String? email, username, title, password, tglLahir, notelp;
+  final int? id;
 
   @override
   State<RegisterView> createState() => _RegisterViewState();
@@ -19,6 +34,13 @@ class _RegisterViewState extends State<RegisterView> {
 
   @override
   Widget build(BuildContext context) {
+    if (widget.id != null) {
+      usernameController.text = widget.username!;
+      emailController.text = widget.email!;
+      passwordController.text = widget.password!;
+      notelpController.text = widget.notelp!;
+      tglLahirController.text = widget.tglLahir!;
+    }
     return Scaffold(
       body: SafeArea(
         child: Form(
@@ -55,24 +77,23 @@ class _RegisterViewState extends State<RegisterView> {
                     helperTxt: "ex: JohnDoe",
                     iconData: Icons.person),
                 DatePicker(
-                  validasi: ((String? selectedDate) {
-                    DateTime now = DateTime.now();
-                    if (selectedDate == null || selectedDate.isEmpty) {
-                      return "Pilih tanggal lahir!";
-                    }
-                    DateTime? selectedDateTime =
-                        DateTime.tryParse(selectedDate);
-                    if (selectedDateTime?.isAfter(now) ?? false) {
-                      return 'Tanggal yang dimasukkan tidak boleh lebih dari sekarang';
-                    }
-                    return null;
-                  }),
-                  controller: tglLahirController,
-                  hintTxt: "Tanggal Lahir",
-                  helperTxt: "ex: 2022-06-12",
-                  iconData: Icons.calendar_today,
-                  selectedDate: null,
-                ),
+                    validasi: ((String? selectedDate) {
+                      DateTime now = DateTime.now();
+                      if (selectedDate == null || selectedDate.isEmpty) {
+                        return "Pilih tanggal lahir!";
+                      }
+                      DateFormat inputFormat = DateFormat('EEEE, d MMM y');
+                      DateTime selectedDateTime =
+                          inputFormat.parse(selectedDate);
+                      if (selectedDateTime!.isAfter(now)) {
+                        return "Tanggal tidak bisa setelah hari ini";
+                      }
+                      return null;
+                    }),
+                    controller: tglLahirController,
+                    hintTxt: "Tanggal Lahir",
+                    helperTxt: "ex: 2022-06-12",
+                    iconData: Icons.calendar_today),
                 InputForm(
                     validasi: ((p0) {
                       if (p0 == null || p0.isEmpty) {
@@ -117,26 +138,32 @@ class _RegisterViewState extends State<RegisterView> {
                     helperTxt: "must use 5 or more character",
                     iconData: Icons.password),
                 ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        Map<String, dynamic> formData = {};
-                        formData['username'] = usernameController.text;
-                        formData['password'] = passwordController.text;
-                        showDialog(
-                            context: context,
-                            builder: (_) => AlertDialog(
-                                  title: Text("Register Success!"),
-                                  actions: [
-                                    TextButton(
-                                        onPressed: () => Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (_) => LoginView(
-                                                      data: formData,
-                                                    ))),
-                                        child: Text("OK"))
-                                  ],
-                                ));
+                        if (await SQLHelperUser.isEmailUnique(
+                                emailController.text) ==
+                            true) {
+                          await addUser();
+                          showDialog(
+                              context: context,
+                              builder: (_) => AlertDialog(
+                                    title: Text("Register Success!"),
+                                    actions: [
+                                      TextButton(
+                                          onPressed: () => Navigator.push(
+                                                context,
+                                                MaterialPageRoute(
+                                                  builder: (_) => LoginView(),
+                                                ),
+                                              ),
+                                          child: Text("OK"))
+                                    ],
+                                  ));
+                        } else {
+                          showToastMessage(
+                              "Tidak bisa register email tidak unik",
+                              Colors.red);
+                        }
                       }
                     },
                     child: const Text('Register'))
@@ -146,5 +173,14 @@ class _RegisterViewState extends State<RegisterView> {
         ),
       ),
     );
+  }
+
+  Future<void> addUser() async {
+    await SQLHelperUser.addUser(
+        usernameController.text,
+        emailController.text,
+        passwordController.text,
+        notelpController.text,
+        tglLahirController.text);
   }
 }

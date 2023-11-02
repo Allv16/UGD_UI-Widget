@@ -3,6 +3,7 @@ import 'package:ugd_ui_widget/View/reservation_form.dart';
 import 'package:ugd_ui_widget/database/sql_helper_reservation.dart';
 import 'home.dart';
 import 'profile.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 final List<String> doctor = ['Aji', 'Caily', 'Alina', 'Bonita', 'Daisy'];
 
@@ -16,7 +17,7 @@ class MyReservation extends StatefulWidget {
 class _MyReservationState extends State<MyReservation> {
   //for bottom nav
   int _selectedIndex = 1;
-
+  String _userEmail = '';
   void _onItemTapped(int index) {
     if (index == 0) {
       _selectedIndex = 0;
@@ -41,13 +42,13 @@ class _MyReservationState extends State<MyReservation> {
     }
   }
 
-  //for data
-
   List<Map<String, dynamic>> reservation = [];
   void refresh() async {
-    final data = await SQLHelperReservation.getUser();
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final data = await SQLHelperReservation.getUser(prefs.getString('email')!);
     setState(() {
       reservation = data;
+      _userEmail = prefs.getString('email')!;
     });
   }
 
@@ -95,7 +96,8 @@ class _MyReservationState extends State<MyReservation> {
                 if (value.isEmpty) {
                   refresh();
                 } else {
-                  final data = await SQLHelperReservation.getUserByName(value);
+                  final data = await SQLHelperReservation.getUserByName(
+                      value, _userEmail);
                   setState(() {
                     reservation = data;
                   });

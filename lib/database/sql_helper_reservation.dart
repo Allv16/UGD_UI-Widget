@@ -33,15 +33,18 @@ class SQLHelperReservation {
   }
 
   //read user
-  static Future<List<Map<String, dynamic>>> getUser() async {
+  static Future<List<Map<String, dynamic>>> getUser(String email) async {
     final db = await SQLHelperReservation.db();
-    return db.query('reservation');
+    return db
+        .query('reservation', where: 'userEmail LIKE ?', whereArgs: [email]);
   }
 
-  static Future<List<Map<String, dynamic>>> getUserByName(String query) async {
+  static Future<List<Map<String, dynamic>>> getUserByName(
+      String query, String email) async {
     final db = await SQLHelperReservation.db();
     return db.query('reservation',
-        where: "doctorName LIKE ?", whereArgs: ['%$query%']);
+        where: "doctorName LIKE ? AND userEmail = ?",
+        whereArgs: ['%$query%', email]);
   }
 
   static Future<int> editReservation(String date, String time, int id) async {
