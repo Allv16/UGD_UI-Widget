@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:qr_flutter/qr_flutter.dart';
 
 class QRCodeView extends StatelessWidget {
-  final String data;
-
-  QRCodeView({required this.data, required int version, required double size});
+  const QRCodeView({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -17,11 +15,10 @@ class QRCodeView extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            QRCodeView(data: data, version: QrVersions.auto, size: 200.0),
-            SizedBox(height: 20),
-            Text(
-              'Data untuk QR Code: $data',
-              style: TextStyle(fontSize: 18),
+            QrImageView(
+              data: 'https://pub.dev/packages/qr_flutter',
+              version: 6,
+              padding: const EdgeInsets.all(50),
             ),
           ],
         ),

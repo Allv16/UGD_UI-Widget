@@ -27,7 +27,7 @@ class MainApp extends StatelessWidget {
             backgroundColor:
                 MaterialStateProperty.all<Color>(const Color(0xFF1B90B8)),
           ))),
-      home: QrImageView(data: 'bebas'),
+      home: LoginView(),
     );
   }
 }
