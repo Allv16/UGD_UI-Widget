@@ -149,7 +149,7 @@ class _HomeViewState extends State<HomeView> {
                               CircleAvatar(
                                 radius: 50,
                                 backgroundImage:
-                                    AssetImage('images/kucheng.jpeg'),
+                                    AssetImage('images/pp.jpg'),
                               ),
                             ],
                           ),

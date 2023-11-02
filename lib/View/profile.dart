@@ -78,7 +78,7 @@ class _ProfileViewState extends State<ProfileView> {
             ClipOval(
               // untuk mengatur bentuk gambar jd bulat
               child: Image.asset(
-                'images/kucheng.jpeg',
+                'images/pp.jpg',
                 width: 200,
                 height: 200,
                 fit: BoxFit.cover,
