@@ -14,23 +14,31 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   String username1 = "";
+  late ShakeDetector detector;
+
   void initState() {
     super.initState();
     loadUserData();
 
-    ShakeDetector detector = ShakeDetector.autoStart(
-    onPhoneShake: () async { 
-        final Uri url = Uri(
-          scheme: 'tel',
-          path: '911',
-        );
-        if(await canLaunchUrl(url)){
-          await launchUrl(url);
-        }else{
-          print('cannot launch this url');
-        }
-    }
-);
+    detector = ShakeDetector.autoStart(
+      onPhoneShake: () async { 
+          final Uri url = Uri(
+            scheme: 'tel',
+            path: '911',
+          );
+          if(await canLaunchUrl(url)){
+            await launchUrl(url);
+          }else{
+            print('cannot launch this url');
+          }
+      }
+    );
+  }
+
+  @override
+  void dispose(){
+    detector.stopListening();
+    super.dispose();
   }
 
   Future<void> loadUserData() async {
