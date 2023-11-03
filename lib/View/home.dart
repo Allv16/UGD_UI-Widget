@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:ugd_ui_widget/View/profile.dart';
 import 'my_reservation.dart';
@@ -12,6 +14,7 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   String username1 = "";
+  String profilePath = '';
   void initState() {
     super.initState();
     loadUserData();
@@ -20,8 +23,12 @@ class _HomeViewState extends State<HomeView> {
   Future<void> loadUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? username = prefs.getString('username');
+    String? newPath = prefs.getString('profilePath');
+    print(newPath);
     setState(() {
       username1 = username!;
+      profilePath = newPath!;
+      print('profile path $profilePath');
     });
   }
 
@@ -103,9 +110,6 @@ class _HomeViewState extends State<HomeView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(
-                  height: 50,
-                ),
                 Container(
                   child: Row(
                     children: [
@@ -146,11 +150,16 @@ class _HomeViewState extends State<HomeView> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              CircleAvatar(
-                                radius: 50,
-                                backgroundImage:
-                                    AssetImage('images/kucheng.jpeg'),
-                              ),
+                              profilePath.isEmpty
+                                  ? const CircleAvatar(
+                                      //default profile
+                                      radius: 50,
+                                      backgroundImage:
+                                          AssetImage('images/kucheng.jpeg'))
+                                  : CircleAvatar(
+                                      radius: 50,
+                                      backgroundImage:
+                                          FileImage(File(profilePath)))
                             ],
                           ),
                         ),
@@ -178,7 +187,7 @@ class _HomeViewState extends State<HomeView> {
                   ]),
                 ),
                 SizedBox(
-                  height: 50,
+                  height: 25,
                 ),
                 Container(
                   padding: const EdgeInsets.all(25.0),

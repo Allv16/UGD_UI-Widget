@@ -1,9 +1,12 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:ugd_ui_widget/View/profileEdit.dart';
 import 'home.dart';
 import 'my_reservation.dart';
 import 'login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ugd_ui_widget/View/camera.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({Key? key}) : super(key: key);
@@ -17,6 +20,7 @@ class _ProfileViewState extends State<ProfileView> {
   TextEditingController emailController = TextEditingController();
   TextEditingController noTelpController = TextEditingController();
   TextEditingController tglLahirController = TextEditingController();
+  String profilePath = '';
   @override
   void initState() {
     super.initState();
@@ -29,12 +33,14 @@ class _ProfileViewState extends State<ProfileView> {
     String? email = prefs.getString('email');
     String? noTelp = prefs.getString('noTelp');
     String? tgl = prefs.getString('tglLahir');
+    String? newPath = prefs.getString('profilePath');
 
     setState(() {
       usernameController.text = username ?? '';
       emailController.text = email ?? '';
       noTelpController.text = noTelp != null ? noTelp.toString() : '';
       tglLahirController.text = tgl ?? '';
+      profilePath = newPath!;
     });
   }
 
@@ -80,14 +86,20 @@ class _ProfileViewState extends State<ProfileView> {
                 width: 150,
                 height: 150,
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(100),
-                  child: Image.asset(
-                    'images/kucheng.jpeg',
-                    width: 160,
-                    height: 160,
-                    fit: BoxFit.cover,
-                  ),
-                ),
+                    borderRadius: BorderRadius.circular(100),
+                    child: profilePath.isEmpty
+                        ? Image.asset(
+                            'images/kucheng.jpeg',
+                            width: 160,
+                            height: 160,
+                            fit: BoxFit.cover,
+                          )
+                        : Image.file(
+                            File(profilePath),
+                            width: 160,
+                            height: 160,
+                            fit: BoxFit.cover,
+                          )),
               ),
               Positioned(
                   bottom: 0,
@@ -98,7 +110,7 @@ class _ProfileViewState extends State<ProfileView> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  LoginView())); // ganti disini buat arahin ke camera view
+                                  CameraView())); // ganti disini buat arahin ke camera view
                     },
                     child: Container(
                       width: 35,

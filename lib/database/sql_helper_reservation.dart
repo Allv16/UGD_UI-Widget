@@ -8,7 +8,8 @@ class SQLHelperReservation {
         date TEXT,
         time TEXT,
         doctorName TEXT,
-        userEmail TEXT
+        userEmail TEXT,
+        bpjs TEXT
       )
     """);
   }
@@ -20,14 +21,15 @@ class SQLHelperReservation {
     });
   }
 
-  static Future<int> addReservation(
-      String date, String time, String doctorName, String userEmail) async {
+  static Future<int> addReservation(String date, String time, String doctorName,
+      String userEmail, String bpjs) async {
     final db = await SQLHelperReservation.db();
     final data = {
       'date': date,
       'time': time,
       'doctorName': doctorName,
       'userEmail': userEmail,
+      'bpjs': bpjs,
     };
     return await db.insert('reservation', data);
   }
