@@ -144,8 +144,12 @@ class _MyReservationState extends State<MyReservation> {
     final hasBpjs = reservation[index]['bpjs'] != '';
     return GestureDetector(
       onTap: () {
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const QRCodeView()));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => QRCodeView(
+                      data: reservation[index]['id'].toString(),
+                    )));
       },
       child: Card(
         color: Colors.grey[200],

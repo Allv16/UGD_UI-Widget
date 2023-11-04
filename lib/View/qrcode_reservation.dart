@@ -3,14 +3,13 @@ import 'package:qr_flutter/qr_flutter.dart';
 import 'package:screen_brightness/screen_brightness.dart';
 
 class QRCodeView extends StatefulWidget {
-  const QRCodeView({Key? key}) : super(key: key);
-
+  final String data;
+  const QRCodeView({Key? key, required this.data}) : super(key: key);
   @override
   _QRCodeViewState createState() => _QRCodeViewState();
 }
 
 class _QRCodeViewState extends State<QRCodeView> {
-
   @override
   void initState() {
     super.initState();
@@ -35,10 +34,17 @@ class _QRCodeViewState extends State<QRCodeView> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             QrImageView(
-              data: 'https://pub.dev/packages/qr_flutter',
+              data: widget.data,
               version: 6,
               padding: const EdgeInsets.all(50),
             ),
+            Text(
+              widget.data,
+              style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 20,
+                  fontWeight: FontWeight.normal),
+            )
           ],
         ),
       ),
