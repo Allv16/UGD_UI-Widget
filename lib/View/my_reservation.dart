@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:ugd_ui_widget/View/reservation_form.dart';
+import 'package:ugd_ui_widget/View/qrcode_reservation.dart';
 import 'package:ugd_ui_widget/database/sql_helper_reservation.dart';
 import 'home.dart';
 import 'profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:badges/badges.dart';
 
 final List<String> doctor = ['Aji', 'Caily', 'Alina', 'Bonita', 'Daisy'];
 

@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 import 'package:ugd_ui_widget/View/home.dart';
 import 'package:ugd_ui_widget/View/login.dart';
+import 'package:ugd_ui_widget/View/qrcode_reservation.dart';
 import 'View/my_reservation.dart';
 
 void main() {
@@ -25,7 +27,7 @@ class MainApp extends StatelessWidget {
             backgroundColor:
                 MaterialStateProperty.all<Color>(const Color(0xFF1B90B8)),
           ))),
-      home: const LoginView(),
+      home: LoginView(),
     );
   }
 }
