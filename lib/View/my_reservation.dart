@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ugd_ui_widget/View/reservation_form.dart';
+import 'package:ugd_ui_widget/View/qrcode_reservation.dart';
 import 'package:ugd_ui_widget/database/sql_helper_reservation.dart';
 import 'home.dart';
 import 'profile.dart';
@@ -141,95 +142,104 @@ class _MyReservationState extends State<MyReservation> {
 
   Widget reservationCard(int index) => Card(
         color: Colors.grey[200],
-        child: Padding(
-          padding: const EdgeInsets.all(15),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: 124,
-                width: 124,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(100),
-                  child: Image(
-                      image: AssetImage(
-                          'images/${reservation[index]['doctorName']}.jpg'),
-                      fit: BoxFit.cover),
+        child: GestureDetector(
+          child: Padding(
+            padding: const EdgeInsets.all(15),
+            child: Row(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                SizedBox(
+                  height: 124,
+                  width: 124,
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(100),
+                    child: Image(
+                        image: AssetImage(
+                            'images/${reservation[index]['doctorName']}.jpg'),
+                        fit: BoxFit.cover),
+                  ),
                 ),
-              ),
-              const SizedBox(
-                width: 16,
-              ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(reservation[index]['doctorName'],
-                      style: const TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 24,
-                      )),
-                  Text(
-                    reservation[index]['date'],
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                  Text(
-                    reservation[index]['time'],
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  Row(
-                    children: [
-                      SizedBox(
-                        width: 100,
-                      ),
-                      CircleAvatar(
-                        radius: 20,
-                        backgroundColor: Colors.blue,
-                        child: IconButton(
-                          onPressed: () => {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ReservationForm(
-                                    date: reservation[index]['date'],
-                                    id: reservation[index]['id'],
-                                    time: reservation[index]['time'],
-                                  ),
-                                )).then((_) => refresh())
-                          },
-                          icon: Icon(
-                            Icons.create_outlined,
-                            color: Colors.white,
-                          ),
-                          style: ButtonStyle(),
+                const SizedBox(
+                  width: 16,
+                ),
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(reservation[index]['doctorName'],
+                        style: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                          fontSize: 24,
+                        )),
+                    Text(
+                      reservation[index]['date'],
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                    Text(
+                      reservation[index]['time'],
+                      style: const TextStyle(fontSize: 16),
+                    ),
+                    const SizedBox(
+                      height: 15,
+                    ),
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 100,
                         ),
-                      ),
-                      SizedBox(
-                        width: 8,
-                      ),
-                      CircleAvatar(
-                        radius: 20,
-                        backgroundColor: Colors.red,
-                        child: IconButton(
-                          onPressed: () => {
-                            deleteReservation(reservation[index]['id'])
-                                .then((_) => refresh())
-                          },
-                          icon: Icon(
-                            Icons.delete,
-                            color: Colors.white,
+                        CircleAvatar(
+                          radius: 20,
+                          backgroundColor: Colors.blue,
+                          child: IconButton(
+                            onPressed: () => {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => ReservationForm(
+                                      date: reservation[index]['date'],
+                                      id: reservation[index]['id'],
+                                      time: reservation[index]['time'],
+                                    ),
+                                  )).then((_) => refresh())
+                            },
+                            icon: Icon(
+                              Icons.create_outlined,
+                              color: Colors.white,
+                            ),
+                            style: ButtonStyle(),
                           ),
-                          style: ButtonStyle(),
                         ),
-                      )
-                    ],
-                  )
-                ],
-              )
-            ],
+                        SizedBox(
+                          width: 8,
+                        ),
+                        CircleAvatar(
+                          radius: 20,
+                          backgroundColor: Colors.red,
+                          child: IconButton(
+                            onPressed: () => {
+                              deleteReservation(reservation[index]['id'])
+                                  .then((_) => refresh())
+                            },
+                            icon: Icon(
+                              Icons.delete,
+                              color: Colors.white,
+                            ),
+                            style: ButtonStyle(),
+                          ),
+                        )
+                      ],
+                    )
+                  ],
+                )
+              ],
+            ),
           ),
+          onTap: () {
+            Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const QRCodeView(),
+                ));
+          },
         ),
       );
 
