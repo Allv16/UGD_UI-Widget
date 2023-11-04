@@ -7,9 +7,7 @@ import 'package:ugd_ui_widget/database/sql_helper_user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class LoginView extends StatefulWidget {
-  final Map? data;
-
-  const LoginView({super.key, this.data});
+  const LoginView({super.key});
 
   @override
   State<LoginView> createState() => _LoginViewState();
@@ -37,8 +35,6 @@ class _LoginViewState extends State<LoginView> {
   Widget build(BuildContext context) {
     TextEditingController emailController = TextEditingController();
     TextEditingController passwordController = TextEditingController();
-
-    Map? dataForm = widget.data;
     return Scaffold(
       body: SafeArea(
         child: Column(
