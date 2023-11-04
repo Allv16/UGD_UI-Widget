@@ -14,8 +14,6 @@
 
 > - Membuat view dan penerapan logic fitur mengganti foto profile
 > - Membuat view dan penerapan logic fitur scan barcode BPJS/KIS
-> - Mengintegrasi branch-branch kontributor lain
-> - cleaning up code
 
 **Andreas Margono | NPM 210711135**
 
@@ -27,7 +25,7 @@
 
 **Kristina Adine (NPM 210711102)**
 
-> - Membuat logic untuk fitur shake, jika pada home screen terjadi shake maka akan menelepon ambulan
+> - Membantu membuat logic untuk fitur shake, jika pada home screen terjadi shake maka akan menelepon ambulan
 
 **Sabastian Gautama (NPM 210711172)**
 
