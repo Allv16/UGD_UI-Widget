@@ -145,11 +145,8 @@ class _MyReservationState extends State<MyReservation> {
     final hasBpjs = reservation[index]['bpjs'] != '';
     return GestureDetector(
       onTap: () {
-        createPdf(
-            reservation[index]['id'].toString(),
-            reservation[index]['doctorName'],
-            reservation[index]['date'],
-            context);
+        createPdf(reservation[index]['id'], reservation[index]['doctorName'],
+            reservation[index]['date'], context);
       },
       child: Card(
         color: Colors.grey[200],
