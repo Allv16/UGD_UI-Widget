@@ -12,6 +12,7 @@ dependencies:
   fluttertoast: ^8.2.2
   intl: ^0.17.0
   shared_preferences: ^2.0.8
+  cupertino_icons: ^1.0.2
 
   sqflite: ^2.2.6
 
@@ -22,6 +23,10 @@ dependencies:
   qr_flutter: ^4.0.0
 
   screen_brightness: ^0.2.2+1
+
+  barcode_widget: ^2.0.4
+
+  uuid: ^3.0.6
 
 dev_dependencies:
   flutter_test:

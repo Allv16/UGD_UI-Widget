@@ -237,7 +237,7 @@ class _MyReservationState extends State<MyReservation> {
             Navigator.push(
                 context,
                 MaterialPageRoute(
-                  builder: (context) => const QRCodeView(),
+                  builder: (context) => const BarcodeView(),
                 ));
           },
         ),

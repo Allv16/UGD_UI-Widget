@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:ugd_ui_widget/View/profile.dart';
 import 'my_reservation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'dart:io';
+import 'package:uuid/uuid.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -12,6 +14,9 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   String username1 = "";
+  String id = const Uuid().v1(); //untuk membuat kode unik berdasarkan waktu
+  File? image;
+
   void initState() {
     super.initState();
     loadUserData();

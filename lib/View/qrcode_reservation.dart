@@ -1,52 +1,54 @@
 import 'package:flutter/material.dart';
-import 'package:qr_flutter/qr_flutter.dart';
-import 'package:screen_brightness/screen_brightness.dart';
+import 'package:barcode_widget/barcode_widget.dart';
+import 'package:uuid/uuid.dart';
 
-class QRCodeView extends StatefulWidget {
-  const QRCodeView({Key? key}) : super(key: key);
+class BarcodeView extends StatefulWidget {
+  const BarcodeView({Key? key}) : super(key: key);
 
   @override
-  _QRCodeViewState createState() => _QRCodeViewState();
+  _BarcodeViewState createState() => _BarcodeViewState();
 }
 
-class _QRCodeViewState extends State<QRCodeView> {
+class _BarcodeViewState extends State<BarcodeView> {
+  late String uuid;
 
   @override
   void initState() {
     super.initState();
-    ScreenBrightness().setScreenBrightness(1.0);
+    generateAndSetUUID();
   }
 
-  @override
-  void dispose() {
-    super.dispose();
-    ScreenBrightness().resetScreenBrightness();
+  void generateAndSetUUID() {
+    final uuidGenerator = Uuid();
+    setState(() {
+      uuid = uuidGenerator.v4();
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        automaticallyImplyLeading: true,
-        title: const Text('QR Code View'),
+        title: Text('Barcode View'),
       ),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
-            QrImageView(
-              data: 'https://pub.dev/packages/qr_flutter',
-              version: 6,
-              padding: const EdgeInsets.all(50),
+            BarcodeWidget(
+              barcode: Barcode.code128(escapes: true),
+              data: uuid,
+              width: 200,
+              height: 100,
             ),
+            SizedBox(height: 20),
+            // ElevatedButton(
+            //   onPressed: generateAndSetUUID,
+            //   child: Text('Generate New UUID'),
+            // ),
           ],
         ),
       ),
     );
   }
 }
-
-// void main() => runApp(MaterialApp(
-//       title: 'QR Code Example',
-//       home: QRCodeView(data: 'Contoh Data'), // Ganti 'Contoh Data' dengan data yang ingin ditampilkan dalam QR code
-//     ));
