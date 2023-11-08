@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:ugd_ui_widget/View/pdf_view.dart';
 import 'package:ugd_ui_widget/View/reservation_form.dart';
 import 'package:ugd_ui_widget/View/qrcode_reservation.dart';
 import 'package:ugd_ui_widget/database/sql_helper_reservation.dart';
@@ -144,12 +145,11 @@ class _MyReservationState extends State<MyReservation> {
     final hasBpjs = reservation[index]['bpjs'] != '';
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) => QRCodeView(
-                      data: reservation[index]['id'].toString(),
-                    )));
+        createPdf(
+            reservation[index]['id'].toString(),
+            reservation[index]['doctorName'],
+            reservation[index]['date'],
+            context);
       },
       child: Card(
         color: Colors.grey[200],
