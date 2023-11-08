@@ -52,13 +52,9 @@ class SQLHelperReservation {
   }
 
   static Future<int> editReservation(
-      String date, String time, String bpjs, String id) async {
+      String date, String time, String id, String bpjs) async {
     final db = await SQLHelperReservation.db();
-    final data = {
-      'date': date,
-      'time': time,
-      'bpjs': bpjs,
-    };
+    final data = {'date': date, 'time': time, 'bpjs': bpjs};
     return await db
         .update('reservation', data, where: 'id = ?', whereArgs: [id]);
   }

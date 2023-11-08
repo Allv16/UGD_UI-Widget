@@ -140,6 +140,6 @@ class ReservationFormState extends State<ReservationForm> {
 
   Future<void> editReservation() async {
     await SQLHelperReservation.editReservation(dateController.text,
-        timeController.text, bpjsController.text, widget.id!);
+        timeController.text, widget.id!, bpjsController.text);
   }
 }
