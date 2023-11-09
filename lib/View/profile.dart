@@ -1,12 +1,14 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:ugd_ui_widget/View/edit_photo.dart';
 import 'package:ugd_ui_widget/View/profileEdit.dart';
 import 'home.dart';
 import 'my_reservation.dart';
 import 'login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ugd_ui_widget/View/camera.dart';
+import 'package:ugd_ui_widget/View/edit_photo.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({Key? key}) : super(key: key);
@@ -110,7 +112,7 @@ class _ProfileViewState extends State<ProfileView> {
                           context,
                           MaterialPageRoute(
                               builder: (context) =>
-                                  CameraView())); // ganti disini buat arahin ke camera view
+                                  editPhoto())); // ganti disini buat arahin ke camera view
                     },
                     child: Container(
                       width: 35,
