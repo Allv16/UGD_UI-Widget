@@ -4,6 +4,7 @@ import 'package:ugd_ui_widget/component/form_component.dart';
 import 'package:ugd_ui_widget/database/sql_helper_user.dart';
 import 'package:ugd_ui_widget/model/user.dart';
 import 'package:intl/intl.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({
@@ -49,18 +50,18 @@ class _RegisterViewState extends State<RegisterView> {
             physics: const BouncingScrollPhysics(),
             child: Column(
               children: [
-                const SizedBox(
-                  height: 100,
+                SizedBox(
+                  height: 100.h,
                 ),
-                const Text(
+                Text(
                   "Register",
                   style: TextStyle(
                       color: Colors.lightBlue,
-                      fontSize: 40,
+                      fontSize: 40.px,
                       fontWeight: FontWeight.w800),
                 ),
-                const SizedBox(
-                  height: 30,
+                SizedBox(
+                  height: 30.h,
                 ),
                 InputForm(
                     validasi: (p0) {
