@@ -4,6 +4,7 @@ import 'package:ugd_ui_widget/database/sql_helper_reservation.dart';
 import 'dart:math';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ugd_ui_widget/component/form_component.dart';
+import 'package:uuid/uuid.dart';
 
 final List<String> doctor = ['Aji', 'Caily', 'Alina', 'Bonita', 'Daisy'];
 
@@ -125,7 +126,7 @@ class ReservationFormState extends State<ReservationForm> {
 
   Future<void> addReservation() async {
     final String doctorName = doctor[Random().nextInt(5)];
-    await SQLHelperReservation.addReservation(dateController.text,
+    await SQLHelperReservation.addReservation(Uuid().v1(), dateController.text,
         timeController.text, doctorName, emailUser, bpjsController.text);
   }
 

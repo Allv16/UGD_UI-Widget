@@ -3,7 +3,11 @@
 #
 
 list(APPEND FLUTTER_PLUGIN_LIST
+<<<<<<< HEAD
   file_selector_windows
+=======
+  printing
+>>>>>>> 8b86a690b72853b78c202187af46215daf468747
   screen_brightness_windows
   url_launcher_windows
 )
