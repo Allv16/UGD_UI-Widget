@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:ugd_ui_widget/View/scan_qr_page.dart';
 
 class InputForm extends StatefulWidget {
   final Function(String?) validasi;
@@ -58,6 +59,70 @@ class _InputFormState extends State<InputForm> {
         ),
       ),
     );
+  }
+}
+
+class ScannerInputForm extends StatefulWidget {
+  final Function(String?) validasi;
+  final TextEditingController controller;
+  final String hintTxt;
+  final String helperTxt;
+  final IconData iconData;
+
+  ScannerInputForm({
+    required this.validasi,
+    required this.controller,
+    required this.hintTxt,
+    required this.helperTxt,
+    required this.iconData,
+  });
+
+  @override
+  _ScannerInputFormState createState() => _ScannerInputFormState();
+}
+
+class _ScannerInputFormState extends State<ScannerInputForm> {
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+      child: SizedBox(
+        child: TextFormField(
+          validator: (value) => widget.validasi(value),
+          autofocus: false,
+          controller: widget.controller,
+          keyboardType: TextInputType.number,
+          decoration: InputDecoration(
+            hintText: widget.hintTxt,
+            border: const OutlineInputBorder(),
+            helperText: widget.helperTxt,
+            prefixIcon: Icon(widget.iconData),
+            suffixIcon: Ink(
+              decoration: const ShapeDecoration(
+                  shape: Border(left: BorderSide(width: 0.8))),
+              child: IconButton(
+                onPressed: () {
+                  _navigateAndDisplayToScanner(context);
+                },
+                icon: const Icon(Icons.qr_code_scanner_outlined),
+                iconSize: 40,
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _navigateAndDisplayToScanner(BuildContext context) async {
+    final result = await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => const BarcodeScannerPageView()),
+    );
+    if (!mounted) return;
+    setState(() {
+      widget.controller.text = result ?? '';
+    });
   }
 }
 

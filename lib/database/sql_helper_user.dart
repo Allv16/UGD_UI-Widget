@@ -9,7 +9,8 @@ class SQLHelperUser {
         password TEXT,
         email TEXT UNIQUE,
         noTelp TEXT,
-        tglLahir TEXT
+        tglLahir TEXT,
+        profilePath TEXT
       )
     """);
   }
@@ -133,5 +134,14 @@ class SQLHelperUser {
     }
 
     return true;
+  }
+
+  static Future<int> editProfile(String newPath, String email) async {
+    final db = await SQLHelperUser.db();
+    final data = {
+      'profilePath': newPath,
+    };
+    return await db
+        .update('user', data, where: "email = ?", whereArgs: [email]);
   }
 }

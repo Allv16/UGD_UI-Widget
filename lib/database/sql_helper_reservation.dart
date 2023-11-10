@@ -4,11 +4,12 @@ class SQLHelperReservation {
   static Future<void> createTables(sql.Database database) async {
     await database.execute("""
       CREATE TABLE reservation(
-        id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
+        id TEXT PRIMARY KEY,
         date TEXT,
         time TEXT,
         doctorName TEXT,
-        userEmail TEXT
+        userEmail TEXT,
+        bpjs TEXT
       )
     """);
   }
@@ -20,14 +21,16 @@ class SQLHelperReservation {
     });
   }
 
-  static Future<int> addReservation(
-      String date, String time, String doctorName, String userEmail) async {
+  static Future<int> addReservation(String id, String date, String time,
+      String doctorName, String userEmail, String bpjs) async {
     final db = await SQLHelperReservation.db();
     final data = {
+      'id': id,
       'date': date,
       'time': time,
       'doctorName': doctorName,
       'userEmail': userEmail,
+      'bpjs': bpjs,
     };
     return await db.insert('reservation', data);
   }
@@ -47,7 +50,7 @@ class SQLHelperReservation {
         whereArgs: ['%$query%', email]);
   }
 
-  static Future<int> editReservation(String date, String time, int id) async {
+  static Future<int> editReservation(String date, String time, String id) async {
     final db = await SQLHelperReservation.db();
     final data = {
       'date': date,

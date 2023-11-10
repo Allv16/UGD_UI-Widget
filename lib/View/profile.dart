@@ -1,9 +1,13 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:ugd_ui_widget/View/profileEdit.dart';
 import 'home.dart';
 import 'my_reservation.dart';
 import 'login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ugd_ui_widget/View/camera.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({Key? key}) : super(key: key);
@@ -17,6 +21,7 @@ class _ProfileViewState extends State<ProfileView> {
   TextEditingController emailController = TextEditingController();
   TextEditingController noTelpController = TextEditingController();
   TextEditingController tglLahirController = TextEditingController();
+  String profilePath = '';
   @override
   void initState() {
     super.initState();
@@ -29,12 +34,14 @@ class _ProfileViewState extends State<ProfileView> {
     String? email = prefs.getString('email');
     String? noTelp = prefs.getString('noTelp');
     String? tgl = prefs.getString('tglLahir');
+    String? newPath = prefs.getString('profilePath');
 
     setState(() {
       usernameController.text = username ?? '';
       emailController.text = email ?? '';
       noTelpController.text = noTelp != null ? noTelp.toString() : '';
       tglLahirController.text = tgl ?? '';
+      profilePath = newPath!;
     });
   }
 
@@ -71,24 +78,58 @@ class _ProfileViewState extends State<ProfileView> {
         title: Text('Profile'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16.0),
+        padding: EdgeInsets.all(2.h),
+        child: SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            ClipOval(
-              // untuk mengatur bentuk gambar jd bulat
-              child: Image.asset(
-                'images/pp.jpg',
-                width: 200,
-                height: 200,
-                fit: BoxFit.cover,
+            Stack(children: [
+              SizedBox(
+                width: 160.px,
+                height: 160.px,
+                child: ClipRRect(
+                    borderRadius: BorderRadius.circular(100.px),
+                    child: profilePath.isEmpty
+                        ? Image.asset(
+                            'images/pp.jpg',
+                            width: 40.px,
+                            height: 40.px,
+                            fit: BoxFit.cover,
+                          )
+                        : Image.file(
+                            File(profilePath),
+                            width: 40.px,
+                            height: 40.px,
+                            fit: BoxFit.cover,
+                          )),
               ),
-            ),
-            SizedBox(height: 20),
+              Positioned(
+                  bottom: 0,
+                  right: 0,
+                  child: GestureDetector(
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) =>
+                                  CameraView())); // ganti disini buat arahin ke camera view
+                    },
+                    child: Container(
+                      width: 50.px,
+                      height: 50.px,
+                      decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(100.px),
+                          color: Theme.of(context).colorScheme.primary),
+                      child: Icon(Icons.camera_alt,
+                          color: Colors.white, size: 24.px),
+                    ),
+                  ))
+            ]),
+            SizedBox(height: 3.h),
             TextFormField(
               controller: usernameController,
               style: TextStyle(
-                  fontSize: 20, color: Color.fromARGB(255, 30, 127, 207)),
+                  fontSize: 18.sp, color: Color.fromARGB(255, 30, 127, 207)),
               decoration: InputDecoration(
                 labelText: 'Username',
                 labelStyle: TextStyle(color: Colors.black),
@@ -100,7 +141,7 @@ class _ProfileViewState extends State<ProfileView> {
             TextFormField(
               controller: emailController,
               style: TextStyle(
-                  fontSize: 20, color: Color.fromARGB(255, 30, 127, 207)),
+                  fontSize: 18.sp, color: Color.fromARGB(255, 30, 127, 207)),
               decoration: InputDecoration(
                 labelText: 'Email',
                 labelStyle: TextStyle(color: Colors.black),
@@ -112,7 +153,7 @@ class _ProfileViewState extends State<ProfileView> {
             TextFormField(
               controller: noTelpController,
               style: TextStyle(
-                  fontSize: 20, color: Color.fromARGB(255, 30, 127, 207)),
+                  fontSize: 18.sp, color: Color.fromARGB(255, 30, 127, 207)),
               decoration: InputDecoration(
                 labelText: 'No. Telp',
                 labelStyle: TextStyle(color: Colors.black),
@@ -124,7 +165,7 @@ class _ProfileViewState extends State<ProfileView> {
             TextFormField(
               controller: tglLahirController,
               style: TextStyle(
-                  fontSize: 20, color: Color.fromARGB(255, 30, 127, 207)),
+                  fontSize: 18.sp, color: Color.fromARGB(255, 30, 127, 207)),
               decoration: InputDecoration(
                 labelText: 'Tanggal Lahir',
                 labelStyle: TextStyle(color: Colors.black),
@@ -134,7 +175,7 @@ class _ProfileViewState extends State<ProfileView> {
               enabled: false,
             ),
             Padding(
-              padding: EdgeInsets.only(bottom: 24, right: 15, left: 15),
+              padding: EdgeInsets.only(top: 2.h,bottom: 2.h, right: 2.w, left: 2.w),
               child: ElevatedButton(
                 onPressed: () async {
                   Navigator.push(context,
@@ -142,17 +183,18 @@ class _ProfileViewState extends State<ProfileView> {
                 },
                 style: ButtonStyle(
                     minimumSize:
-                        MaterialStateProperty.all<Size>(const Size(360, 50)),
+                        MaterialStateProperty.all<Size>(Size(80.w, 7.h)),
                     backgroundColor:
                         MaterialStateProperty.all<Color>(Colors.red)),
                 child: Text(
                   "Logout",
-                  style: TextStyle(color: Colors.white, fontSize: 20),
+                  style: TextStyle(color: Colors.white, fontSize: 20.sp),
                 ),
               ),
             ),
           ],
         ),
+       ),
       ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[

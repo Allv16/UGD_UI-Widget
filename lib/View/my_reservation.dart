@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:ugd_ui_widget/View/pdf_view.dart';
 import 'package:ugd_ui_widget/View/reservation_form.dart';
 import 'package:ugd_ui_widget/View/qrcode_reservation.dart';
 import 'package:ugd_ui_widget/database/sql_helper_reservation.dart';
 import 'home.dart';
 import 'profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 final List<String> doctor = ['Aji', 'Caily', 'Alina', 'Bonita', 'Daisy'];
 
@@ -80,11 +82,17 @@ class _MyReservationState extends State<MyReservation> {
         },
         child: Icon(Icons.add),
         backgroundColor: Colors.lightBlue,
+        foregroundColor: Colors.white,
       ),
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
-        child: Column(
-          children: [
+      body: ResponsiveSizer(
+        builder: (context, orientation, deviceType) {
+          return Padding(
+            padding: EdgeInsets.symmetric(
+              horizontal: 10.w, 
+              vertical: 5.h,   
+            ),
+            child: Column(
+              children: [
             TextField(
               decoration: InputDecoration(
                   border: OutlineInputBorder(
@@ -105,8 +113,8 @@ class _MyReservationState extends State<MyReservation> {
                 }
               },
             ),
-            const SizedBox(
-              height: 20,
+            SizedBox(
+              height: 2.h,
             ),
             reservation.length == 0
                 ? Text("No Reservation found")
@@ -115,9 +123,11 @@ class _MyReservationState extends State<MyReservation> {
                     itemCount: reservation.length,
                     itemBuilder: (context, index) => reservationCard(index),
                   ))
-          ],
-        ),
-      ),
+            ],
+         ),
+        );
+      },
+    ),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -140,108 +150,133 @@ class _MyReservationState extends State<MyReservation> {
     );
   }
 
-  Widget reservationCard(int index) => Card(
+  Widget reservationCard(int index) {
+    final hasBpjs = reservation[index]['bpjs'] != '';
+    return GestureDetector(
+      onTap: () {
+        createPdf(reservation[index]['id'], reservation[index]['doctorName'],
+            reservation[index]['date'], context);
+      },
+      child: Card(
         color: Colors.grey[200],
-        child: GestureDetector(
-          child: Padding(
-            padding: const EdgeInsets.all(15),
-            child: Row(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                SizedBox(
-                  height: 124,
-                  width: 124,
-                  child: ClipRRect(
-                    borderRadius: BorderRadius.circular(100),
-                    child: Image(
-                        image: AssetImage(
-                            'images/${reservation[index]['doctorName']}.jpg'),
-                        fit: BoxFit.cover),
+        child: Padding(
+          padding: EdgeInsets.all(2.h),
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              SizedBox(
+                height: 80.px,
+                width: 80.px,
+                child: ClipRRect(
+                  borderRadius: BorderRadius.circular(100),
+                  child: Image(
+                      image: AssetImage(
+                          'images/${reservation[index]['doctorName']}.jpg'),
+                      fit: BoxFit.cover),
+                ),
+              ),
+              SizedBox(
+                width: 10.px,
+              ),
+              Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Row(
+                    children: [
+                      Text('Dr. ' + reservation[index]['doctorName'],
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20.sp,
+                          )),
+                      SizedBox(
+                        width: 2.w,
+                      ),
+                      hasBpjs
+                          ? Container(
+                              alignment: Alignment.center,
+                              width: 14.w,
+                              height: 4.h,
+                              decoration: BoxDecoration(
+                                  color: Colors.green,
+                                  borderRadius: BorderRadius.circular(10)),
+                              child: Text(
+                                "BPJS",
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 7.px,
+                                  fontWeight: FontWeight.w900,
+                                ),
+                              ),
+                            )
+                          : const SizedBox.shrink()
+                    ],
                   ),
-                ),
-                const SizedBox(
-                  width: 16,
-                ),
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(reservation[index]['doctorName'],
-                        style: const TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 24,
-                        )),
-                    Text(
-                      reservation[index]['date'],
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                    Text(
-                      reservation[index]['time'],
-                      style: const TextStyle(fontSize: 16),
-                    ),
-                    const SizedBox(
-                      height: 15,
-                    ),
-                    Row(
-                      children: [
-                        SizedBox(
-                          width: 100,
-                        ),
-                        CircleAvatar(
-                          radius: 20,
-                          backgroundColor: Colors.blue,
-                          child: IconButton(
-                            onPressed: () => {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ReservationForm(
-                                      date: reservation[index]['date'],
-                                      id: reservation[index]['id'],
-                                      time: reservation[index]['time'],
-                                    ),
-                                  )).then((_) => refresh())
-                            },
-                            icon: Icon(
-                              Icons.create_outlined,
-                              color: Colors.white,
-                            ),
-                            style: ButtonStyle(),
+                  Text(
+                    reservation[index]['date'],
+                    style: TextStyle(fontSize: 13.px),
+                  ),
+                  Text(
+                    reservation[index]['time'],
+                    style: TextStyle(fontSize: 13.px),
+                  ),
+                  SizedBox(
+                    height: 2.h,
+                  ),
+                  Row(
+                    children: [
+                      // SizedBox(
+                      //   width: 1.w,
+                      // ),
+                      CircleAvatar(
+                        radius: 20,
+                        backgroundColor: Colors.blue,
+                        child: IconButton(
+                          onPressed: () => {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ReservationForm(
+                                    date: reservation[index]['date'],
+                                    id: reservation[index]['id'],
+                                    time: reservation[index]['time'],
+                                  ),
+                                )).then((_) => refresh())
+                          },
+                          icon: Icon(
+                            Icons.create_outlined,
+                            color: Colors.white,
                           ),
+                          style: ButtonStyle(),
                         ),
-                        SizedBox(
-                          width: 8,
-                        ),
-                        CircleAvatar(
-                          radius: 20,
-                          backgroundColor: Colors.red,
-                          child: IconButton(
-                            onPressed: () => {
-                              deleteReservation(reservation[index]['id'])
-                                  .then((_) => refresh())
-                            },
-                            icon: Icon(
-                              Icons.delete,
-                              color: Colors.white,
-                            ),
-                            style: ButtonStyle(),
+                      ),
+                      SizedBox(
+                        width: 2.w,
+                      ),
+                      CircleAvatar(
+                        radius: 20.px,
+                        backgroundColor: Colors.red,
+                        child: IconButton(
+                          onPressed: () => {
+                            deleteReservation(reservation[index]['id'])
+                                .then((_) => refresh())
+                          },
+                          icon: Icon(
+                            Icons.delete,
+                            color: Colors.white,
                           ),
-                        )
-                      ],
-                    )
-                  ],
-                )
-              ],
-            ),
+                          style: ButtonStyle(),
+                        ),
+                      )
+                    ],
+                  )
+                ],
+              )
+            ],
           ),
-          onTap: () {
-            Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => const BarcodeView(),
-                ));
-          },
         ),
-      );
+      ),
+    );
+  }
 
   Future<void> deleteReservation(int id) async {
     await SQLHelperReservation.deleteReservation(id);

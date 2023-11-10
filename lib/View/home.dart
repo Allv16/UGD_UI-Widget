@@ -1,12 +1,15 @@
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:ugd_ui_widget/View/profile.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'my_reservation.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'dart:io';
 import 'package:uuid/uuid.dart';
+import 'package:shake/shake.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class HomeView extends StatefulWidget {
-  const HomeView({super.key});
+  const HomeView({Key? key}) : super(key: key);
 
   @override
   State<HomeView> createState() => _HomeViewState();
@@ -14,19 +17,42 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
   String username1 = "";
-  String id = const Uuid().v1(); //untuk membuat kode unik berdasarkan waktu
-  File? image;
+  String profilePath = '';
+  late ShakeDetector detector;
+  String id = const Uuid().v1(); 
 
   void initState() {
     super.initState();
     loadUserData();
+
+    detector = ShakeDetector.autoStart(onPhoneShake: () async {
+      final Uri url = Uri(
+        scheme: 'tel',
+        path: '911',
+      );
+      if (await canLaunchUrl(url)) {
+        await launchUrl(url);
+      } else {
+        print('cannot launch this url');
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    detector.stopListening();
+    super.dispose();
   }
 
   Future<void> loadUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? username = prefs.getString('username');
+    String? newPath = prefs.getString('profilePath');
+    print(newPath);
     setState(() {
       username1 = username!;
+      profilePath = newPath!;
+      print('profile path $profilePath');
     });
   }
 
@@ -108,9 +134,6 @@ class _HomeViewState extends State<HomeView> {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const SizedBox(
-                  height: 50,
-                ),
                 Container(
                   child: Row(
                     children: [
@@ -120,7 +143,7 @@ class _HomeViewState extends State<HomeView> {
                           Text(
                             "Hi $username1!",
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 5.w,
                               fontWeight: FontWeight.w400,
                               color: Colors.cyan[600],
                             ),
@@ -131,7 +154,7 @@ class _HomeViewState extends State<HomeView> {
                           Text(
                             "Find Your Doctor",
                             style: TextStyle(
-                              fontSize: 25,
+                              fontSize: 7.w,
                               fontWeight: FontWeight.w900,
                               color: Colors.cyan[600],
                             ),
@@ -151,11 +174,16 @@ class _HomeViewState extends State<HomeView> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.end,
                             children: [
-                              CircleAvatar(
-                                radius: 50,
-                                backgroundImage:
-                                    AssetImage('images/pp.jpg'),
-                              ),
+                              profilePath.isEmpty
+                                  ? const CircleAvatar(
+                                      //default profile
+                                      radius: 50,
+                                      backgroundImage:
+                                          AssetImage('images/pp.jpg'))
+                                  : CircleAvatar(
+                                      radius: 50,
+                                      backgroundImage:
+                                          FileImage(File(profilePath)))
                             ],
                           ),
                         ),
@@ -164,13 +192,13 @@ class _HomeViewState extends State<HomeView> {
                   ),
                 ),
                 SizedBox(
-                  height: 20,
+                  height: 3.h,
                 ),
                 Container(
                   padding: const EdgeInsets.all(15.0),
                   decoration: BoxDecoration(
                       color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(15)),
+                      borderRadius: BorderRadius.circular(6.w)),
                   child: Row(children: [
                     const Icon(
                       Icons.search,
@@ -183,13 +211,13 @@ class _HomeViewState extends State<HomeView> {
                   ]),
                 ),
                 SizedBox(
-                  height: 50,
+                  height: 5.h,
                 ),
                 Container(
-                  padding: const EdgeInsets.all(25.0),
+                  padding: EdgeInsets.all(15.px),
                   decoration: BoxDecoration(
                       color: Colors.cyan[600],
-                      borderRadius: BorderRadius.circular(15)),
+                      borderRadius: BorderRadius.circular(6.w)),
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -197,36 +225,36 @@ class _HomeViewState extends State<HomeView> {
                           "Health Fact",
                           style: TextStyle(
                               color: Colors.grey[200],
-                              fontSize: 25,
+                              fontSize: 30.px,
                               fontWeight: FontWeight.bold),
                         ),
                         SizedBox(
-                          height: 10,
+                          height: 2.h,
                         ),
                         Text(
                           "Dalam istilah Kedokteran, istilah penyakit panas dalam tidak pernah ada.",
                           style:
-                              TextStyle(color: Colors.grey[200], fontSize: 20),
+                              TextStyle(color: Colors.grey[200], fontSize: 15.px),
                         )
                       ]),
                 ),
                 SizedBox(
-                  height: 50,
+                  height: 5.h,
                 ),
                 Text(
                   "What do you need?",
                   style: TextStyle(
-                      fontSize: 25,
+                      fontSize: 25.px,
                       fontWeight: FontWeight.w900,
                       color: Color(0xFF00ACC1)),
                 ),
                 SizedBox(
-                  height: 30,
+                  height: 5.h,
                 ),
                 GridView.count(
                   crossAxisCount: 3,
-                  crossAxisSpacing: 10.0,
-                  mainAxisSpacing: 10.0,
+                  crossAxisSpacing: 5.px,
+                  mainAxisSpacing: 5.px,
                   shrinkWrap: true,
                   children: [
                     menuBox("images/medicine.png", "Medecine", 0xFF00ACC1),

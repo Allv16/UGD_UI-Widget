@@ -3,6 +3,9 @@ import 'package:ugd_ui_widget/component/form_component.dart';
 import 'package:ugd_ui_widget/database/sql_helper_reservation.dart';
 import 'dart:math';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ugd_ui_widget/component/form_component.dart';
+import 'package:uuid/uuid.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 final List<String> doctor = ['Aji', 'Caily', 'Alina', 'Bonita', 'Daisy'];
 
@@ -10,7 +13,7 @@ class ReservationForm extends StatefulWidget {
   const ReservationForm(
       {super.key, required this.date, required this.time, required this.id});
   final String? date, time;
-  final int? id;
+  final String? id;
 
   @override
   State<ReservationForm> createState() => ReservationFormState();
@@ -34,6 +37,7 @@ class ReservationFormState extends State<ReservationForm> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController dateController = TextEditingController();
   TextEditingController timeController = TextEditingController();
+  TextEditingController bpjsController = TextEditingController();
   bool isEmpty = true;
   @override
   Widget build(BuildContext context) {
@@ -48,48 +52,60 @@ class ReservationFormState extends State<ReservationForm> {
         centerTitle: true,
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15),
+        padding: EdgeInsets.symmetric(horizontal: 2.px),
         child: Form(
           key: _formKey,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              SizedBox(
-                height: 15,
-              ),
-              DatePicker(
-                validasi: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Date cannot be empty";
-                  }
-                },
-                controller: dateController,
-                hintTxt: "Select desired date",
-                helperTxt: "",
-                iconData: Icons.date_range_rounded,
-                selectedDate: isEmpty ? null : dateController.text,
-              ),
-              TimePicker(
-                validasi: (value) {
-                  if (value == null || value.isEmpty) {
-                    return "Select the desired time";
-                  }
-                },
-                controller: timeController,
-                hintTxt: "Select desired time",
-                helperTxt: "",
-                iconData: Icons.access_time,
-                startTime: isEmpty ? null : timeController.text,
-              ),
-              SizedBox(
-                height: 400,
-              ),
-            ],
+          child: SingleChildScrollView(
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              children: [
+                 SizedBox(
+                  height: 15.px,
+                ),
+                DatePicker(
+                  validasi: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Date cannot be empty";
+                    }
+                  },
+                  controller: dateController,
+                  hintTxt: "Select desired date",
+                  helperTxt: "",
+                  iconData: Icons.date_range_rounded,
+                  selectedDate: isEmpty ? null : dateController.text,
+                ),
+                TimePicker(
+                  validasi: (value) {
+                    if (value == null || value.isEmpty) {
+                      return "Select the desired time";
+                    }
+                  },
+                  controller: timeController,
+                  hintTxt: "Select desired time",
+                  helperTxt: "",
+                  iconData: Icons.access_time,
+                  startTime: isEmpty ? null : timeController.text,
+                ),
+                ScannerInputForm(
+                    validasi: (value) {
+                      if (value?.length != 13 && value!.isNotEmpty) {
+                        return "Nomer kartu BPJS harus 13 digit. sekarang hanya ada ${value.length}";
+                      }
+                    },
+                    controller: bpjsController,
+                    hintTxt: "Masukkan nomor BPJS Anda",
+                    helperTxt: "",
+                    iconData: Icons.credit_card),
+                 SizedBox(
+                  height: 377.px,
+                ),
+              ],
+            ),
           ),
         ),
       ),
       bottomNavigationBar: Padding(
-        padding: EdgeInsets.only(bottom: 24, right: 15, left: 15),
+        padding: EdgeInsets.only(bottom: 15.h, right: 15.w, left: 15.w),
         child: ElevatedButton(
           onPressed: () async {
             if (_formKey.currentState!.validate()) {
@@ -99,10 +115,10 @@ class ReservationFormState extends State<ReservationForm> {
           },
           style: ButtonStyle(
               minimumSize:
-                  MaterialStateProperty.all<Size>(const Size(360, 50))),
+                  MaterialStateProperty.all<Size>(Size(40.w, 7.h))),
           child: Text(
             isEmpty ? "Create" : "Edit",
-            style: TextStyle(color: Colors.white, fontSize: 20),
+            style: TextStyle(color: Colors.white, fontSize: 20.sp),
           ),
         ),
       ),
@@ -111,8 +127,8 @@ class ReservationFormState extends State<ReservationForm> {
 
   Future<void> addReservation() async {
     final String doctorName = doctor[Random().nextInt(5)];
-    await SQLHelperReservation.addReservation(
-        dateController.text, timeController.text, doctorName, emailUser);
+    await SQLHelperReservation.addReservation(Uuid().v1(), dateController.text,
+        timeController.text, doctorName, emailUser, bpjsController.text);
   }
 
   Future<void> editReservation() async {
