@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:ugd_ui_widget/View/login.dart';
 import 'package:ugd_ui_widget/component/form_component.dart';
 import 'package:ugd_ui_widget/database/sql_helper_user.dart';
-import 'package:ugd_ui_widget/model/user.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:intl/intl.dart';
 
 class RegisterView extends StatefulWidget {
@@ -49,18 +49,18 @@ class _RegisterViewState extends State<RegisterView> {
             physics: const BouncingScrollPhysics(),
             child: Column(
               children: [
-                const SizedBox(
-                  height: 100,
+                SizedBox(
+                  height: 10.h,
                 ),
-                const Text(
+                Text(
                   "Register",
                   style: TextStyle(
                       color: Colors.lightBlue,
-                      fontSize: 40,
+                      fontSize: 25.sp,
                       fontWeight: FontWeight.w800),
                 ),
-                const SizedBox(
-                  height: 30,
+                SizedBox(
+                  height: 3.h,
                 ),
                 InputForm(
                     validasi: (p0) {
@@ -147,7 +147,7 @@ class _RegisterViewState extends State<RegisterView> {
                           showDialog(
                               context: context,
                               builder: (_) => AlertDialog(
-                                    title: Text("Register Success!"),
+                                    title: const Text("Register Success!"),
                                     actions: [
                                       TextButton(
                                           onPressed: () => Navigator.push(

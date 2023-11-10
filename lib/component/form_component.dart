@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:ugd_ui_widget/View/scan_qr_page.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class InputForm extends StatefulWidget {
   final Function(String?) validasi;
@@ -29,7 +30,7 @@ class _InputFormState extends State<InputForm> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+      padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 1.h),
       child: SizedBox(
         child: TextFormField(
           validator: (value) => widget.validasi(value),

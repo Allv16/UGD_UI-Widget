@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:ugd_ui_widget/View/profile.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'my_reservation.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shake/shake.dart';
 
@@ -124,153 +125,158 @@ class _HomeViewState extends State<HomeView> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.grey[100],
-      body: SafeArea(
-        child: SingleChildScrollView(
-          physics: BouncingScrollPhysics(),
-          child: Padding(
-            padding: const EdgeInsets.all(20.0),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Container(
-                  child: Row(
-                    children: [
-                      Column(
+      body: OrientationBuilder(builder: (context, orientation) {
+        int gridCount = (orientation == Orientation.portrait) ? 3 : 5;
+        return SafeArea(
+          child: SingleChildScrollView(
+            physics: BouncingScrollPhysics(),
+            child: Padding(
+              padding: const EdgeInsets.all(20.0),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Container(
+                    child: Row(
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Text(
+                              "Hi $username1!",
+                              style: TextStyle(
+                                fontSize: 20,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.cyan[600],
+                              ),
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Text(
+                              "Find Your Doctor",
+                              style: TextStyle(
+                                fontSize: 25,
+                                fontWeight: FontWeight.w900,
+                                color: Colors.cyan[600],
+                              ),
+                            ),
+                          ],
+                        ),
+                        Expanded(
+                          child: GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => ProfileView(),
+                                ),
+                              );
+                            },
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.end,
+                              children: [
+                                profilePath.isEmpty
+                                    ? const CircleAvatar(
+                                        //default profile
+                                        radius: 50,
+                                        backgroundImage:
+                                            AssetImage('images/kucheng.jpeg'))
+                                    : CircleAvatar(
+                                        radius: 50,
+                                        backgroundImage:
+                                            FileImage(File(profilePath)))
+                              ],
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(15.0),
+                    decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(15)),
+                    child: Row(children: [
+                      const Icon(
+                        Icons.search,
+                        color: Colors.black,
+                      ),
+                      const Text(
+                        "Search",
+                        style: TextStyle(color: Colors.black),
+                      )
+                    ]),
+                  ),
+                  SizedBox(
+                    height: 25,
+                  ),
+                  Container(
+                    padding: const EdgeInsets.all(25.0),
+                    decoration: BoxDecoration(
+                        color: Colors.cyan[600],
+                        borderRadius: BorderRadius.circular(15)),
+                    child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Text(
-                            "Hi $username1!",
+                            "Health Fact",
                             style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.cyan[600],
-                            ),
+                                color: Colors.grey[200],
+                                fontSize: 25,
+                                fontWeight: FontWeight.bold),
                           ),
-                          const SizedBox(
+                          SizedBox(
                             height: 10,
                           ),
                           Text(
-                            "Find Your Doctor",
+                            "Dalam istilah Kedokteran, istilah penyakit panas dalam tidak pernah ada.",
                             style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.w900,
-                              color: Colors.cyan[600],
-                            ),
-                          ),
-                        ],
-                      ),
-                      Expanded(
-                        child: GestureDetector(
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => ProfileView(),
-                              ),
-                            );
-                          },
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              profilePath.isEmpty
-                                  ? const CircleAvatar(
-                                      //default profile
-                                      radius: 50,
-                                      backgroundImage:
-                                          AssetImage('images/kucheng.jpeg'))
-                                  : CircleAvatar(
-                                      radius: 50,
-                                      backgroundImage:
-                                          FileImage(File(profilePath)))
-                            ],
-                          ),
-                        ),
-                      ),
+                                color: Colors.grey[200], fontSize: 20),
+                          )
+                        ]),
+                  ),
+                  SizedBox(
+                    height: 50,
+                  ),
+                  Text(
+                    "What do you need?",
+                    style: TextStyle(
+                        fontSize: 25,
+                        fontWeight: FontWeight.w900,
+                        color: Color(0xFF00ACC1)),
+                  ),
+                  SizedBox(
+                    height: 30,
+                  ),
+                  GridView.count(
+                    physics: const NeverScrollableScrollPhysics(),
+                    crossAxisCount: gridCount,
+                    crossAxisSpacing: 10.0,
+                    mainAxisSpacing: 10.0,
+                    shrinkWrap: true,
+                    children: [
+                      menuBox("images/medicine.png", "Medecine", 0xFF00ACC1),
+                      menuBox("images/medicine.png", "Diagnostic", 0xFF00ACC1),
+                      menuBox(
+                          "images/medicine.png", "Consultation", 0xFF00ACC1),
+                      menuBox("images/medicine.png", "Ambulance", 0xFF00ACC1),
+                      menuBox("images/medicine.png", "Nurse", 0xFF00ACC1),
+                      menuBox("images/medicine.png", "First Aid", 0xFF00ACC1),
+                      menuBox("images/medicine.png", "First Aid", 0xFF00ACC1),
+                      menuBox("images/medicine.png", "First Aid", 0xFF00ACC1),
+                      menuBox("images/medicine.png", "First Aid", 0xFF00ACC1),
                     ],
                   ),
-                ),
-                SizedBox(
-                  height: 20,
-                ),
-                Container(
-                  padding: const EdgeInsets.all(15.0),
-                  decoration: BoxDecoration(
-                      color: Colors.grey[300],
-                      borderRadius: BorderRadius.circular(15)),
-                  child: Row(children: [
-                    const Icon(
-                      Icons.search,
-                      color: Colors.black,
-                    ),
-                    const Text(
-                      "Search",
-                      style: TextStyle(color: Colors.black),
-                    )
-                  ]),
-                ),
-                SizedBox(
-                  height: 25,
-                ),
-                Container(
-                  padding: const EdgeInsets.all(25.0),
-                  decoration: BoxDecoration(
-                      color: Colors.cyan[600],
-                      borderRadius: BorderRadius.circular(15)),
-                  child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Health Fact",
-                          style: TextStyle(
-                              color: Colors.grey[200],
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold),
-                        ),
-                        SizedBox(
-                          height: 10,
-                        ),
-                        Text(
-                          "Dalam istilah Kedokteran, istilah penyakit panas dalam tidak pernah ada.",
-                          style:
-                              TextStyle(color: Colors.grey[200], fontSize: 20),
-                        )
-                      ]),
-                ),
-                SizedBox(
-                  height: 50,
-                ),
-                Text(
-                  "What do you need?",
-                  style: TextStyle(
-                      fontSize: 25,
-                      fontWeight: FontWeight.w900,
-                      color: Color(0xFF00ACC1)),
-                ),
-                SizedBox(
-                  height: 30,
-                ),
-                GridView.count(
-                  crossAxisCount: 3,
-                  crossAxisSpacing: 10.0,
-                  mainAxisSpacing: 10.0,
-                  shrinkWrap: true,
-                  children: [
-                    menuBox("images/medicine.png", "Medecine", 0xFF00ACC1),
-                    menuBox("images/medicine.png", "Diagnostic", 0xFF00ACC1),
-                    menuBox("images/medicine.png", "Consultation", 0xFF00ACC1),
-                    menuBox("images/medicine.png", "Ambulance", 0xFF00ACC1),
-                    menuBox("images/medicine.png", "Nurse", 0xFF00ACC1),
-                    menuBox("images/medicine.png", "First Aid", 0xFF00ACC1),
-                    menuBox("images/medicine.png", "First Aid", 0xFF00ACC1),
-                    menuBox("images/medicine.png", "First Aid", 0xFF00ACC1),
-                    menuBox("images/medicine.png", "First Aid", 0xFF00ACC1),
-                  ],
-                ),
-              ],
+                ],
+              ),
             ),
           ),
-        ),
-      ),
+        );
+      }),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(

@@ -10,6 +10,7 @@ import 'my_reservation.dart';
 import 'login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({Key? key}) : super(key: key);
@@ -70,172 +71,220 @@ class _ProfileViewState extends State<ProfileView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.only(top: 64, left: 15, right: 15),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.start,
-              mainAxisSize: MainAxisSize.max,
-              children: [
-                Stack(children: [
+      body: OrientationBuilder(builder: (context, orientation) {
+        bool isPortrait = orientation == Orientation.portrait;
+        return Padding(
+          padding: const EdgeInsets.only(top: 64, left: 15, right: 15),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Row(
+                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisSize: MainAxisSize.max,
+                children: [
+                  isPortrait
+                      ? Stack(children: [
+                          SizedBox(
+                            width: 22.w,
+                            height: 11.h,
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(100),
+                                child: profilePath.isEmpty
+                                    ? Image.asset(
+                                        'images/kucheng.jpeg',
+                                        width: 38.w,
+                                        height: 18.px,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Image.file(
+                                        File(profilePath),
+                                        width: 38.w,
+                                        height: 18.px,
+                                        fit: BoxFit.cover,
+                                      )),
+                          ),
+                          Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: GestureDetector(
+                                onTap: () {
+                                  _displayBottomSheet();
+                                },
+                                child: Container(
+                                  width: 6.w,
+                                  height: 3.h,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(100),
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primary),
+                                  child: Icon(Icons.edit,
+                                      color: Colors.white, size: 15.sp),
+                                ),
+                              ))
+                        ])
+                      : Stack(children: [
+                          SizedBox(
+                            width: 11.w,
+                            height: 22.h,
+                            child: ClipRRect(
+                                borderRadius: BorderRadius.circular(100),
+                                child: profilePath.isEmpty
+                                    ? Image.asset(
+                                        'images/kucheng.jpeg',
+                                        width: 18.w,
+                                        height: 38.px,
+                                        fit: BoxFit.cover,
+                                      )
+                                    : Image.file(
+                                        File(profilePath),
+                                        width: 18.w,
+                                        height: 38.px,
+                                        fit: BoxFit.cover,
+                                      )),
+                          ),
+                          Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: GestureDetector(
+                                onTap: () {
+                                  _displayBottomSheet();
+                                },
+                                child: Container(
+                                  width: 3.w,
+                                  height: 6.h,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(100),
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primary),
+                                  child: Icon(Icons.edit,
+                                      color: Colors.white, size: 15.sp),
+                                ),
+                              ))
+                        ]),
                   SizedBox(
-                    width: 86,
-                    height: 86,
-                    child: ClipRRect(
-                        borderRadius: BorderRadius.circular(100),
-                        child: profilePath.isEmpty
-                            ? Image.asset(
-                                'images/kucheng.jpeg',
-                                width: 160,
-                                height: 160,
-                                fit: BoxFit.cover,
-                              )
-                            : Image.file(
-                                File(profilePath),
-                                width: 160,
-                                height: 160,
-                                fit: BoxFit.cover,
-                              )),
+                    width: 3.w,
                   ),
-                  Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: GestureDetector(
-                        onTap: () {
-                          _displayBottomSheet();
-                        },
-                        child: Container(
-                          width: 25,
-                          height: 25,
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(100),
-                              color: Theme.of(context).colorScheme.primary),
-                          child: const Icon(Icons.edit,
-                              color: Colors.white, size: 15),
+                  Flexible(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(username,
+                            style: TextStyle(
+                                fontSize: 20.sp,
+                                fontWeight: FontWeight.bold,
+                                color: Theme.of(context).colorScheme.primary),
+                            softWrap: true),
+                        SizedBox(
+                          height: 4.px,
                         ),
-                      ))
-                ]),
-                const SizedBox(
-                  width: 15,
-                ),
-                Flexible(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(username,
-                          style: TextStyle(
-                              fontSize: 25,
-                              fontWeight: FontWeight.bold,
-                              color: Theme.of(context).colorScheme.primary),
-                          softWrap: true),
-                      const SizedBox(
-                        height: 4,
-                      ),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(
-                            Icons.email,
-                            color: Colors.black54,
-                            size: 15,
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Text(email),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 4,
-                      ),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(
-                            Icons.phone,
-                            color: Colors.black54,
-                            size: 15,
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Text(noTelp),
-                        ],
-                      ),
-                      const SizedBox(
-                        height: 4,
-                      ),
-                      Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          const Icon(
-                            Icons.calendar_month,
-                            color: Colors.black54,
-                            size: 15,
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Text(tglLahir),
-                        ],
-                      ),
-                    ],
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.email,
+                              color: Colors.black54,
+                              size: 16.sp,
+                            ),
+                            SizedBox(
+                              width: 2.w,
+                            ),
+                            Text(email),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 4.px,
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.phone,
+                              color: Colors.black54,
+                              size: 16.sp,
+                            ),
+                            SizedBox(
+                              width: 2.w,
+                            ),
+                            Text(noTelp),
+                          ],
+                        ),
+                        SizedBox(
+                          height: 4.px,
+                        ),
+                        Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            Icon(
+                              Icons.calendar_month,
+                              color: Colors.black54,
+                              size: 16.sp,
+                            ),
+                            SizedBox(
+                              width: 2.w,
+                            ),
+                            Text(tglLahir),
+                          ],
+                        ),
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-            const SizedBox(
-              height: 20,
-            ),
-            Text('Account Settings',
-                style: GoogleFonts.lato(
-                    fontSize: 15, fontWeight: FontWeight.w600)),
-            ListTile(
-              leading: const Icon(Icons.person_outline_rounded),
-              title: const Text(
-                'Edit Profile',
-                textAlign: TextAlign.left,
+                ],
               ),
-              contentPadding: const EdgeInsets.all(0),
-              trailing: const Icon(Icons.arrow_forward_ios_rounded,
-                  size: 15, color: Colors.grey),
-              horizontalTitleGap: 0,
-              shape: const Border(
-                  bottom: BorderSide(color: Colors.grey, width: 1)),
-              onTap: () => {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => ProfileEditView(),
-                  ),
-                ).then((_) => loadUserData())
-              },
-            ),
-            ListTile(
-                leading: const Icon(Icons.exit_to_app, color: Colors.red),
+              SizedBox(
+                height: 3.h,
+              ),
+              Text('Account Settings',
+                  style: GoogleFonts.lato(
+                      fontSize: 16.sp, fontWeight: FontWeight.w600)),
+              ListTile(
+                leading: const Icon(Icons.person_outline_rounded),
                 title: const Text(
-                  'Logout',
+                  'Edit Profile',
                   textAlign: TextAlign.left,
-                  style: TextStyle(color: Colors.red),
                 ),
                 contentPadding: const EdgeInsets.all(0),
-                trailing: const Icon(Icons.arrow_forward_ios_rounded,
-                    size: 15, color: Colors.grey),
+                trailing: Icon(Icons.arrow_forward_ios_rounded,
+                    size: 16.sp, color: Colors.grey),
                 horizontalTitleGap: 0,
-                shape: const Border(bottom: BorderSide(color: Colors.grey)),
+                shape: const Border(
+                    bottom: BorderSide(color: Colors.grey, width: 1)),
                 onTap: () => {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => LoginView(),
-                        ),
-                      )
-                    }),
-          ],
-        ),
-      ),
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => ProfileEditView(),
+                    ),
+                  ).then((_) => loadUserData())
+                },
+              ),
+              ListTile(
+                  leading: const Icon(Icons.exit_to_app, color: Colors.red),
+                  title: const Text(
+                    'Logout',
+                    textAlign: TextAlign.left,
+                    style: TextStyle(color: Colors.red),
+                  ),
+                  contentPadding: const EdgeInsets.all(0),
+                  trailing: Icon(Icons.arrow_forward_ios_rounded,
+                      size: 16.sp, color: Colors.grey),
+                  horizontalTitleGap: 0,
+                  shape: const Border(bottom: BorderSide(color: Colors.grey)),
+                  onTap: () => {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => const LoginView(),
+                          ),
+                        )
+                      }),
+              Text(MediaQuery.of(context).size.width.toString()),
+              Text(MediaQuery.of(context).size.height.toString())
+            ],
+          ),
+        );
+      }),
       bottomNavigationBar: BottomNavigationBar(
         items: const <BottomNavigationBarItem>[
           BottomNavigationBarItem(
@@ -264,14 +313,14 @@ class _ProfileViewState extends State<ProfileView> {
             borderRadius: BorderRadius.vertical(top: Radius.circular(15.0))),
         context: context,
         builder: (context) => Container(
-              padding: const EdgeInsets.all(20),
-              height: 200,
+              padding: EdgeInsets.all(20.sp),
+              height: 24.h,
               child: Column(
                 children: [
                   Text(
                     "Select Image Source",
                     style: TextStyle(
-                        fontSize: 20, color: Color(Colors.grey[900]!.value)),
+                        fontSize: 19.sp, color: Color(Colors.grey[500]!.value)),
                   ),
                   const SizedBox(height: 20),
                   Row(
@@ -282,9 +331,9 @@ class _ProfileViewState extends State<ProfileView> {
                           children: [
                             GestureDetector(
                               child: Padding(
-                                  padding: EdgeInsets.all(10),
+                                  padding: EdgeInsets.all(10.sp),
                                   child: IconButton(
-                                    iconSize: 40,
+                                    iconSize: 25.sp,
                                     icon: Icon(
                                       Icons.photo,
                                       color: Colors.black,
@@ -303,9 +352,9 @@ class _ProfileViewState extends State<ProfileView> {
                           children: [
                             GestureDetector(
                               child: Padding(
-                                  padding: const EdgeInsets.all(10),
+                                  padding: EdgeInsets.all(10.sp),
                                   child: IconButton(
-                                    iconSize: 40,
+                                    iconSize: 25.sp,
                                     icon: const Icon(Icons.camera_alt,
                                         color: Colors.black),
                                     onPressed: () {
