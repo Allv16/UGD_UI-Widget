@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ugd_ui_widget/View/pdf_view.dart';
 import 'package:ugd_ui_widget/View/reservation_form.dart';
-import 'package:ugd_ui_widget/View/qrcode_reservation.dart';
 import 'package:ugd_ui_widget/database/sql_helper_reservation.dart';
 import 'home.dart';
 import 'profile.dart';

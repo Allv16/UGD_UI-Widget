@@ -2,7 +2,6 @@ import 'package:camera/camera.dart';
 import 'package:flutter/material.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:ugd_ui_widget/View/home.dart';
 import 'package:ugd_ui_widget/View/profile.dart';
 import 'package:ugd_ui_widget/database/sql_helper_user.dart';
 import 'dart:io';

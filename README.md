@@ -12,21 +12,22 @@
 
 **Yohanes Alvian Wijaya Irawan | 210711047**
 
-> - Membuat view dan penerapan logic fitur mengganti foto profile
-> - Membuat view dan penerapan logic fitur scan barcode BPJS/KIS
+> - Membuat logic untuk image picker
+> - Menerapkan UUID pada ID reservasi
+> - Menerapkan Intl pada tanggal reservasi
+> - Membantu membuat view PDF
 
 **Andreas Margono | NPM 210711135**
 
-> - Membuat logic untuk fitur shake, jika pada home screen terjadi shake maka akan menelepon ambulan
+> - Membuat view PDF
+> - Menerapkan barcode_widget pada PDF
 
 **Rhema Stella (NPM 210711071)**
 
-> - Membuat logic untuk hardware screen yaitu max brightness ketika user membuka halaman QR code reservasi
+> - Menerapkan responsive sizer pada halaman home, tambah/edit reservasi, my_reservation, profile, edit profile
 
 **Kristina Adine (NPM 210711102)**
 
-> - Membantu membuat logic untuk fitur shake, jika pada home screen terjadi shake maka akan menelepon ambulan
+> - Menerapkan responsive sizer pada halaman login
 
 **Sabastian Gautama (NPM 210711172)**
-
-> - Membuat view QR Code Reservasi
