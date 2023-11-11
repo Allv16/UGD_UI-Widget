@@ -11,8 +11,12 @@ final List<String> doctor = ['Aji', 'Caily', 'Alina', 'Bonita', 'Daisy'];
 
 class ReservationForm extends StatefulWidget {
   const ReservationForm(
-      {super.key, required this.date, required this.time, required this.id});
-  final String? date, time;
+      {super.key,
+      required this.date,
+      required this.time,
+      required this.id,
+      this.bpjs});
+  final String? date, time, bpjs;
   final String? id;
 
   @override
@@ -29,6 +33,7 @@ class ReservationFormState extends State<ReservationForm> {
     });
   }
 
+  @override
   void initState() {
     loadUserData();
     super.initState();
@@ -45,6 +50,9 @@ class ReservationFormState extends State<ReservationForm> {
       dateController.text = widget.date!;
       timeController.text = widget.time!;
       isEmpty = false;
+    }
+    if (widget.bpjs != null) {
+      bpjsController.text = widget.bpjs!;
     }
     return Scaffold(
       appBar: AppBar(
@@ -131,7 +139,7 @@ class ReservationFormState extends State<ReservationForm> {
   }
 
   Future<void> editReservation() async {
-    await SQLHelperReservation.editReservation(
-        dateController.text, timeController.text, widget.id!);
+    await SQLHelperReservation.editReservation(dateController.text,
+        timeController.text, bpjsController.text, widget.id!);
   }
 }

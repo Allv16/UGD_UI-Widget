@@ -12,7 +12,6 @@ dependencies:
     sdk: flutter
   fluttertoast: ^8.2.2
   google_fonts: ^6.1.0
-  image_picker: ^1.0.4
   intl: ^0.17.0
   mobile_scanner: ^3.5.2
   path: ^1.8.3
@@ -26,6 +25,7 @@ dependencies:
   shared_preferences: ^2.0.8
   sqflite: ^2.2.6
   url_launcher: ^6.2.1
+  image_picker: ^0.8.4
   uuid: ^4.2.1
   barcode_widget: ^2.0.4
 
@@ -36,5 +36,6 @@ dev_dependencies:
 
 flutter:
   uses-material-design: true
+
   assets:
     - images/

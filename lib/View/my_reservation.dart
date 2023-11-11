@@ -18,6 +18,29 @@ class MyReservation extends StatefulWidget {
 }
 
 class _MyReservationState extends State<MyReservation> {
+  TextEditingController usernameController = TextEditingController();
+  TextEditingController emailController = TextEditingController();
+  TextEditingController noTelpController = TextEditingController();
+  TextEditingController tglLahirController = TextEditingController();
+  String profilePath = '';
+
+  Future<void> loadUserData() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String? username = prefs.getString('username');
+    String? email = prefs.getString('email');
+    String? noTelp = prefs.getString('noTelp');
+    String? tgl = prefs.getString('tglLahir');
+    String? newPath = prefs.getString('profilePath');
+
+    setState(() {
+      usernameController.text = username ?? '';
+      emailController.text = email ?? '';
+      noTelpController.text = noTelp != null ? noTelp.toString() : '';
+      tglLahirController.text = tgl ?? '';
+      profilePath = newPath!;
+    });
+  }
+
   //for bottom nav
   int _selectedIndex = 1;
   String _userEmail = '';
@@ -59,6 +82,7 @@ class _MyReservationState extends State<MyReservation> {
   void initState() {
     refresh();
     super.initState();
+    loadUserData();
   }
 
   @override
@@ -151,8 +175,17 @@ class _MyReservationState extends State<MyReservation> {
     final hasBpjs = reservation[index]['bpjs'] != '';
     return GestureDetector(
       onTap: () {
-        createPdf(reservation[index]['id'], reservation[index]['doctorName'],
-            reservation[index]['date'], context);
+        createPdf(
+            reservation[index]['id'],
+            reservation[index]['doctorName'],
+            reservation[index]['date'],
+            reservation[index]['bpjs'],
+            reservation[index]['time'],
+            usernameController.text,
+            emailController.text,
+            noTelpController.text,
+            tglLahirController.text,
+            context);
       },
       child: Card(
         color: Colors.grey[200],
@@ -191,8 +224,8 @@ class _MyReservationState extends State<MyReservation> {
                       hasBpjs
                           ? Container(
                               alignment: Alignment.center,
-                              width: 14.w,
-                              height: 4.h,
+                              width: 9.w,
+                              height: 2.h,
                               decoration: BoxDecoration(
                                   color: Colors.green,
                                   borderRadius: BorderRadius.circular(10)),
@@ -200,7 +233,7 @@ class _MyReservationState extends State<MyReservation> {
                                 "BPJS",
                                 style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 7.px,
+                                  fontSize: 12.sp,
                                   fontWeight: FontWeight.w900,
                                 ),
                               ),
@@ -233,6 +266,7 @@ class _MyReservationState extends State<MyReservation> {
                                     date: reservation[index]['date'],
                                     id: reservation[index]['id'],
                                     time: reservation[index]['time'],
+                                    bpjs: reservation[index]['bpjs'],
                                   ),
                                 )).then((_) => refresh())
                           },
