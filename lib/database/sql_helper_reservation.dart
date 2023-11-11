@@ -1,3 +1,4 @@
+import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart' as sql;
 
 class SQLHelperReservation {
@@ -50,17 +51,18 @@ class SQLHelperReservation {
         whereArgs: ['%$query%', email]);
   }
 
-  static Future<int> editReservation(String date, String time, int id) async {
+  static Future<int> editReservation(
+      String date, String time, String id) async {
     final db = await SQLHelperReservation.db();
     final data = {
       'date': date,
       'time': time,
     };
-    return await db.update('reservation', data, where: "id = $id");
+    return await db.update('reservation', data, where: "'id = $id'");
   }
 
-  static Future<int> deleteReservation(int id) async {
+  static Future<int> deleteReservation(String id) async {
     final db = await SQLHelperReservation.db();
-    return await db.delete('reservation', where: "id = $id");
+    return await db.delete('reservation', where: 'id = ?', whereArgs: [id]);
   }
 }

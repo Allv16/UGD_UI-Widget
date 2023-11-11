@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:ugd_ui_widget/View/profile.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -9,7 +8,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shake/shake.dart';
 
 class HomeView extends StatefulWidget {
-  const HomeView({super.key});
+  const HomeView({Key? key}) : super(key: key);
 
   @override
   State<HomeView> createState() => _HomeViewState();
@@ -225,9 +224,10 @@ class _HomeViewState extends State<HomeView> {
                           Text(
                             "Health Fact",
                             style: TextStyle(
-                                color: Colors.grey[200],
-                                fontSize: 25,
-                                fontWeight: FontWeight.bold),
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.w400,
+                              color: Colors.white,
+                            ),
                           ),
                           SizedBox(
                             height: 10,

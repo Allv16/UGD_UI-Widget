@@ -6,6 +6,7 @@ import 'package:ugd_ui_widget/database/sql_helper_reservation.dart';
 import 'home.dart';
 import 'profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 final List<String> doctor = ['Aji', 'Caily', 'Alina', 'Bonita', 'Daisy'];
 
@@ -81,9 +82,13 @@ class _MyReservationState extends State<MyReservation> {
         },
         child: Icon(Icons.add),
         backgroundColor: Colors.lightBlue,
+        foregroundColor: Colors.white,
       ),
       body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 15, vertical: 15),
+        padding: EdgeInsets.symmetric(
+          horizontal: 3.w,
+          vertical: 2.h,
+        ),
         child: Column(
           children: [
             TextField(
@@ -106,16 +111,17 @@ class _MyReservationState extends State<MyReservation> {
                 }
               },
             ),
-            const SizedBox(
-              height: 20,
+            SizedBox(
+              height: 2.h,
             ),
             reservation.length == 0
                 ? Text("No Reservation found")
                 : Expanded(
                     child: ListView.builder(
                     itemCount: reservation.length,
+                    physics: ScrollPhysics(),
                     itemBuilder: (context, index) => reservationCard(index),
-                  ))
+                  )),
           ],
         ),
       ),
@@ -151,13 +157,13 @@ class _MyReservationState extends State<MyReservation> {
       child: Card(
         color: Colors.grey[200],
         child: Padding(
-          padding: const EdgeInsets.all(15),
+          padding: EdgeInsets.all(2.h),
           child: Row(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               SizedBox(
-                height: 124,
-                width: 124,
+                width: 30.w,
+                height: 15.h,
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(100),
                   child: Image(
@@ -166,8 +172,8 @@ class _MyReservationState extends State<MyReservation> {
                       fit: BoxFit.cover),
                 ),
               ),
-              const SizedBox(
-                width: 16,
+              SizedBox(
+                width: 10.px,
               ),
               Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -175,23 +181,26 @@ class _MyReservationState extends State<MyReservation> {
                   Row(
                     children: [
                       Text('Dr. ' + reservation[index]['doctorName'],
-                          style: const TextStyle(
+                          style: TextStyle(
                             fontWeight: FontWeight.bold,
-                            fontSize: 24,
+                            fontSize: 20.sp,
                           )),
+                      SizedBox(
+                        width: 2.w,
+                      ),
                       hasBpjs
                           ? Container(
                               alignment: Alignment.center,
-                              width: 35,
-                              height: 16,
+                              width: 14.w,
+                              height: 4.h,
                               decoration: BoxDecoration(
                                   color: Colors.green,
                                   borderRadius: BorderRadius.circular(10)),
-                              child: const Text(
+                              child: Text(
                                 "BPJS",
                                 style: TextStyle(
                                   color: Colors.white,
-                                  fontSize: 10,
+                                  fontSize: 7.px,
                                   fontWeight: FontWeight.w900,
                                 ),
                               ),
@@ -201,20 +210,17 @@ class _MyReservationState extends State<MyReservation> {
                   ),
                   Text(
                     reservation[index]['date'],
-                    style: const TextStyle(fontSize: 16),
+                    style: TextStyle(fontSize: 13.px),
                   ),
                   Text(
                     reservation[index]['time'],
-                    style: const TextStyle(fontSize: 16),
+                    style: TextStyle(fontSize: 13.px),
                   ),
-                  const SizedBox(
-                    height: 15,
+                  SizedBox(
+                    height: 2.h,
                   ),
                   Row(
                     children: [
-                      SizedBox(
-                        width: 100,
-                      ),
                       CircleAvatar(
                         radius: 20,
                         backgroundColor: Colors.blue,
@@ -238,13 +244,14 @@ class _MyReservationState extends State<MyReservation> {
                         ),
                       ),
                       SizedBox(
-                        width: 8,
+                        width: 2.w,
                       ),
                       CircleAvatar(
-                        radius: 20,
+                        radius: 20.px,
                         backgroundColor: Colors.red,
                         child: IconButton(
                           onPressed: () => {
+                            debugPrint("delete"),
                             deleteReservation(reservation[index]['id'])
                                 .then((_) => refresh())
                           },
@@ -266,7 +273,7 @@ class _MyReservationState extends State<MyReservation> {
     );
   }
 
-  Future<void> deleteReservation(int id) async {
+  Future<void> deleteReservation(String id) async {
     await SQLHelperReservation.deleteReservation(id);
   }
 }

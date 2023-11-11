@@ -4,6 +4,7 @@ import 'package:ugd_ui_widget/database/sql_helper_user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ugd_ui_widget/component/form_component.dart';
 import 'package:intl/intl.dart';
+import 'package:responsive_sizer/responsive_sizer.dart';
 
 class ProfileEditView extends StatefulWidget {
   @override
@@ -51,8 +52,9 @@ class _ProfileEditViewState extends State<ProfileEditView> {
       ),
       body: Form(
         key: _formKey,
+        child: SingleChildScrollView(
         child: Padding(
-          padding: const EdgeInsets.all(16.0),
+          padding: EdgeInsets.all(1.h),
           child: Column(
             children: [
               InputForm(
@@ -120,6 +122,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
             ],
           ),
         ),
+       ),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () async {

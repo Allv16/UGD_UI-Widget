@@ -74,7 +74,7 @@ class _ProfileViewState extends State<ProfileView> {
       body: OrientationBuilder(builder: (context, orientation) {
         bool isPortrait = orientation == Orientation.portrait;
         return Padding(
-          padding: const EdgeInsets.only(top: 64, left: 15, right: 15),
+          padding: EdgeInsets.only(top: 6.h, left: 2.h, right: 2.h),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
@@ -82,87 +82,44 @@ class _ProfileViewState extends State<ProfileView> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  isPortrait
-                      ? Stack(children: [
-                          SizedBox(
-                            width: 22.w,
-                            height: 11.h,
-                            child: ClipRRect(
+                  Stack(children: [
+                    SizedBox(
+                      width: 19.w,
+                      height: 11.h,
+                      child: ClipRRect(
+                          borderRadius: BorderRadius.circular(100),
+                          child: profilePath.isEmpty
+                              ? Image.asset(
+                                  'images/kucheng.jpeg',
+                                  width: 38.w,
+                                  height: 18.px,
+                                  fit: BoxFit.cover,
+                                )
+                              : Image.file(
+                                  File(profilePath),
+                                  width: 38.w,
+                                  height: 18.px,
+                                  fit: BoxFit.cover,
+                                )),
+                    ),
+                    Positioned(
+                        bottom: 0,
+                        right: 0,
+                        child: GestureDetector(
+                          onTap: () {
+                            _displayBottomSheet();
+                          },
+                          child: Container(
+                            width: 6.w,
+                            height: 3.h,
+                            decoration: BoxDecoration(
                                 borderRadius: BorderRadius.circular(100),
-                                child: profilePath.isEmpty
-                                    ? Image.asset(
-                                        'images/kucheng.jpeg',
-                                        width: 38.w,
-                                        height: 18.px,
-                                        fit: BoxFit.cover,
-                                      )
-                                    : Image.file(
-                                        File(profilePath),
-                                        width: 38.w,
-                                        height: 18.px,
-                                        fit: BoxFit.cover,
-                                      )),
+                                color: Theme.of(context).colorScheme.primary),
+                            child: Icon(Icons.edit,
+                                color: Colors.white, size: 15.sp),
                           ),
-                          Positioned(
-                              bottom: 0,
-                              right: 0,
-                              child: GestureDetector(
-                                onTap: () {
-                                  _displayBottomSheet();
-                                },
-                                child: Container(
-                                  width: 6.w,
-                                  height: 3.h,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(100),
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .primary),
-                                  child: Icon(Icons.edit,
-                                      color: Colors.white, size: 15.sp),
-                                ),
-                              ))
-                        ])
-                      : Stack(children: [
-                          SizedBox(
-                            width: 11.w,
-                            height: 22.h,
-                            child: ClipRRect(
-                                borderRadius: BorderRadius.circular(100),
-                                child: profilePath.isEmpty
-                                    ? Image.asset(
-                                        'images/kucheng.jpeg',
-                                        width: 18.w,
-                                        height: 38.px,
-                                        fit: BoxFit.cover,
-                                      )
-                                    : Image.file(
-                                        File(profilePath),
-                                        width: 18.w,
-                                        height: 38.px,
-                                        fit: BoxFit.cover,
-                                      )),
-                          ),
-                          Positioned(
-                              bottom: 0,
-                              right: 0,
-                              child: GestureDetector(
-                                onTap: () {
-                                  _displayBottomSheet();
-                                },
-                                child: Container(
-                                  width: 3.w,
-                                  height: 6.h,
-                                  decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(100),
-                                      color: Theme.of(context)
-                                          .colorScheme
-                                          .primary),
-                                  child: Icon(Icons.edit,
-                                      color: Colors.white, size: 15.sp),
-                                ),
-                              ))
-                        ]),
+                        ))
+                  ]),
                   SizedBox(
                     width: 3.w,
                   ),
@@ -279,8 +236,6 @@ class _ProfileViewState extends State<ProfileView> {
                           ),
                         )
                       }),
-              Text(MediaQuery.of(context).size.width.toString()),
-              Text(MediaQuery.of(context).size.height.toString())
             ],
           ),
         );
@@ -334,7 +289,7 @@ class _ProfileViewState extends State<ProfileView> {
                                   padding: EdgeInsets.all(10.sp),
                                   child: IconButton(
                                     iconSize: 25.sp,
-                                    icon: Icon(
+                                    icon: const Icon(
                                       Icons.photo,
                                       color: Colors.black,
                                     ),
