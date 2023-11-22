@@ -151,7 +151,7 @@ class DatePicker extends StatefulWidget {
 class _DatePickerState extends State<DatePicker> {
   String? errorDate;
   DateTime dateNow = DateTime.now();
-  DateFormat customDateFormat = DateFormat('EEEE, d MMM y', 'en_US');
+  DateFormat customDateFormat = DateFormat('yyyy-MM-dd', 'en_US');
 
   @override
   Widget build(BuildContext context) {
@@ -190,7 +190,7 @@ class _DatePickerState extends State<DatePicker> {
             if (pickedDate != null) {
               setState(() {
                 widget.controller.text =
-                    DateFormat('EEEE, d MMM y').format(pickedDate);
+                    DateFormat('yyyy-MM-dd').format(pickedDate);
               });
             } else {
               setState(() {

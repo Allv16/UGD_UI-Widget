@@ -6,6 +6,8 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ugd_ui_widget/database/sql_helper_user.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:ugd_ui_widget/model/user.dart';
+import 'package:ugd_ui_widget/client/userClient.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -95,27 +97,25 @@ class _LoginViewState extends State<LoginView> {
                             if (_formKey.currentState!.validate()) {
                               String email = emailController.text;
                               String password = passwordController.text;
-                              Map<dynamic, dynamic> loginResult =
-                                  await SQLHelperUser.loginUser(
-                                      email, password);
-                              print(loginResult['id']);
-                              if (loginResult['id'] != -1) {
+                              User? loginResult =
+                                  await UserClient.login(email, password);
+                              print(loginResult);
+                              if (loginResult != null) {
                                 //set sharedpreferenced
                                 SharedPreferences prefs =
                                     await SharedPreferences.getInstance();
                                 prefs.setString(
-                                    'username', loginResult['username']);
-                                prefs.setString('email', loginResult['email']);
+                                    'username', loginResult.username);
+                                prefs.setString('email', loginResult.email);
+                                prefs.setString('noTelp', loginResult.noTelp);
                                 prefs.setString(
-                                    'noTelp', loginResult['noTelp']);
+                                    'password', loginResult.password);
                                 prefs.setString(
-                                    'password', loginResult['password']);
-                                prefs.setString(
-                                    'tglLahir', loginResult['tglLahir']);
-                                loginResult['profilePath'] == null
+                                    'tglLahir', loginResult.tglLahir);
+                                loginResult.profilePath == '1'
                                     ? prefs.setString('profilePath', '')
-                                    : prefs.setString('profilePath',
-                                        loginResult['profilePath']);
+                                    : prefs.setString(
+                                        'profilePath', loginResult.profilePath);
 
                                 showToastMessage(
                                     "Login Successful", Colors.green);

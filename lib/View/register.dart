@@ -4,6 +4,8 @@ import 'package:ugd_ui_widget/component/form_component.dart';
 import 'package:ugd_ui_widget/database/sql_helper_user.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:intl/intl.dart';
+import 'package:ugd_ui_widget/client/userClient.dart';
+import 'package:ugd_ui_widget/model/user.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({
@@ -82,7 +84,7 @@ class _RegisterViewState extends State<RegisterView> {
                       if (selectedDate == null || selectedDate.isEmpty) {
                         return "Pilih tanggal lahir!";
                       }
-                      DateFormat inputFormat = DateFormat('EEEE, d MMM y');
+                      DateFormat inputFormat = DateFormat('yyyy-MM-dd');
                       DateTime selectedDateTime =
                           inputFormat.parse(selectedDate);
                       if (selectedDateTime!.isAfter(now)) {
@@ -140,9 +142,8 @@ class _RegisterViewState extends State<RegisterView> {
                 ElevatedButton(
                     onPressed: () async {
                       if (_formKey.currentState!.validate()) {
-                        if (await SQLHelperUser.isEmailUnique(
-                                emailController.text) ==
-                            true) {
+                        if (await UserClient.checkEmail(emailController.text) ==
+                            false) {
                           await addUser();
                           showDialog(
                               context: context,
@@ -176,11 +177,13 @@ class _RegisterViewState extends State<RegisterView> {
   }
 
   Future<void> addUser() async {
-    await SQLHelperUser.addUser(
-        usernameController.text,
-        emailController.text,
-        passwordController.text,
-        notelpController.text,
-        tglLahirController.text);
+    var user = User(
+        username: usernameController.text,
+        email: emailController.text,
+        password: passwordController.text,
+        noTelp: notelpController.text,
+        tglLahir: tglLahirController.text,
+        profilePath: "1");
+    await UserClient.register(user);
   }
 }
