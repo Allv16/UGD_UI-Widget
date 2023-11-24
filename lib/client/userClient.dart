@@ -50,4 +50,22 @@ class UserClient {
       throw Exception(e.toString());
     }
   }
+
+//updatePhoto
+  static Future<bool> updateProfile(int id, String photoUrl) async {
+    var url = Uri.parse('http://10.0.2.2:8000/user/{id}/profile/$id');
+    var response = await put(url, headers: {
+      'Authorization': 'Bearer YOUR_API_TOKEN',
+    }, body: json.encode({
+      'photo_url': photoUrl,
+    }));
+
+    if (response.statusCode == 200) {
+      return true;
+    } else {
+      return false;
+    }
+  }
 }
+  
+
