@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:ugd_ui_widget/View/login.dart';
+import 'package:ugd_ui_widget/View/welcome.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
               backgroundColor:
                   MaterialStateProperty.all<Color>(const Color(0xFF1B90B8)),
             ))),
-        home: LoginView(),
+        home: WelcomePage(),
       );
     });
   }

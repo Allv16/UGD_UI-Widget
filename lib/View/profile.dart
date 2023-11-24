@@ -7,7 +7,7 @@ import 'package:ugd_ui_widget/View/profileEdit.dart';
 import 'package:ugd_ui_widget/database/sql_helper_user.dart';
 import 'home.dart';
 import 'my_reservation.dart';
-import 'login.dart';
+import 'package:ugd_ui_widget/View/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';

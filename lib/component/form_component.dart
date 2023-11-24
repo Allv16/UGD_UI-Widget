@@ -30,7 +30,7 @@ class _InputFormState extends State<InputForm> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 1.h),
+      padding: EdgeInsets.only(top: 1.h),
       child: SizedBox(
         child: TextFormField(
           validator: (value) => widget.validasi(value),
