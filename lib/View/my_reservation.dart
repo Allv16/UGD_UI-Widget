@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:ugd_ui_widget/View/pdf_view.dart';
 import 'package:ugd_ui_widget/View/reservation_form.dart';
 import 'package:ugd_ui_widget/database/sql_helper_reservation.dart';
+import 'package:ugd_ui_widget/entity/Reservation.dart';
 import 'home.dart';
 import 'profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:ugd_ui_widget/client/reservationClient.dart';
 
 final List<String> doctor = ['Aji', 'Caily', 'Alina', 'Bonita', 'Daisy'];
 
@@ -67,10 +69,10 @@ class _MyReservationState extends State<MyReservation> {
     }
   }
 
-  List<Map<String, dynamic>> reservation = [];
+  List<Reservation> reservation = [];
   void refresh() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    final data = await SQLHelperReservation.getUser(prefs.getString('email')!);
+    final data = await ReservationClient.fetchAll(prefs.getString('email')!);
     setState(() {
       reservation = data;
       _userEmail = prefs.getString('email')!;
@@ -126,8 +128,7 @@ class _MyReservationState extends State<MyReservation> {
                 if (value.isEmpty) {
                   refresh();
                 } else {
-                  final data = await SQLHelperReservation.getUserByName(
-                      value, _userEmail);
+                  final data = await ReservationClient.getUserByName(_userEmail);
                   setState(() {
                     reservation = data;
                   });
@@ -137,7 +138,7 @@ class _MyReservationState extends State<MyReservation> {
             SizedBox(
               height: 2.h,
             ),
-            reservation.length == 0
+            reservation.isEmpty
                 ? Text("No Reservation found")
                 : Expanded(
                     child: ListView.builder(
@@ -171,15 +172,15 @@ class _MyReservationState extends State<MyReservation> {
   }
 
   Widget reservationCard(int index) {
-    final hasBpjs = reservation[index]['bpjs'] != '';
+    final hasBpjs = reservation[index].bpjs != '-1';
     return GestureDetector(
       onTap: () {
         createPdf(
-            reservation[index]['id'],
-            reservation[index]['doctorName'],
-            reservation[index]['date'],
-            reservation[index]['bpjs'],
-            reservation[index]['time'],
+            reservation[index].id,
+            reservation[index].doctor_name,
+            reservation[index].date,
+            reservation[index].bpjs,
+            reservation[index].time.toString(),
             usernameController.text,
             emailController.text,
             noTelpController.text,
@@ -200,7 +201,7 @@ class _MyReservationState extends State<MyReservation> {
                   borderRadius: BorderRadius.circular(100),
                   child: Image(
                       image: AssetImage(
-                          'images/${reservation[index]['doctorName']}.jpg'),
+                          'images/${reservation[index].doctor_name}.jpg'),
                       fit: BoxFit.cover),
                 ),
               ),
@@ -212,7 +213,7 @@ class _MyReservationState extends State<MyReservation> {
                 children: [
                   Row(
                     children: [
-                      Text('Dr. ' + reservation[index]['doctorName'],
+                      Text('Dr. ' + reservation[index].doctor_name,
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 20.sp,
@@ -241,11 +242,11 @@ class _MyReservationState extends State<MyReservation> {
                     ],
                   ),
                   Text(
-                    reservation[index]['date'],
+                    reservation[index].date,
                     style: TextStyle(fontSize: 13.px),
                   ),
                   Text(
-                    reservation[index]['time'],
+                    reservation[index].time.toString(),
                     style: TextStyle(fontSize: 13.px),
                   ),
                   SizedBox(
@@ -258,17 +259,32 @@ class _MyReservationState extends State<MyReservation> {
                         backgroundColor: Colors.blue,
                         child: IconButton(
                           onPressed: () => {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (context) => ReservationForm(
-                                    date: reservation[index]['date'],
-                                    id: reservation[index]['id'],
-                                    time: reservation[index]['time'],
-                                    bpjs: reservation[index]['bpjs'],
-                                  ),
-                                )).then((_) => refresh())
-                          },
+                            if (reservation[index].bpjs != '-1') {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ReservationForm(
+                                date: reservation[index].date,
+                                id: reservation[index].id,
+                                time: reservation[index].time,
+                                bpjs: reservation[index].bpjs,
+                              ),
+                            ),
+                          ).then((_) => refresh())
+                        } else {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => ReservationForm(
+                                date: reservation[index].date,
+                                id: reservation[index].id,
+                                time: reservation[index].time,
+                                bpjs: '',
+                              ),
+                            ),
+                          ).then((_) => refresh())
+                        }
+                      },
                           icon: Icon(
                             Icons.create_outlined,
                             color: Colors.white,
@@ -285,7 +301,7 @@ class _MyReservationState extends State<MyReservation> {
                         child: IconButton(
                           onPressed: () => {
                             debugPrint("delete"),
-                            deleteReservation(reservation[index]['id'])
+                            ReservationClient.destroy(reservation[index].id)
                                 .then((_) => refresh())
                           },
                           icon: Icon(
