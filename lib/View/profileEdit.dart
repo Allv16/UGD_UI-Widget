@@ -106,8 +106,16 @@ class _ProfileEditViewState extends State<ProfileEditView> {
                   if (selectedDate == null || selectedDate.isEmpty) {
                     return "Pilih tanggal lahir!";
                   }
+
                   DateFormat inputFormat = DateFormat('EEEE, d MMM y');
                   DateTime selectedDateTime = inputFormat.parse(selectedDate);
+
+                  try {
+                    selectedDateTime = DateFormat('yyyy-MM-dd').parse(selectedDate!);
+                  } catch (e) {
+                    return "Format tanggal tidak valid";
+                  }
+
                   if (selectedDateTime.isAfter(now)) {
                     return "Tanggal tidak bisa setelah hari ini";
                   }
@@ -128,7 +136,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
         onPressed: () async {
           if (_formKey.currentState!.validate()) {
             try {
-              saveEditedData();
+              await saveEditedData();
               Navigator.pop(context, true);
               final result = await Navigator.push(
                 context,
@@ -162,6 +170,12 @@ class _ProfileEditViewState extends State<ProfileEditView> {
       // Update data ke sql
       await SQLHelperUser.editUser(
           username, emailUser, noTelp, tanggalLahir, password);
+
+      // Melakukan navigasi/pindah ke halaman ProfileView
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(builder: (context) => ProfileView()),
+      );
 
       // Pop the current screen and return to the previous screen
       Navigator.pop(context, true);

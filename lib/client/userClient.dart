@@ -50,4 +50,54 @@ class UserClient {
       throw Exception(e.toString());
     }
   }
+
+  static Future<User?> update(String token, User updated) async {
+    try {
+      var response = await put(Uri.http(url, '$endpoint'),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+          body: updated.toRawJson());
+      if (response.statusCode != 200) {
+        return null;
+      }
+      return User.fromJson(json.decode(response.body)['data']);
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
+  static Future<User?> edit(String token, int userId, User updated) async {
+    try {
+      var response = await put(Uri.http(url, '$endpoint/$userId'),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          },
+          body: updated.toRawJson());
+      if (response.statusCode != 200) {
+        return null;
+      }
+      return User.fromJson(json.decode(response.body)['data']);
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
+  static Future<void> deleteUser(String token, int userId) async {
+    try {
+      var response = await delete(Uri.http(url, '$endpoint/$userId'),
+          headers: {
+            'Content-Type': 'application/json',
+            'Authorization': 'Bearer $token',
+          });
+
+      if (response.statusCode != 200) {
+        throw Exception(response.reasonPhrase);
+      }
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
 }
