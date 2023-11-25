@@ -50,4 +50,30 @@ class UserClient {
       throw Exception(e.toString());
     }
   }
+
+  static Future<void> updateProfilePicture(String email, String path) async {
+    try {
+      var response = await put(Uri.http(url, '$endpoint/$email/profile'),
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode({'profile_path': path}));
+      if (response.statusCode != 200) {
+        throw Exception(response.reasonPhrase);
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  static Future<void> updateProfile(User user) async {
+    try {
+      var response = await put(Uri.http(url, '$endpoint/${user.email}'),
+          headers: {'Content-Type': 'application/json'},
+          body: user.toRawJson());
+      if (response.statusCode != 200) {
+        throw Exception(response.reasonPhrase);
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
 }

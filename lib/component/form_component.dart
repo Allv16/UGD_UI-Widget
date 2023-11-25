@@ -166,7 +166,7 @@ class _DatePickerState extends State<DatePicker> {
       } finally {}
     }
     return Padding(
-      padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+      padding: EdgeInsets.only(top: 1.h),
       child: SizedBox(
         child: TextFormField(
           readOnly: true,

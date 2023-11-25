@@ -11,6 +11,7 @@ import 'package:ugd_ui_widget/View/login.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:ugd_ui_widget/client/userClient.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({Key? key}) : super(key: key);
@@ -333,7 +334,7 @@ class _ProfileViewState extends State<ProfileView> {
       final pickedFile = await picker.pickImage(source: ImageSource.gallery);
       if (pickedFile != null) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        await SQLHelperUser.editProfile(pickedFile.path, email);
+        await UserClient.updateProfilePicture(email, pickedFile.path);
         prefs.setString('profilePath', pickedFile.path);
         setState(() {
           profilePath = pickedFile.path;
@@ -350,7 +351,7 @@ class _ProfileViewState extends State<ProfileView> {
       final pickedFile = await picker.pickImage(source: ImageSource.camera);
       if (pickedFile != null) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        await SQLHelperUser.editProfile(pickedFile.path, email);
+        await UserClient.updateProfilePicture(email, pickedFile.path);
         prefs.setString('profilePath', pickedFile.path);
         setState(() {
           profilePath = pickedFile.path;
