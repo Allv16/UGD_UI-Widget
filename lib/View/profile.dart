@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ugd_ui_widget/View/profileEdit.dart';
-import 'package:ugd_ui_widget/database/sql_helper_user.dart';
 import 'home.dart';
 import 'my_reservation.dart';
 import 'package:ugd_ui_widget/View/login.dart';
@@ -12,6 +11,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:ugd_ui_widget/client/userClient.dart';
+import 'package:ugd_ui_widget/utils/custom_formatter.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({Key? key}) : super(key: key);
@@ -28,8 +28,8 @@ class _ProfileViewState extends State<ProfileView> {
   String profilePath = '';
   @override
   void initState() {
-    super.initState();
     loadUserData();
+    super.initState();
   }
 
   Future<void> loadUserData() async {
@@ -73,7 +73,6 @@ class _ProfileViewState extends State<ProfileView> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: OrientationBuilder(builder: (context, orientation) {
-        bool isPortrait = orientation == Orientation.portrait;
         return Padding(
           padding: EdgeInsets.only(top: 6.h, left: 2.h, right: 2.h),
           child: Column(
@@ -165,7 +164,7 @@ class _ProfileViewState extends State<ProfileView> {
                             SizedBox(
                               width: 2.w,
                             ),
-                            Text(noTelp),
+                            Text(CustomeFormatter.phoneNumberFormat(noTelp)),
                           ],
                         ),
                         SizedBox(

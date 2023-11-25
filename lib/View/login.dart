@@ -9,6 +9,9 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ugd_ui_widget/View/home.dart';
 
+//testing
+import 'package:ugd_ui_widget/utils/custom_formatter.dart';
+
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
 

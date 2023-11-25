@@ -9,7 +9,6 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:ugd_ui_widget/client/reservationClient.dart';
 import 'package:ugd_ui_widget/entity/Reservation.dart';
 
-
 final List<String> doctor = ['Aji', 'Caily', 'Alina', 'Bonita', 'Daisy'];
 
 class ReservationForm extends StatefulWidget {
@@ -19,7 +18,7 @@ class ReservationForm extends StatefulWidget {
       required this.time,
       required this.id,
       this.bpjs});
-  final String? id,date, time, bpjs;
+  final String? id, date, time, bpjs;
   @override
   State<ReservationForm> createState() => ReservationFormState();
 }
@@ -35,19 +34,19 @@ class ReservationFormState extends State<ReservationForm> {
   }
 
   void loadData() async {
-      try {
-        Reservation res = await ReservationClient.find(widget.id);
-        setState(() {
-          dateController.value = TextEditingValue(text: res.date);
-          timeController.value = TextEditingValue(text: res.time.toString());
-          bpjsController.value = TextEditingValue(text: res.bpjs);
-        });
-      } catch (err) {
-        showSnackBar(context, err.toString(), Colors.red);
-        Navigator.pop(context);
-      }
+    try {
+      Reservation res = await ReservationClient.find(widget.id);
+      setState(() {
+        dateController.value = TextEditingValue(text: res.date);
+        timeController.value = TextEditingValue(text: res.time.toString());
+        bpjsController.value = TextEditingValue(text: res.bpjs);
+      });
+    } catch (err) {
+      showSnackBar(context, err.toString(), Colors.red);
+      Navigator.pop(context);
     }
-  
+  }
+
   @override
   void initState() {
     loadUserData();
@@ -75,28 +74,24 @@ class ReservationFormState extends State<ReservationForm> {
     void onSubmit() async {
       if (!_formKey.currentState!.validate()) return;
 
-      
-
       try {
         if (widget.id == null) {
           Reservation input = Reservation(
-            id: Uuid().v1(),
-            user_email: emailUser,
-            date: dateController.text,
-            time: timeController.text,
-            doctor_name: doctorName,
-            bpjs: bpjsController.text.isEmpty ? "-1" : bpjsController.text
-          );
+              id: Uuid().v1(),
+              user_email: emailUser,
+              date: dateController.text,
+              time: timeController.text,
+              doctor_name: doctorName,
+              bpjs: bpjsController.text.isEmpty ? "-1" : bpjsController.text);
           await ReservationClient.create(input);
         } else {
           Reservation input = Reservation(
-            id: widget.id.toString(),
-            user_email: emailUser,
-            date: dateController.text,
-            time: timeController.text,
-            doctor_name: doctorName,
-            bpjs: bpjsController.text.isEmpty ? "-1" : bpjsController.text
-          );
+              id: widget.id.toString(),
+              user_email: emailUser,
+              date: dateController.text,
+              time: timeController.text,
+              doctor_name: doctorName,
+              bpjs: bpjsController.text.isEmpty ? "-1" : bpjsController.text);
           await ReservationClient.update(input);
         }
         showSnackBar(context, 'Success', Colors.green);
@@ -106,14 +101,14 @@ class ReservationFormState extends State<ReservationForm> {
         Navigator.pop(context);
       }
     }
-    
+
     return Scaffold(
       appBar: AppBar(
         title: Text(isEmpty ? "Create Reservation" : "Edit Reservation"),
         centerTitle: true,
       ),
       body: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 2.px),
+        padding: EdgeInsets.symmetric(horizontal: 2.w),
         child: Form(
           key: _formKey,
           child: SingleChildScrollView(
@@ -121,7 +116,7 @@ class ReservationFormState extends State<ReservationForm> {
               mainAxisAlignment: MainAxisAlignment.start,
               children: [
                 SizedBox(
-                  height: 15.px,
+                  height: 3.h,
                 ),
                 DatePicker(
                   validasi: (value) {

@@ -12,22 +12,21 @@
 
 **Yohanes Alvian Wijaya Irawan | 210711047**
 
-> - Membuat logic untuk image picker
-> - Menerapkan UUID pada ID reservasi
-> - Menerapkan Intl pada tanggal reservasi
-> - Membantu membuat view PDF
+> - Membuat API dan database
+> - Integrasi login dan register menggunakan API
 
 **Andreas Margono | NPM 210711135**
 
-> - Membuat view PDF
-> - Menerapkan barcode_widget pada PDF
+> - Integrasi CRUDS reservasi dokter menggunakan API
 
 **Rhema Stella (NPM 210711071)**
 
-> - Menerapkan responsive sizer pada halaman home, tambah/edit reservasi, my_reservation, profile, edit profile
+> - Integrasi CRUDS reservasi dokter menggunakan API
 
 **Kristina Adine (NPM 210711102)**
 
-> - Menerapkan responsive sizer pada halaman login
+> - Integrasi edit foto profile menggunakan API
 
 **Sabastian Gautama (NPM 210711172)**
+
+> - Integrasi edit profile menggunakan API

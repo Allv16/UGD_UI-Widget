@@ -86,7 +86,7 @@ class _ScannerInputFormState extends State<ScannerInputForm> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+      padding: EdgeInsets.only(top: 0.h),
       child: SizedBox(
         child: TextFormField(
           validator: (value) => widget.validasi(value),
@@ -240,7 +240,7 @@ class _TimePickerState extends State<TimePicker> {
       selectedTime = parsedTime;
     }
     return Padding(
-      padding: const EdgeInsets.only(left: 20, right: 20, top: 10),
+      padding: EdgeInsets.only(top: 1.h),
       child: SizedBox(
         child: TextFormField(
           readOnly: true,
