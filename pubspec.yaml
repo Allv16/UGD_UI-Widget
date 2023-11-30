@@ -4,13 +4,15 @@ publish_to: "none"
 version: 0.1.0
 
 environment:
-  sdk: ">=3.1.0 <4.0.0"
+  sdk: ">=3.1.2 <4.0.0"
 
 dependencies:
   barcode_widget: ^2.0.4
   camera: ^0.10.5+5
+  drop_shadow: ^0.1.0
   flutter:
     sdk: flutter
+  flutter_riverpod: ^2.4.7
   fluttertoast: ^8.2.2
   google_fonts: ^6.1.0
   http: ^1.1.0
@@ -23,7 +25,6 @@ dependencies:
   printing: ^5.9.0
   qr_flutter: ^4.1.0
   responsive_sizer: ^3.2.0
-  flutter_riverpod: ^2.4.7
   screen_brightness: ^0.2.2+1
   shake: ^2.2.0
   shared_preferences: ^2.0.8

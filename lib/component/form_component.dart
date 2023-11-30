@@ -10,6 +10,7 @@ class InputForm extends StatefulWidget {
   final String helperTxt;
   final IconData iconData;
   final bool password;
+  final Key key;
 
   InputForm({
     required this.validasi,
@@ -17,6 +18,7 @@ class InputForm extends StatefulWidget {
     required this.hintTxt,
     required this.helperTxt,
     required this.iconData,
+    required this.key,
     this.password = false,
   });
 
@@ -33,6 +35,7 @@ class _InputFormState extends State<InputForm> {
       padding: EdgeInsets.only(top: 1.h),
       child: SizedBox(
         child: TextFormField(
+          key: widget.key,
           validator: (value) => widget.validasi(value),
           autofocus: false,
           controller: widget.controller,

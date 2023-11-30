@@ -4,7 +4,8 @@ import 'dart:convert';
 import 'package:http/http.dart';
 
 class UserClient {
-  static final String url = '10.0.2.2:8000';
+  // static final String url = '10.0.2.2:8000';
+  static final String url = '127.0.0.1:8000';
   static final String endpoint = '/api/user';
   static final String loginEndpoint = '/api/login';
 

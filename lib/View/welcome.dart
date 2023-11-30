@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ugd_ui_widget/View/login.dart';
-import 'package:ugd_ui_widget/View/register.dart';
+import 'package:ugd_ui_widget/View/register-old.dart';
+import 'register.dart';
 
 class WelcomePage extends StatelessWidget {
   const WelcomePage({super.key});
@@ -74,16 +75,7 @@ class WelcomePage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const RegisterView(
-                              title: 'REGISTER USER',
-                              id: null,
-                              username: null,
-                              email: null,
-                              password: null,
-                              tglLahir: null,
-                              notelp: null,
-                            ),
-                          ),
+                              builder: (context) => const RegisterView()),
                         );
                       },
                       child: const Text(

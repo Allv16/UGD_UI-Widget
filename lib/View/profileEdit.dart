@@ -62,6 +62,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
               child: Column(
                 children: [
                   InputForm(
+                      key: Key('usernameField'),
                       validasi: (p0) {
                         if (p0 == null || p0.isEmpty) {
                           return 'Username Tidak Boleh Kosong';
@@ -79,6 +80,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
                     height: 2.h,
                   ),
                   InputForm(
+                      key: Key('emailField'),
                       validasi: (value) {
                         if (value == null || value.isEmpty) {
                           return 'password kosong';
@@ -97,6 +99,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
                     height: 2.h,
                   ),
                   InputForm(
+                      key: Key('telpField'),
                       validasi: ((p0) {
                         if (p0 == null || p0.isEmpty) {
                           return 'Nomor Telepon tidak boleh kosong';

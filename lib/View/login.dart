@@ -16,10 +16,10 @@ class LoginView extends StatefulWidget {
   const LoginView({super.key});
 
   @override
-  State<LoginView> createState() => _LoginViewState();
+  State<LoginView> createState() => LoginViewState();
 }
 
-class _LoginViewState extends State<LoginView> {
+class LoginViewState extends State<LoginView> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
@@ -42,7 +42,7 @@ class _LoginViewState extends State<LoginView> {
         child: Column(
           children: [
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.4,
+              height: MediaQuery.of(context).size.height * 0.2,
               child: Image.asset(
                 'images/login-rv.png',
                 fit: BoxFit.fitHeight,
@@ -73,6 +73,7 @@ class _LoginViewState extends State<LoginView> {
                             key: _formKey,
                             child: Column(children: [
                               InputForm(
+                                  key: Key('emailField'),
                                   validasi: (value) {
                                     if (value == null || value.isEmpty) {
                                       return 'Email cannot be empty';
@@ -83,6 +84,7 @@ class _LoginViewState extends State<LoginView> {
                                   helperTxt: "",
                                   iconData: Icons.email),
                               InputForm(
+                                  key: Key('passwordField'),
                                   validasi: (value) {
                                     if (value == null || value.isEmpty) {
                                       return 'Password cannot be empty';
@@ -110,7 +112,6 @@ class _LoginViewState extends State<LoginView> {
                                     String password = passwordController.text;
                                     User? loginResult =
                                         await UserClient.login(email, password);
-                                    print(loginResult);
                                     if (loginResult != null) {
                                       //set sharedpreferenced
                                       SharedPreferences prefs =
@@ -203,14 +204,7 @@ class _LoginViewState extends State<LoginView> {
                             onPressed: () {
                               Navigator.push(context,
                                   MaterialPageRoute(builder: (context) {
-                                return RegisterView(
-                                    id: null,
-                                    username: null,
-                                    email: null,
-                                    password: null,
-                                    tglLahir: null,
-                                    notelp: null,
-                                    title: "Register User");
+                                return const RegisterView();
                               }));
                             },
                             child: Text("Register",
@@ -225,6 +219,10 @@ class _LoginViewState extends State<LoginView> {
         ),
       ),
     );
+  }
+
+  Future<User?> login(String username, String password) async {
+    return await UserClient.login(username, password);
   }
 }
 
