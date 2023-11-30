@@ -13,10 +13,10 @@ class LoginView extends StatefulWidget {
   const LoginView({super.key});
 
   @override
-  State<LoginView> createState() => _LoginViewState();
+  State<LoginView> createState() => LoginViewState();
 }
 
-class _LoginViewState extends State<LoginView> {
+class LoginViewState extends State<LoginView> {
   final _formKey = GlobalKey<FormState>();
   int userID = -1;
   List<Map<String, dynamic>> user = [];
@@ -62,6 +62,7 @@ class _LoginViewState extends State<LoginView> {
                 child: Column(
                   children: [
                     InputForm(
+                      key: const ValueKey("email"),
                       validasi: (value) {
                         if (value == null || value.isEmpty) {
                           return 'email tidak boleh kosong';
@@ -74,6 +75,7 @@ class _LoginViewState extends State<LoginView> {
                       iconData: Icons.email,
                     ),
                     InputForm(
+                        key: const ValueKey("password"),
                         validasi: (value) {
                           if (value == null || value.isEmpty) {
                             return 'password kosong';

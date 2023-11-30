@@ -12,14 +12,14 @@ class InputForm extends StatefulWidget {
   final bool password;
 
   InputForm({
+    Key? key,
     required this.validasi,
     required this.controller,
     required this.hintTxt,
     required this.helperTxt,
     required this.iconData,
     this.password = false,
-  });
-
+  }) : super(key: key);
   @override
   _InputFormState createState() => _InputFormState();
 }
@@ -33,6 +33,7 @@ class _InputFormState extends State<InputForm> {
       padding: EdgeInsets.only(left: 5.w, right: 5.w, top: 1.h),
       child: SizedBox(
         child: TextFormField(
+          key: widget.key,
           validator: (value) => widget.validasi(value),
           autofocus: false,
           controller: widget.controller,
