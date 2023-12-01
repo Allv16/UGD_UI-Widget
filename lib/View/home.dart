@@ -46,11 +46,9 @@ class _HomeViewState extends State<HomeView> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? username = prefs.getString('username');
     String? newPath = prefs.getString('profilePath');
-    print(newPath);
     setState(() {
       username1 = username!;
       profilePath = newPath!;
-      print('profile path $profilePath');
     });
   }
 
@@ -174,18 +172,21 @@ class _HomeViewState extends State<HomeView> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                profilePath == '-1'
-                                    ? const CircleAvatar(
-                                        //default profile
-                                        radius: 50,
-                                        // backgroundImage:
-                                        //     AssetImage('images/kucheng.jpeg')
-                                      )
-                                    : CircleAvatar(
-                                        radius: 50,
-                                        // backgroundImage:
-                                        //     FileImage(File(profilePath))
-                                      )
+                                // profilePath == '-1'
+                                //     ? const CircleAvatar(
+                                //         //default profile
+                                //         radius: 50,
+                                //         backgroundImage:
+                                //             AssetImage('images/kucheng.jpeg'))
+                                //     : CircleAvatar(
+                                //         radius: 50,
+                                //         backgroundImage:
+                                //             FileImage(File(profilePath)))
+                                const CircleAvatar(
+                                    //default profile
+                                    radius: 50,
+                                    backgroundImage:
+                                        AssetImage('images/kucheng.jpeg'))
                               ],
                             ),
                           ),
