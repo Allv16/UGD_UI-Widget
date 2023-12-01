@@ -12,21 +12,22 @@
 
 **Yohanes Alvian Wijaya Irawan | 210711047**
 
-> - Membuat API dan database
-> - Integrasi login dan register menggunakan API
+> - Membuat dan Membenahi Widget Testing untuk proses CRUD Reservasi
+> - Membantu widget Testing halaman Login
+> - Membantu widget Testing halaman Register
 
 **Andreas Margono | NPM 210711135**
 
-> - Integrasi CRUDS reservasi dokter menggunakan API
+> - Membuat Widget Testing pada Halaman Register
 
 **Rhema Stella (NPM 210711071)**
 
-> - Integrasi CRUDS reservasi dokter menggunakan API
+> - Membuat Widget Testing pada Halaman Login
 
 **Kristina Adine (NPM 210711102)**
 
-> - Integrasi edit foto profile menggunakan API
+> - Membantu Widget Testing Update
 
 **Sabastian Gautama (NPM 210711172)**
 
-> - Integrasi edit profile menggunakan API
+> - Membantu Widget Testing Delete
