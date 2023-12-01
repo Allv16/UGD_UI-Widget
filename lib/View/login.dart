@@ -159,60 +159,60 @@ class LoginViewState extends State<LoginView> {
                                 height: 2.h,
                               ),
                             ])),
-                        Row(children: <Widget>[
-                          Expanded(
-                            child: Container(
-                                margin: const EdgeInsets.only(
-                                    left: 10.0, right: 20.0),
-                                child: Divider(
-                                  color: Colors.grey,
-                                  height: 1.h,
-                                )),
-                          ),
-                          const Text("or",
-                              style:
-                                  TextStyle(fontSize: 14, color: Colors.grey)),
-                          Expanded(
-                            child: Container(
-                                margin: const EdgeInsets.only(
-                                    left: 20.0, right: 10.0),
-                                child: Divider(
-                                  color: Colors.grey,
-                                  height: 1.h,
-                                )),
-                          ),
-                        ]),
-                        SizedBox(
-                          height: 1.h,
-                        ),
-                        const Text("Don't have an account?",
-                            style: TextStyle(fontSize: 14, color: Colors.grey)),
-                        SizedBox(
-                          height: 2.h,
-                        ),
-                        ElevatedButton(
-                            style: OutlinedButton.styleFrom(
-                              shape: RoundedRectangleBorder(
-                                  side: BorderSide(
-                                      color:
-                                          Theme.of(context).colorScheme.primary,
-                                      width: 2),
-                                  borderRadius: BorderRadius.circular(5)),
-                              minimumSize: Size(100.w, 6.h),
-                              backgroundColor: Colors.white,
-                            ),
-                            onPressed: () {
-                              Navigator.push(context,
-                                  MaterialPageRoute(builder: (context) {
-                                return const RegisterView();
-                              }));
-                            },
-                            child: Text("Register",
-                                style: TextStyle(
-                                    color:
-                                        Theme.of(context).colorScheme.primary,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 16)))
+                        //     Row(children: <Widget>[
+                        //       Expanded(
+                        //         child: Container(
+                        //             margin: const EdgeInsets.only(
+                        //                 left: 10.0, right: 20.0),
+                        //             child: Divider(
+                        //               color: Colors.grey,
+                        //               height: 1.h,
+                        //             )),
+                        //       ),
+                        //       const Text("or",
+                        //           style:
+                        //               TextStyle(fontSize: 14, color: Colors.grey)),
+                        //       Expanded(
+                        //         child: Container(
+                        //             margin: const EdgeInsets.only(
+                        //                 left: 20.0, right: 10.0),
+                        //             child: Divider(
+                        //               color: Colors.grey,
+                        //               height: 1.h,
+                        //             )),
+                        //       ),
+                        //     ]),
+                        //     SizedBox(
+                        //       height: 1.h,
+                        //     ),
+                        //     const Text("Don't have an account?",
+                        //         style: TextStyle(fontSize: 14, color: Colors.grey)),
+                        //     SizedBox(
+                        //       height: 2.h,
+                        //     ),
+                        //     ElevatedButton(
+                        //         style: OutlinedButton.styleFrom(
+                        //           shape: RoundedRectangleBorder(
+                        //               side: BorderSide(
+                        //                   color:
+                        //                       Theme.of(context).colorScheme.primary,
+                        //                   width: 2),
+                        //               borderRadius: BorderRadius.circular(5)),
+                        //           minimumSize: Size(100.w, 6.h),
+                        //           backgroundColor: Colors.white,
+                        //         ),
+                        //         onPressed: () {
+                        //           Navigator.push(context,
+                        //               MaterialPageRoute(builder: (context) {
+                        //             return const RegisterView();
+                        //           }));
+                        //         },
+                        //         child: Text("Register",
+                        //             style: TextStyle(
+                        //                 color:
+                        //                     Theme.of(context).colorScheme.primary,
+                        //                 fontWeight: FontWeight.bold,
+                        //                 fontSize: 16)))
                       ],
                     )))
           ],
