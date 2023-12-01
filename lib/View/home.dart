@@ -178,12 +178,14 @@ class _HomeViewState extends State<HomeView> {
                                     ? const CircleAvatar(
                                         //default profile
                                         radius: 50,
-                                        backgroundImage:
-                                            AssetImage('images/kucheng.jpeg'))
+                                        // backgroundImage:
+                                        //     AssetImage('images/kucheng.jpeg')
+                                      )
                                     : CircleAvatar(
                                         radius: 50,
-                                        backgroundImage:
-                                            FileImage(File(profilePath)))
+                                        // backgroundImage:
+                                        //     FileImage(File(profilePath))
+                                      )
                               ],
                             ),
                           ),
