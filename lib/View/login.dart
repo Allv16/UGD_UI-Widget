@@ -42,7 +42,7 @@ class LoginViewState extends State<LoginView> {
         child: Column(
           children: [
             SizedBox(
-              height: MediaQuery.of(context).size.height * 0.2,
+              height: MediaQuery.of(context).size.height * 0.35,
               child: Image.asset(
                 'images/login-rv.png',
                 fit: BoxFit.fitHeight,

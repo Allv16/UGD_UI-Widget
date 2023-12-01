@@ -174,7 +174,7 @@ class _HomeViewState extends State<HomeView> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                profilePath.isEmpty
+                                profilePath == '-1'
                                     ? const CircleAvatar(
                                         //default profile
                                         radius: 50,

@@ -40,7 +40,7 @@ class _RegisterViewState extends State<RegisterView> {
                   )),
             ),
             SizedBox(
-                height: 800,
+                height: 100.h,
                 width: double.infinity,
                 child: Container(
                   decoration: const BoxDecoration(

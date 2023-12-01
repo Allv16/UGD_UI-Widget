@@ -88,7 +88,7 @@ class _ProfileViewState extends State<ProfileView> {
                       height: 11.h,
                       child: ClipRRect(
                           borderRadius: BorderRadius.circular(100),
-                          child: profilePath.isEmpty
+                          child: profilePath == '-1'
                               ? Image.asset(
                                   'images/kucheng.jpeg',
                                   width: 38.w,
