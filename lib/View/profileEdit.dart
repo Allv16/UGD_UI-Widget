@@ -117,6 +117,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
                     height: 2.h,
                   ),
                   DatePicker(
+                    key: Key('dateField'),
                     validasi: ((String? selectedDate) {
                       DateTime now = DateTime.now();
                       if (selectedDate == null || selectedDate.isEmpty) {

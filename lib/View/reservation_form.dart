@@ -119,6 +119,7 @@ class ReservationFormState extends State<ReservationForm> {
                   height: 3.h,
                 ),
                 DatePicker(
+                  key: Key('dateField'),
                   validasi: (value) {
                     if (value == null || value.isEmpty) {
                       return "Date cannot be empty";

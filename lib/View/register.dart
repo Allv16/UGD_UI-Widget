@@ -40,7 +40,6 @@ class _RegisterViewState extends State<RegisterView> {
                   )),
             ),
             SizedBox(
-                height: 100.h,
                 width: double.infinity,
                 child: Container(
                   decoration: const BoxDecoration(
@@ -51,7 +50,7 @@ class _RegisterViewState extends State<RegisterView> {
                     ),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.all(20),
+                    padding: const EdgeInsets.all(5),
                     child: Form(
                       key: _formKey,
                       child: Column(
@@ -86,6 +85,7 @@ class _RegisterViewState extends State<RegisterView> {
                               helperTxt: "ex: JohnDoe",
                               iconData: Icons.person),
                           DatePicker(
+                              key: Key('dateField'),
                               validasi: ((String? selectedDate) {
                                 DateTime now = DateTime.now();
                                 if (selectedDate == null ||

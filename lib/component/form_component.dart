@@ -137,6 +137,7 @@ class DatePicker extends StatefulWidget {
   final String helperTxt;
   final IconData iconData;
   final String? selectedDate;
+  final Key key;
 
   DatePicker({
     required this.validasi,
@@ -144,6 +145,7 @@ class DatePicker extends StatefulWidget {
     required this.hintTxt,
     required this.helperTxt,
     required this.iconData,
+    required this.key,
     this.selectedDate,
   });
 

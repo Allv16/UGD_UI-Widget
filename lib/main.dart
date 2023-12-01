@@ -4,7 +4,7 @@ import 'package:ugd_ui_widget/View/welcome.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ugd_ui_widget/View/register.dart';
-
+ 
 void main() {
   runApp(const LoadLoginPage());
 }
