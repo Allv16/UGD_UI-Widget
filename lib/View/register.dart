@@ -86,6 +86,7 @@ class _RegisterViewState extends State<RegisterView> {
                               helperTxt: "ex: JohnDoe",
                               iconData: Icons.person),
                           DatePicker(
+                              key: Key('datePicker'),
                               validasi: ((String? selectedDate) {
                                 DateTime now = DateTime.now();
                                 if (selectedDate == null ||

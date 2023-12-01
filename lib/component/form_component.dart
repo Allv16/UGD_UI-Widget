@@ -72,8 +72,10 @@ class ScannerInputForm extends StatefulWidget {
   final String hintTxt;
   final String helperTxt;
   final IconData iconData;
+  final Key key;
 
   ScannerInputForm({
+    required this.key,
     required this.validasi,
     required this.controller,
     required this.hintTxt,
@@ -92,6 +94,7 @@ class _ScannerInputFormState extends State<ScannerInputForm> {
       padding: EdgeInsets.only(top: 0.h),
       child: SizedBox(
         child: TextFormField(
+          key: widget.key,
           validator: (value) => widget.validasi(value),
           autofocus: false,
           controller: widget.controller,
@@ -137,8 +140,10 @@ class DatePicker extends StatefulWidget {
   final String helperTxt;
   final IconData iconData;
   final String? selectedDate;
+  final Key key;
 
   DatePicker({
+    required this.key,
     required this.validasi,
     required this.controller,
     required this.hintTxt,
@@ -172,6 +177,7 @@ class _DatePickerState extends State<DatePicker> {
       padding: EdgeInsets.only(top: 1.h),
       child: SizedBox(
         child: TextFormField(
+          key: widget.key,
           readOnly: true,
           validator: (value) => widget.validasi(value),
           autofocus: false,
@@ -214,6 +220,7 @@ class TimePicker extends StatefulWidget {
   final String helperTxt;
   final IconData iconData;
   final String? startTime;
+  final Key key;
 
   TimePicker({
     required this.validasi,
@@ -222,6 +229,7 @@ class TimePicker extends StatefulWidget {
     required this.helperTxt,
     required this.iconData,
     required this.startTime,
+    required this.key,
   });
 
   @override
@@ -246,6 +254,7 @@ class _TimePickerState extends State<TimePicker> {
       padding: EdgeInsets.only(top: 1.h),
       child: SizedBox(
         child: TextFormField(
+          key: widget.key,
           readOnly: true,
           validator: (value) => widget.validasi(value),
           autofocus: false,

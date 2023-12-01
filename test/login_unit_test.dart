@@ -24,6 +24,8 @@ void main() {
     await tester.enterText(find.byKey(const Key("passwordField")), "12345");
     await tester.pumpAndSettle();
     await tester.tap(find.byType(ElevatedButton));
+    await tester.pumpAndSettle(const Duration(seconds: 1));
+    await tester.pumpAndSettle();
     await tester.pumpAndSettle();
     ignoreException(PathNotFoundException);
     expect(find.text("Hi alvian!"), findsOneWidget);

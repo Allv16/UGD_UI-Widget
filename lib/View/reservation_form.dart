@@ -127,10 +127,12 @@ class ReservationFormState extends State<ReservationForm> {
                   controller: dateController,
                   hintTxt: "Select desired date",
                   helperTxt: "",
+                  key: Key("datePicker"),
                   iconData: Icons.date_range_rounded,
                   selectedDate: isEmpty ? null : dateController.text,
                 ),
                 TimePicker(
+                  key: Key("timePicker"),
                   validasi: (value) {
                     if (value == null || value.isEmpty) {
                       return "Select the desired time";
@@ -143,6 +145,7 @@ class ReservationFormState extends State<ReservationForm> {
                   startTime: isEmpty ? null : timeController.text,
                 ),
                 ScannerInputForm(
+                    key: Key("bpjsField"),
                     validasi: (value) {
                       if (value?.length != 13 && value!.isNotEmpty) {
                         return "Nomer kartu BPJS harus 13 digit. sekarang hanya ada ${value.length}";
