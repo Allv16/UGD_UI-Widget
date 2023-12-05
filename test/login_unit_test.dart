@@ -19,7 +19,7 @@ void main() {
     ));
 
     await tester.pumpAndSettle(const Duration(seconds: 3));
-    await tester.enterText(find.byKey(const Key("emailField")), "alvian@");
+    await tester.enterText(find.byKey(const Key("emailField")), "123@");
     await tester.pumpAndSettle();
     await tester.enterText(find.byKey(const Key("passwordField")), "12345");
     await tester.pumpAndSettle();
