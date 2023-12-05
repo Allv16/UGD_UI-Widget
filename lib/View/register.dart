@@ -187,7 +187,8 @@ class _RegisterViewState extends State<RegisterView> {
         password: passwordController.text,
         noTelp: notelpController.text,
         tglLahir: tglLahirController.text,
-        profilePath: "1");
+        profilePath: "-1",
+        bpjs: "-1");
     await UserClient.register(user);
   }
 }

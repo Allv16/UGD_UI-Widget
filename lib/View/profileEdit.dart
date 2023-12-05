@@ -182,7 +182,8 @@ class _ProfileEditViewState extends State<ProfileEditView> {
           noTelp: noTelp,
           tglLahir: tanggalLahir,
           password: password,
-          profilePath: '-1');
+          profilePath: '-1',
+          bpjs: '-1');
       await UserClient.updateProfile(user);
 
       // Pop the current screen and return to the previous screen

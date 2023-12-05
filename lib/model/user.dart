@@ -8,6 +8,7 @@ class User {
   final String noTelp;
   final String tglLahir;
   final String profilePath;
+  final String bpjs;
 
   const User({
     required this.username,
@@ -16,6 +17,7 @@ class User {
     required this.noTelp,
     required this.tglLahir,
     required this.profilePath,
+    required this.bpjs,
   });
 
   factory User.fromRawJson(String str) => User.fromJson(json.decode(str));
@@ -26,6 +28,7 @@ class User {
         noTelp: json["no_telp"],
         tglLahir: json["tgl_lahir"],
         profilePath: json["profile_path"],
+        bpjs: json["bpjs"],
       );
 
   String toRawJson() => json.encode(toJson());
@@ -36,5 +39,6 @@ class User {
         "no_telp": noTelp,
         "tgl_lahir": tglLahir,
         "profile_path": profilePath,
+        "bpjs": bpjs,
       };
 }

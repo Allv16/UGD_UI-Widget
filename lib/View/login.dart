@@ -125,10 +125,9 @@ class _LoginViewState extends State<LoginView> {
                                           'password', loginResult.password);
                                       prefs.setString(
                                           'tglLahir', loginResult.tglLahir);
-                                      loginResult.profilePath == '1'
-                                          ? prefs.setString('profilePath', '')
-                                          : prefs.setString('profilePath',
-                                              loginResult.profilePath);
+                                      prefs.setString('profilePath',
+                                          loginResult.profilePath);
+                                      prefs.setString('bpjs', loginResult.bpjs);
 
                                       showToastMessage("Login Successful",
                                           Colors.green[400]);
