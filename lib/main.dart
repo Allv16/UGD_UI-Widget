@@ -17,10 +17,10 @@ class MyApp extends StatelessWidget {
         title: 'WeCare',
         theme: ThemeData(
             colorScheme: ColorScheme.fromSeed(
-              seedColor: Colors.blue,
-              brightness: Brightness.light,
-              primary: const Color(0xFF1B90B8),
-            ),
+                seedColor: Colors.blue,
+                brightness: Brightness.light,
+                primary: const Color(0xFF1B90B8),
+                inversePrimary: const Color(0xFF13293D)),
             elevatedButtonTheme: ElevatedButtonThemeData(
                 style: ButtonStyle(
               backgroundColor:

@@ -7,7 +7,8 @@ import 'package:http/http.dart';
 
 class ReservationClient {
   //untuk emulator
-  static final String url = '10.0.2.2:8000'; //base url
+  // static final String url = '10.0.2.2:8000'; //base url
+  static final String url = '52.185.188.129:8000'; //base url
   static final String endpoint = '/api/reservation'; //base endpoint
 
   //untuk hp
@@ -16,11 +17,13 @@ class ReservationClient {
 
   //mengambil semua data barang dari API
   static Future<List<Reservation>> fetchAll(String email) async {
+    print("$url$endpoint/$email");
     try {
       var response = await get(Uri.http(url,
           "$endpoint/$email")); //melakukan req ke api dan menyimpan responsenya
 
       if (response.statusCode != 200) throw Exception(response.reasonPhrase);
+      print(response.body);
       //mengambil bagian data dari response body
       Iterable list = json.decode(response.body)['data'];
 
@@ -46,13 +49,19 @@ class ReservationClient {
   }
 
   //membuat data barang baru
-  static Future<Response> create(Reservation reservation) async {
+  static Future<Response> create(
+      String user_email, String date, bool hasBpjs, int idPraktek) async {
     try {
       var response = await post(Uri.http(url, endpoint),
           headers: {'Content-Type': 'application/json'},
-          body: reservation.toRawJson());
+          body: jsonEncode({
+            "user_email": user_email,
+            "date": date,
+            "has_bpjs": hasBpjs,
+            "id_praktek": idPraktek
+          }));
       if (response.statusCode != 200) throw Exception(response.reasonPhrase);
-      print(reservation);
+      print(response.body);
       return response;
     } catch (e) {
       return Future.error(e.toString());
@@ -60,11 +69,17 @@ class ReservationClient {
   }
 
   //mengubah data barang sesuai ID
-  static Future<Response> update(Reservation reservation) async {
+  static Future<Response> update(int id, String user_email, String date,
+      bool hasBpjs, int idPraktek) async {
     try {
-      var response = await put(Uri.http(url, '$endpoint/${reservation.id}'),
+      var response = await put(Uri.http(url, '$endpoint/$id'),
           headers: {'Content-Type': 'application/json'},
-          body: reservation.toRawJson());
+          body: jsonEncode({
+            "user_email": user_email,
+            "date": date,
+            "has_bpjs": hasBpjs,
+            "id_praktek": idPraktek
+          }));
 
       if (response.statusCode != 200) throw Exception(response.reasonPhrase);
 

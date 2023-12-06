@@ -6,6 +6,7 @@ import 'my_reservation.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shake/shake.dart';
+import 'package:ugd_ui_widget/constant/app_constant.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -46,11 +47,9 @@ class _HomeViewState extends State<HomeView> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? username = prefs.getString('username');
     String? newPath = prefs.getString('profilePath');
-    print(newPath);
     setState(() {
       username1 = username!;
       profilePath = newPath!;
-      print('profile path $profilePath');
     });
   }
 
@@ -123,7 +122,7 @@ class _HomeViewState extends State<HomeView> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100],
+      backgroundColor: Colors.white,
       body: OrientationBuilder(builder: (context, orientation) {
         int gridCount = (orientation == Orientation.portrait) ? 3 : 5;
         return SafeArea(
@@ -140,23 +139,26 @@ class _HomeViewState extends State<HomeView> {
                         Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
-                              "Hi $username1!",
+                            const Text(
+                              "Hello,",
                               style: TextStyle(
-                                fontSize: 20,
+                                fontSize: 16,
                                 fontWeight: FontWeight.w400,
-                                color: Colors.cyan[600],
+                                color: Colors.black,
                               ),
                             ),
-                            const SizedBox(
-                              height: 10,
+                            SizedBox(
+                              height: 2.w,
                             ),
                             Text(
-                              "Find Your Doctor",
+                              username1.isEmpty
+                                  ? ''
+                                  : username1[0].toUpperCase() +
+                                      username1.substring(1),
                               style: TextStyle(
                                 fontSize: 25,
                                 fontWeight: FontWeight.w900,
-                                color: Colors.cyan[600],
+                                color: Theme.of(context).primaryColor,
                               ),
                             ),
                           ],
@@ -174,16 +176,21 @@ class _HomeViewState extends State<HomeView> {
                             child: Row(
                               mainAxisAlignment: MainAxisAlignment.end,
                               children: [
-                                profilePath.isEmpty
+                                profilePath == '-1'
                                     ? const CircleAvatar(
                                         //default profile
                                         radius: 50,
                                         backgroundImage:
                                             AssetImage('images/kucheng.jpeg'))
-                                    : CircleAvatar(
+                                    : const CircleAvatar(
+                                        //default profile
                                         radius: 50,
                                         backgroundImage:
-                                            FileImage(File(profilePath)))
+                                            AssetImage('images/kucheng.jpeg'))
+                                // : CircleAvatar(
+                                //     radius: 50,
+                                //     backgroundImage: NetworkImage(
+                                //         "http://10.0.2.2:8000/api/user/test@/profile"))
                               ],
                             ),
                           ),
@@ -191,27 +198,8 @@ class _HomeViewState extends State<HomeView> {
                       ],
                     ),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 20,
-                  ),
-                  Container(
-                    padding: const EdgeInsets.all(15.0),
-                    decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(15)),
-                    child: Row(children: [
-                      const Icon(
-                        Icons.search,
-                        color: Colors.black,
-                      ),
-                      const Text(
-                        "Search",
-                        style: TextStyle(color: Colors.black),
-                      )
-                    ]),
-                  ),
-                  SizedBox(
-                    height: 25,
                   ),
                   Container(
                     padding: const EdgeInsets.all(25.0),

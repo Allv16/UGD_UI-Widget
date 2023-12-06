@@ -8,6 +8,7 @@ import 'profile.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:ugd_ui_widget/client/reservationClient.dart';
+import 'package:intl/intl.dart';
 
 final List<String> doctor = ['Aji', 'Caily', 'Alina', 'Bonita', 'Daisy'];
 
@@ -73,6 +74,7 @@ class _MyReservationState extends State<MyReservation> {
   void refresh() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final data = await ReservationClient.fetchAll(prefs.getString('email')!);
+    print(data);
     setState(() {
       reservation = data;
       _userEmail = prefs.getString('email')!;
@@ -90,7 +92,11 @@ class _MyReservationState extends State<MyReservation> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('My Reservation'),
+        title: Text('My Reservation',
+            style: TextStyle(
+                fontSize: 20.sp,
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.inversePrimary)),
         centerTitle: true,
       ),
       floatingActionButton: FloatingActionButton(
@@ -100,7 +106,7 @@ class _MyReservationState extends State<MyReservation> {
               MaterialPageRoute(
                 builder: (context) => const ReservationForm(
                   date: null,
-                  id: null,
+                  id: -1,
                   time: null,
                 ),
               )).then((_) => refresh())
@@ -116,25 +122,26 @@ class _MyReservationState extends State<MyReservation> {
         ),
         child: Column(
           children: [
-            TextField(
-              decoration: InputDecoration(
-                  border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(10)),
-                  hintText: "Search",
-                  prefixIcon: const Icon(Icons.search),
-                  filled: true,
-                  fillColor: Colors.grey[200]),
-              onChanged: (value) async {
-                if (value.isEmpty) {
-                  refresh();
-                } else {
-                  final data = await ReservationClient.getUserByName(_userEmail);
-                  setState(() {
-                    reservation = data;
-                  });
-                }
-              },
-            ),
+            // TextField(
+            //   decoration: InputDecoration(
+            //       border: OutlineInputBorder(
+            //           borderRadius: BorderRadius.circular(10)),
+            //       hintText: "Search",
+            //       prefixIcon: const Icon(Icons.search),
+            //       filled: true,
+            //       fillColor: Colors.grey[200]),
+            //   onChanged: (value) async {
+            //     if (value.isEmpty) {
+            //       refresh();
+            //     } else {
+            //       final data =
+            //           await ReservationClient.getUserByName(_userEmail);
+            //       setState(() {
+            //         reservation = data;
+            //       });
+            //     }
+            //   },
+            // ),
             SizedBox(
               height: 2.h,
             ),
@@ -172,105 +179,162 @@ class _MyReservationState extends State<MyReservation> {
   }
 
   Widget reservationCard(int index) {
-    final hasBpjs = reservation[index].bpjs != '-1';
     return GestureDetector(
       onTap: () {
-        createPdf(
-            reservation[index].id,
-            reservation[index].doctor_name,
-            reservation[index].date,
-            reservation[index].bpjs,
-            reservation[index].time.toString(),
-            usernameController.text,
-            emailController.text,
-            noTelpController.text,
-            tglLahirController.text,
-            context);
+        null;
       },
       child: Card(
-        color: Colors.grey[200],
+        color: Color(0xFFfcfcfc),
         child: Padding(
           padding: EdgeInsets.all(2.h),
-          child: Row(
-            crossAxisAlignment: CrossAxisAlignment.start,
+          child: Column(
             children: [
+              Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(
+                    width: 16.w,
+                    height: 8.h,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child: Image(
+                          image: AssetImage('images/Aji.jpg'),
+                          fit: BoxFit.cover),
+                    ),
+                  ),
+                  SizedBox(
+                    width: 10.px,
+                  ),
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text('Dr. ${reservation[index].praktek.dokter.nama}',
+                          style: TextStyle(
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18.sp,
+                            color: Theme.of(context).colorScheme.inversePrimary,
+                          )),
+                      SizedBox(
+                        height: 0.5.h,
+                      ),
+                      Row(
+                        children: [
+                          Text(
+                            reservation[index].praktek.dokter.spesialis,
+                            style: TextStyle(
+                                fontSize: 15.sp, color: Colors.grey[600]),
+                          ),
+                          reservation[index].hasBPJS
+                              ? Container(
+                                  margin: EdgeInsets.only(left: 2.w),
+                                  padding: EdgeInsets.symmetric(
+                                      horizontal: 2.w, vertical: 0.5.h),
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(6),
+                                      color: Colors.green[400]),
+                                  child: Text(
+                                    'BPJS',
+                                    style: TextStyle(
+                                        fontSize: 12.sp,
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold),
+                                  ),
+                                )
+                              : const SizedBox(width: 0)
+                        ],
+                      ),
+                    ],
+                  ),
+                ],
+              ),
               SizedBox(
-                width: 30.w,
-                height: 15.h,
-                child: ClipRRect(
-                  borderRadius: BorderRadius.circular(100),
-                  child: Image(
-                      image: AssetImage(
-                          'images/${reservation[index].doctor_name}.jpg'),
-                      fit: BoxFit.cover),
+                height: 2.h,
+              ),
+              Container(
+                width: double.infinity,
+                height: 7.h,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: const Color(0xFFe4ecf1),
+                ),
+                padding: EdgeInsets.symmetric(horizontal: 3.w),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      children: [
+                        Icon(Icons.date_range, color: Colors.grey[600]),
+                        SizedBox(width: 2.w),
+                        Text(
+                          formatDate(reservation[index].date),
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16.sp,
+                              wordSpacing: -1,
+                              color:
+                                  Theme.of(context).colorScheme.inversePrimary),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Icon(Icons.access_time, color: Colors.grey[600]),
+                        SizedBox(width: 2.w),
+                        Text(
+                          "${reservation[index].praktek.jamPraktek} - ${addOneHour(reservation[index].praktek.jamPraktek)} WIB",
+                          style: TextStyle(
+                              fontWeight: FontWeight.w600,
+                              fontSize: 16.sp,
+                              wordSpacing: -1,
+                              color:
+                                  Theme.of(context).colorScheme.inversePrimary),
+                        ),
+                      ],
+                    ),
+                  ],
                 ),
               ),
               SizedBox(
-                width: 10.px,
+                height: 2.h,
               ),
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Row(
-                    children: [
-                      Text('Dr. ' + reservation[index].doctor_name,
-                          style: TextStyle(
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20.sp,
-                          )),
-                      SizedBox(
-                        width: 2.w,
+                  ElevatedButton(
+                      style: OutlinedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50)),
+                        side: const BorderSide(color: Colors.grey, width: 0.8),
+                        backgroundColor: const Color(0xFFfcfcfc),
+                        minimumSize: Size(40.w, 5.h),
                       ),
-                      hasBpjs
-                          ? Container(
-                              alignment: Alignment.center,
-                              width: 9.w,
-                              height: 2.h,
-                              decoration: BoxDecoration(
-                                  color: Colors.green,
-                                  borderRadius: BorderRadius.circular(10)),
-                              child: Text(
-                                "BPJS",
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 12.sp,
-                                  fontWeight: FontWeight.w900,
-                                ),
-                              ),
-                            )
-                          : const SizedBox.shrink()
-                    ],
-                  ),
-                  Text(
-                    reservation[index].date,
-                    style: TextStyle(fontSize: 13.px),
-                  ),
-                  Text(
-                    reservation[index].time.toString(),
-                    style: TextStyle(fontSize: 13.px),
-                  ),
-                  SizedBox(
-                    height: 2.h,
-                  ),
-                  Row(
-                    children: [
-                      CircleAvatar(
-                        radius: 20,
-                        backgroundColor: Colors.blue,
-                        child: IconButton(
-                          onPressed: () => {
-                            if (reservation[index].bpjs != '-1') {
+                      onPressed: () {
+                        ReservationClient.destroy(reservation[index].id)
+                            .then((_) => refresh());
+                      },
+                      child: Text(
+                        'Cancle',
+                        style: TextStyle(color: Colors.grey[600], fontSize: 16),
+                      )),
+                  ElevatedButton(
+                      style: OutlinedButton.styleFrom(
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(50)),
+                        minimumSize: Size(40.w, 5.h),
+                      ),
+                      onPressed: () {
+                        if (reservation[index].hasBPJS) {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => ReservationForm(
                                 date: reservation[index].date,
                                 id: reservation[index].id,
-                                time: reservation[index].time,
-                                bpjs: reservation[index].bpjs,
+                                time: reservation[index].praktek.jamPraktek,
+                                bpjs: reservation[index].hasBPJS.toString(),
                               ),
                             ),
-                          ).then((_) => refresh())
+                          ).then((_) => refresh());
                         } else {
                           Navigator.push(
                             context,
@@ -278,41 +342,17 @@ class _MyReservationState extends State<MyReservation> {
                               builder: (context) => ReservationForm(
                                 date: reservation[index].date,
                                 id: reservation[index].id,
-                                time: reservation[index].time,
+                                time: reservation[index].praktek.jamPraktek,
                                 bpjs: '',
                               ),
                             ),
-                          ).then((_) => refresh())
+                          ).then((_) => refresh());
                         }
                       },
-                          icon: Icon(
-                            Icons.create_outlined,
-                            color: Colors.white,
-                          ),
-                          style: ButtonStyle(),
-                        ),
-                      ),
-                      SizedBox(
-                        width: 2.w,
-                      ),
-                      CircleAvatar(
-                        radius: 20.px,
-                        backgroundColor: Colors.red,
-                        child: IconButton(
-                          onPressed: () => {
-                            debugPrint("delete"),
-                            ReservationClient.destroy(reservation[index].id)
-                                .then((_) => refresh())
-                          },
-                          icon: Icon(
-                            Icons.delete,
-                            color: Colors.white,
-                          ),
-                          style: ButtonStyle(),
-                        ),
-                      )
-                    ],
-                  )
+                      child: const Text(
+                        'Reschedule',
+                        style: TextStyle(color: Colors.white, fontSize: 16),
+                      )),
                 ],
               )
             ],
@@ -325,4 +365,19 @@ class _MyReservationState extends State<MyReservation> {
   Future<void> deleteReservation(String id) async {
     await SQLHelperReservation.deleteReservation(id);
   }
+}
+
+String formatDate(String date) {
+  final inputFormat = DateFormat('yyyy-MM-dd');
+  final inputDate = inputFormat.parse(date);
+
+  final outputFormat = DateFormat('EEEE, MMM d');
+  return outputFormat.format(inputDate);
+}
+
+String addOneHour(String time) {
+  final timeFormat = DateFormat('HH:mm');
+  DateTime dateTime = timeFormat.parse(time);
+  dateTime = dateTime.add(const Duration(hours: 1));
+  return timeFormat.format(dateTime);
 }

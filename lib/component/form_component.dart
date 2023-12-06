@@ -10,6 +10,7 @@ class InputForm extends StatefulWidget {
   final String helperTxt;
   final IconData iconData;
   final bool password;
+  final Key key;
 
   InputForm({
     required this.validasi,
@@ -18,6 +19,7 @@ class InputForm extends StatefulWidget {
     required this.helperTxt,
     required this.iconData,
     this.password = false,
+    required this.key,
   });
 
   @override
@@ -134,9 +136,11 @@ class DatePicker extends StatefulWidget {
   final String helperTxt;
   final IconData iconData;
   final String? selectedDate;
+  final Key key;
 
   DatePicker({
     required this.validasi,
+    required this.key,
     required this.controller,
     required this.hintTxt,
     required this.helperTxt,

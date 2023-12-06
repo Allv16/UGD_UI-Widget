@@ -1,41 +1,42 @@
 import 'dart:convert';
 
+import 'package:ugd_ui_widget/entity/Praktek.dart';
+
 class Reservation {
-  String id;
-  String date;
-  String? time;
-  String doctor_name;
-  String user_email;
-  String bpjs;
+  final int id;
+  final String date;
+  final bool hasBPJS;
+  final String userEmail;
+  final int idPraktek;
+  final Praktek praktek;
 
   Reservation({
     required this.id,
     required this.date,
-    required this.doctor_name,
-    required this.user_email,
-    required this.bpjs,
-    required this.time
+    required this.hasBPJS,
+    required this.userEmail,
+    required this.idPraktek,
+    required this.praktek,
   });
 
-  factory Reservation.fromRawJson(String str) => Reservation.fromJson(json.decode(str));
+  factory Reservation.fromRawJson(String str) =>
+      Reservation.fromJson(json.decode(str));
 
   factory Reservation.fromJson(Map<String, dynamic> json) => Reservation(
         id: json['id'],
-        user_email: json['user_email'],
         date: json['date'],
-        time: json['time'],
-        doctor_name: json['doctor_name'],
-        bpjs: json['bpjs'],
+        hasBPJS: json['has_bpjs'] == 1,
+        userEmail: json['user_email'],
+        idPraktek: json['id_praktek'],
+        praktek: Praktek.fromJson(json['praktek']),
       );
 
   String toRawJson() => json.encode(toJson());
 
   Map<String, dynamic> toJson() => {
         "id": id,
-        "user_email": user_email,
         "date": date,
-        "time": time,
-        "doctor_name": doctor_name,
-          "bpjs": bpjs,
+        "id_praktek": idPraktek,
+        "has_bpjs": hasBPJS,
       };
 }

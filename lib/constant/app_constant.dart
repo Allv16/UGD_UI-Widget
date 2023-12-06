@@ -19,3 +19,7 @@ class LabelTextConstant {
   static const String txtonCopyingClipboard = 'QR code disalin ke clipboard';
 }
 
+class UrlConstant {
+  static const String apiPath = '10.0.2.2:8000/';
+  static final String url = '10.0.2.2:8000';
+}

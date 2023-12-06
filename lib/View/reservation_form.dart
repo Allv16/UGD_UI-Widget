@@ -18,7 +18,8 @@ class ReservationForm extends StatefulWidget {
       required this.time,
       required this.id,
       this.bpjs});
-  final String? id, date, time, bpjs;
+  final String? date, time, bpjs;
+  final int id;
   @override
   State<ReservationForm> createState() => ReservationFormState();
 }
@@ -38,8 +39,8 @@ class ReservationFormState extends State<ReservationForm> {
       Reservation res = await ReservationClient.find(widget.id);
       setState(() {
         dateController.value = TextEditingValue(text: res.date);
-        timeController.value = TextEditingValue(text: res.time.toString());
-        bpjsController.value = TextEditingValue(text: res.bpjs);
+        timeController.value = TextEditingValue(text: res.praktek.jamPraktek);
+        bpjsController.value = TextEditingValue(text: res.hasBPJS.toString());
       });
     } catch (err) {
       showSnackBar(context, err.toString(), Colors.red);
@@ -75,24 +76,12 @@ class ReservationFormState extends State<ReservationForm> {
       if (!_formKey.currentState!.validate()) return;
 
       try {
-        if (widget.id == null) {
-          Reservation input = Reservation(
-              id: Uuid().v1(),
-              user_email: emailUser,
-              date: dateController.text,
-              time: timeController.text,
-              doctor_name: doctorName,
-              bpjs: bpjsController.text.isEmpty ? "-1" : bpjsController.text);
-          await ReservationClient.create(input);
+        if (widget.id == -1) {
+          await ReservationClient.create(
+              emailUser, dateController.text, true, 1);
         } else {
-          Reservation input = Reservation(
-              id: widget.id.toString(),
-              user_email: emailUser,
-              date: dateController.text,
-              time: timeController.text,
-              doctor_name: doctorName,
-              bpjs: bpjsController.text.isEmpty ? "-1" : bpjsController.text);
-          await ReservationClient.update(input);
+          await ReservationClient.update(
+              widget.id, emailUser, dateController.text, true, 1);
         }
         showSnackBar(context, 'Success', Colors.green);
         Navigator.pop(context);
@@ -119,6 +108,7 @@ class ReservationFormState extends State<ReservationForm> {
                   height: 3.h,
                 ),
                 DatePicker(
+                  key: const Key("dateField"),
                   validasi: (value) {
                     if (value == null || value.isEmpty) {
                       return "Date cannot be empty";

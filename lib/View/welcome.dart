@@ -14,6 +14,9 @@ class WelcomePage extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
+              // Image.network(
+              //   'http://52.185.188.129:8000/profiles/test@.png',
+              // ),
               Image.asset(
                 'images/splash-rv.png',
               ),
@@ -74,15 +77,7 @@ class WelcomePage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => const RegisterView(
-                              title: 'REGISTER USER',
-                              id: null,
-                              username: null,
-                              email: null,
-                              password: null,
-                              tglLahir: null,
-                              notelp: null,
-                            ),
+                            builder: (context) => const RegisterView(),
                           ),
                         );
                       },
