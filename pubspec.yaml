@@ -10,6 +10,7 @@ dependencies:
   barcode_widget: ^2.0.4
   camera: ^0.10.5+5
   drop_shadow: ^0.1.0
+  firebase_core_desktop: ^1.0.2
   flutter:
     sdk: flutter
   flutter_riverpod: ^2.4.7
@@ -29,6 +30,7 @@ dependencies:
   shake: ^2.2.0
   shared_preferences: ^2.0.8
   sqflite: ^2.2.6
+  sqflite_common_ffi: ^2.3.1
   url_launcher: ^6.2.1
   uuid: ^4.2.1
 
@@ -36,6 +38,15 @@ dev_dependencies:
   flutter_lints: ^2.0.0
   flutter_test:
     sdk: flutter
+  msix: ^3.16.7
+
+msix_config:
+  display_name: wecare
+  publisher_display_name: wecare limited
+  identity_name: com.wecare.wecare
+  logo_path: D:\Downloads\splash-rv.png
+  msix_version: 1.0.0.0
+  capabilities: internetClient
 
 flutter:
   uses-material-design: true

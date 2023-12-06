@@ -1,11 +1,19 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
+import 'package:sqflite_common_ffi/sqflite_ffi.dart';
 import 'package:ugd_ui_widget/View/login.dart';
 import 'package:ugd_ui_widget/View/welcome.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ugd_ui_widget/View/register.dart';
- 
-void main() {
+
+void main() async {
+  if (Platform.isWindows) {
+    sqfliteFfiInit();
+    databaseFactory = databaseFactoryFfi;
+  }
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const LoadLoginPage());
 }
 
