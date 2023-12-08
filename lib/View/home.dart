@@ -19,6 +19,16 @@ class _HomeViewState extends State<HomeView> {
   String username1 = "";
   String profilePath = '';
   late ShakeDetector detector;
+  Future<Image> getImage() async {
+    var image = Image.network(
+      "http://52.185.188.129:8000/profiles/$profilePath",
+      headers: const {
+        HttpHeaders.connectionHeader: "keep-alive",
+        HttpHeaders.cacheControlHeader: "max-age=0",
+      },
+    );
+    return image;
+  }
 
   void initState() {
     super.initState();
@@ -178,19 +188,31 @@ class _HomeViewState extends State<HomeView> {
                               children: [
                                 profilePath == '-1'
                                     ? const CircleAvatar(
-                                        //default profile
                                         radius: 50,
                                         backgroundImage:
-                                            AssetImage('images/kucheng.jpeg'))
-                                    : const CircleAvatar(
-                                        //default profile
-                                        radius: 50,
-                                        backgroundImage:
-                                            AssetImage('images/kucheng.jpeg'))
-                                // : CircleAvatar(
-                                //     radius: 50,
-                                //     backgroundImage: NetworkImage(
-                                //         "http://10.0.2.2:8000/api/user/test@/profile"))
+                                            AssetImage('images/kucheng.jpeg'),
+                                      )
+                                    : FutureBuilder(
+                                        future: getImage(),
+                                        builder: (context, snapshot) {
+                                          if (snapshot.connectionState ==
+                                              ConnectionState.waiting) {
+                                            return const Center(
+                                              child: CircleAvatar(),
+                                            );
+                                          } else if (snapshot.data == null) {
+                                            return const CircleAvatar(
+                                                radius: 50,
+                                                backgroundImage: AssetImage(
+                                                    'images/kucheng.jpeg'));
+                                          } else {
+                                            return CircleAvatar(
+                                              radius: 50,
+                                              backgroundImage: snapshot
+                                                  .data!.image as ImageProvider,
+                                            );
+                                          }
+                                        })
                               ],
                             ),
                           ),
@@ -217,7 +239,7 @@ class _HomeViewState extends State<HomeView> {
                               color: Colors.white,
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           Text(
@@ -227,17 +249,17 @@ class _HomeViewState extends State<HomeView> {
                           )
                         ]),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 50,
                   ),
-                  Text(
+                  const Text(
                     "What do you need?",
                     style: TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.w900,
                         color: Color(0xFF00ACC1)),
                   ),
-                  SizedBox(
+                  const SizedBox(
                     height: 30,
                   ),
                   GridView.count(

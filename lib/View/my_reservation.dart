@@ -20,28 +20,7 @@ class MyReservation extends StatefulWidget {
 }
 
 class _MyReservationState extends State<MyReservation> {
-  TextEditingController usernameController = TextEditingController();
-  TextEditingController emailController = TextEditingController();
-  TextEditingController noTelpController = TextEditingController();
-  TextEditingController tglLahirController = TextEditingController();
   String profilePath = '';
-
-  Future<void> loadUserData() async {
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    String? username = prefs.getString('username');
-    String? email = prefs.getString('email');
-    String? noTelp = prefs.getString('noTelp');
-    String? tgl = prefs.getString('tglLahir');
-    String? newPath = prefs.getString('profilePath');
-
-    setState(() {
-      usernameController.text = username ?? '';
-      emailController.text = email ?? '';
-      noTelpController.text = noTelp != null ? noTelp.toString() : '';
-      tglLahirController.text = tgl ?? '';
-      profilePath = newPath!;
-    });
-  }
 
   //for bottom nav
   int _selectedIndex = 1;
@@ -52,7 +31,7 @@ class _MyReservationState extends State<MyReservation> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => HomeView(),
+          builder: (context) => const HomeView(),
         ),
       );
     } else if (index == 2) {
@@ -60,7 +39,7 @@ class _MyReservationState extends State<MyReservation> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => ProfileView(),
+          builder: (context) => const ProfileView(),
         ),
       );
     } else {
@@ -70,22 +49,18 @@ class _MyReservationState extends State<MyReservation> {
     }
   }
 
-  List<Reservation> reservation = [];
-  void refresh() async {
+  Future<List<Reservation>>? _reservation;
+  Future<List<Reservation>> fetchData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final data = await ReservationClient.fetchAll(prefs.getString('email')!);
-    print(data);
-    setState(() {
-      reservation = data;
-      _userEmail = prefs.getString('email')!;
-    });
+    _userEmail = prefs.getString('email') ?? prefs.getString('email')!;
+    return data;
   }
 
   @override
   void initState() {
-    refresh();
     super.initState();
-    loadUserData();
+    _reservation = fetchData();
   }
 
   @override
@@ -109,7 +84,7 @@ class _MyReservationState extends State<MyReservation> {
                   id: -1,
                   time: null,
                 ),
-              )).then((_) => refresh())
+              )).then((_) => fetchData())
         },
         child: Icon(Icons.add),
         backgroundColor: Colors.lightBlue,
@@ -122,37 +97,25 @@ class _MyReservationState extends State<MyReservation> {
         ),
         child: Column(
           children: [
-            // TextField(
-            //   decoration: InputDecoration(
-            //       border: OutlineInputBorder(
-            //           borderRadius: BorderRadius.circular(10)),
-            //       hintText: "Search",
-            //       prefixIcon: const Icon(Icons.search),
-            //       filled: true,
-            //       fillColor: Colors.grey[200]),
-            //   onChanged: (value) async {
-            //     if (value.isEmpty) {
-            //       refresh();
-            //     } else {
-            //       final data =
-            //           await ReservationClient.getUserByName(_userEmail);
-            //       setState(() {
-            //         reservation = data;
-            //       });
-            //     }
-            //   },
-            // ),
             SizedBox(
               height: 2.h,
             ),
-            reservation.isEmpty
-                ? Text("No Reservation found")
-                : Expanded(
-                    child: ListView.builder(
-                    itemCount: reservation.length,
-                    physics: ScrollPhysics(),
-                    itemBuilder: (context, index) => reservationCard(index),
-                  )),
+            Expanded(
+              child: FutureBuilder<List<Reservation>>(
+                future: fetchData(),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError) {
+                    return const Center(child: Text('Error'));
+                  } else {
+                    return snapshot.data == null || snapshot.data!.isEmpty
+                        ? const Center(child: Text("No Reservation"))
+                        : buildCardList(snapshot.data!);
+                  }
+                },
+              ),
+            )
           ],
         ),
       ),
@@ -178,7 +141,16 @@ class _MyReservationState extends State<MyReservation> {
     );
   }
 
-  Widget reservationCard(int index) {
+  Widget buildCardList(List<Reservation> reservation) {
+    return ListView.builder(
+      itemCount: reservation.length,
+      itemBuilder: (context, index) {
+        return buildCard(reservation[index]);
+      },
+    );
+  }
+
+  Widget buildCard(Reservation reservation) {
     return GestureDetector(
       onTap: () {
         null;
@@ -208,7 +180,7 @@ class _MyReservationState extends State<MyReservation> {
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text('Dr. ${reservation[index].praktek.dokter.nama}',
+                      Text('Dr. ${reservation.praktek.dokter.nama}',
                           style: TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 18.sp,
@@ -220,11 +192,11 @@ class _MyReservationState extends State<MyReservation> {
                       Row(
                         children: [
                           Text(
-                            reservation[index].praktek.dokter.spesialis,
+                            reservation.praktek.dokter.spesialis,
                             style: TextStyle(
                                 fontSize: 15.sp, color: Colors.grey[600]),
                           ),
-                          reservation[index].hasBPJS
+                          reservation.hasBPJS
                               ? Container(
                                   margin: EdgeInsets.only(left: 2.w),
                                   padding: EdgeInsets.symmetric(
@@ -266,7 +238,7 @@ class _MyReservationState extends State<MyReservation> {
                         Icon(Icons.date_range, color: Colors.grey[600]),
                         SizedBox(width: 2.w),
                         Text(
-                          formatDate(reservation[index].date),
+                          formatDate(reservation.date),
                           style: TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 16.sp,
@@ -281,7 +253,7 @@ class _MyReservationState extends State<MyReservation> {
                         Icon(Icons.access_time, color: Colors.grey[600]),
                         SizedBox(width: 2.w),
                         Text(
-                          "${reservation[index].praktek.jamPraktek} - ${addOneHour(reservation[index].praktek.jamPraktek)} WIB",
+                          "${reservation.praktek.jamPraktek} - ${addOneHour(reservation.praktek.jamPraktek)} WIB",
                           style: TextStyle(
                               fontWeight: FontWeight.w600,
                               fontSize: 16.sp,
@@ -309,8 +281,8 @@ class _MyReservationState extends State<MyReservation> {
                         minimumSize: Size(40.w, 5.h),
                       ),
                       onPressed: () {
-                        ReservationClient.destroy(reservation[index].id)
-                            .then((_) => refresh());
+                        ReservationClient.destroy(reservation.id)
+                            .then((_) => fetchData());
                       },
                       child: Text(
                         'Cancle',
@@ -323,30 +295,30 @@ class _MyReservationState extends State<MyReservation> {
                         minimumSize: Size(40.w, 5.h),
                       ),
                       onPressed: () {
-                        if (reservation[index].hasBPJS) {
+                        if (reservation.hasBPJS) {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => ReservationForm(
-                                date: reservation[index].date,
-                                id: reservation[index].id,
-                                time: reservation[index].praktek.jamPraktek,
-                                bpjs: reservation[index].hasBPJS.toString(),
+                                date: reservation.date,
+                                id: reservation.id,
+                                time: reservation.praktek.jamPraktek,
+                                bpjs: reservation.hasBPJS.toString(),
                               ),
                             ),
-                          ).then((_) => refresh());
+                          ).then((_) => fetchData());
                         } else {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
                               builder: (context) => ReservationForm(
-                                date: reservation[index].date,
-                                id: reservation[index].id,
-                                time: reservation[index].praktek.jamPraktek,
+                                date: reservation.date,
+                                id: reservation.id,
+                                time: reservation.praktek.jamPraktek,
                                 bpjs: '',
                               ),
                             ),
-                          ).then((_) => refresh());
+                          ).then((_) => fetchData());
                         }
                       },
                       child: const Text(

@@ -32,6 +32,17 @@ class _ProfileViewState extends State<ProfileView> {
     super.initState();
   }
 
+  Future<Image> getImage() async {
+    var image = Image.network(
+      "http://52.185.188.129:8000/profiles/$profilePath",
+      headers: const {
+        HttpHeaders.connectionHeader: "keep-alive",
+        HttpHeaders.cacheControlHeader: "max-age=0",
+      },
+    );
+    return image;
+  }
+
   Future<void> loadUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     setState(() {
@@ -39,7 +50,7 @@ class _ProfileViewState extends State<ProfileView> {
       email = prefs.getString('email')!;
       noTelp = prefs.getString('noTelp')!;
       tglLahir = prefs.getString('tglLahir')!;
-      profilePath = prefs.getString('profilePath')!;
+      profilePath = prefs.getString('profilePath') ?? '-1';
     });
   }
 
@@ -83,25 +94,32 @@ class _ProfileViewState extends State<ProfileView> {
                 mainAxisSize: MainAxisSize.max,
                 children: [
                   Stack(children: [
-                    SizedBox(
-                      width: 19.w,
-                      height: 11.h,
-                      child: ClipRRect(
-                          borderRadius: BorderRadius.circular(100),
-                          child: profilePath.isEmpty
-                              ? Image.asset(
-                                  'images/kucheng.jpeg',
-                                  width: 38.w,
-                                  height: 18.px,
-                                  fit: BoxFit.cover,
-                                )
-                              : Image.file(
-                                  File(profilePath),
-                                  width: 38.w,
-                                  height: 18.px,
-                                  fit: BoxFit.cover,
-                                )),
-                    ),
+                    profilePath == '-1'
+                        ? const CircleAvatar(
+                            radius: 50,
+                            backgroundImage: AssetImage('images/kucheng.jpeg'),
+                          )
+                        : FutureBuilder(
+                            future: getImage(),
+                            builder: (context, snapshot) {
+                              if (snapshot.connectionState ==
+                                  ConnectionState.waiting) {
+                                return const Center(
+                                  child: CircleAvatar(),
+                                );
+                              } else if (snapshot.data == null) {
+                                return const CircleAvatar(
+                                    radius: 50,
+                                    backgroundImage:
+                                        AssetImage('images/kucheng.jpeg'));
+                              } else {
+                                return CircleAvatar(
+                                  radius: 50,
+                                  backgroundImage:
+                                      snapshot.data!.image as ImageProvider,
+                                );
+                              }
+                            }),
                     Positioned(
                         bottom: 0,
                         right: 0,
@@ -330,7 +348,8 @@ class _ProfileViewState extends State<ProfileView> {
   Future _pickImageFromGallery() async {
     try {
       final picker = ImagePicker();
-      final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+      final pickedFile =
+          await picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
       if (pickedFile != null) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await UserClient.updateProfilePicture(email, pickedFile.path);
@@ -347,7 +366,8 @@ class _ProfileViewState extends State<ProfileView> {
   Future _pickImageFromCamera() async {
     try {
       final picker = ImagePicker();
-      final pickedFile = await picker.pickImage(source: ImageSource.camera);
+      final pickedFile =
+          await picker.pickImage(source: ImageSource.camera, imageQuality: 50);
       if (pickedFile != null) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
         await UserClient.updateProfilePicture(email, pickedFile.path);
