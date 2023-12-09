@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ugd_ui_widget/component/form_component.dart';
 import 'package:uuid/uuid.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:ugd_ui_widget/View/edit_reservation_success.dart';
 
 final List<String> doctor = ['Aji', 'Caily', 'Alina', 'Bonita', 'Daisy'];
 
@@ -71,6 +72,7 @@ class ReservationFormState extends State<ReservationForm> {
                   height: 15.px,
                 ),
                 DatePicker(
+                  key: const ValueKey("date"),
                   validasi: (value) {
                     if (value == null || value.isEmpty) {
                       return "Date cannot be empty";
@@ -83,6 +85,7 @@ class ReservationFormState extends State<ReservationForm> {
                   selectedDate: isEmpty ? null : dateController.text,
                 ),
                 TimePicker(
+                  key: const ValueKey("time"),
                   validasi: (value) {
                     if (value == null || value.isEmpty) {
                       return "Select the desired time";
@@ -95,6 +98,7 @@ class ReservationFormState extends State<ReservationForm> {
                   startTime: isEmpty ? null : timeController.text,
                 ),
                 ScannerInputForm(
+                    key: const ValueKey("bpjs"),
                     validasi: (value) {
                       if (value?.length != 13 && value!.isNotEmpty) {
                         return "Nomer kartu BPJS harus 13 digit. sekarang hanya ada ${value.length}";
@@ -118,9 +122,19 @@ class ReservationFormState extends State<ReservationForm> {
           onPressed: () async {
             if (_formKey.currentState!.validate()) {
               isEmpty ? addReservation() : editReservation();
-              Navigator.pop(context);
-            }
-          },
+             // Navigator.pop(context);
+             Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => EditReservationSuccess(
+                  doctorName: doctor[Random().nextInt(5)], // Pass actual doctor's name here or update as needed
+                  date: dateController.text,
+                  time: timeController.text,
+                ),
+              ),
+            );
+          }
+        },
           style: ButtonStyle(
               minimumSize: MaterialStateProperty.all<Size>(Size(40.w, 7.h))),
           child: Text(
