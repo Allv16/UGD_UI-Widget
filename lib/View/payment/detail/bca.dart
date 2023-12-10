@@ -252,7 +252,7 @@ class _CardDetailsWidgetState extends State<CardDetailsWidget> {
                 InkWell(
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(builder: (context) {
-                      return testApp();
+                      return paymentSuccessPage();
                     }));
                   },
                   child: Text(
