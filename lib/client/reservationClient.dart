@@ -24,7 +24,7 @@ class ReservationClient {
           "$endpoint/$email")); //melakukan req ke api dan menyimpan responsenya
 
       if (response.statusCode != 200) throw Exception(response.reasonPhrase);
-      print(response.body);
+      // print(response.body);
       //mengambil bagian data dari response body
       Iterable list = json.decode(response.body)['data'];
 
@@ -49,20 +49,26 @@ class ReservationClient {
     }
   }
 
-  //membuat data barang baru
-  static Future<Response> create(
-      String user_email, String date, bool hasBpjs, int idPraktek) async {
+  //ini masih TEMPORARY!!!
+  static Future<Response> create(String user_email, String date) async {
+    print("create reservation------");
+    print("$user_email, $date");
+    print("$url$endpoint");
     try {
       var response = await post(Uri.http(url, endpoint),
           headers: {'Content-Type': 'application/json'},
           body: jsonEncode({
             "user_email": user_email,
             "date": date,
-            "has_bpjs": hasBpjs,
-            "id_praktek": idPraktek
+            "has_bpjs": true,
+            "id_praktek": "5"
           }));
-      if (response.statusCode != 200) throw Exception(response.reasonPhrase);
       print(response.body);
+      if (response.statusCode != 200) {
+        print('Error: ${response.statusCode}');
+        print('Body: ${response.body}');
+        throw Exception(response.reasonPhrase);
+      }
       return response;
     } catch (e) {
       return Future.error(e.toString());
@@ -70,18 +76,12 @@ class ReservationClient {
   }
 
   //mengubah data barang sesuai ID
-  static Future<Response> update(int id, String user_email, String date,
-      bool hasBpjs, int idPraktek) async {
+  static Future<Response> update(int id, String date) async {
     try {
       var response = await put(Uri.http(url, '$endpoint/$id'),
           headers: {'Content-Type': 'application/json'},
-          body: jsonEncode({
-            "user_email": user_email,
-            "date": date,
-            "has_bpjs": hasBpjs,
-            "id_praktek": idPraktek
-          }));
-
+          body: jsonEncode({"date": date, "id_praktek": "8"}));
+      // print(response.body);
       if (response.statusCode != 200) throw Exception(response.reasonPhrase);
 
       return response;

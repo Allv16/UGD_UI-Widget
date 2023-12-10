@@ -280,10 +280,10 @@ class _RegisterViewState extends State<RegisterView> {
                                   backgroundColor: Colors.white,
                                 ),
                                 onPressed: () {
-                                  Navigator.push(context,
+                                  Navigator.pushAndRemoveUntil(context,
                                       MaterialPageRoute(builder: (context) {
                                     return const LoginView();
-                                  }));
+                                  }), (route) => false);
                                 },
                                 child: Text("Login",
                                     style: TextStyle(

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:ugd_ui_widget/View/scan_qr_page.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -97,8 +98,10 @@ class _ScannerInputFormState extends State<ScannerInputForm> {
           keyboardType: TextInputType.number,
           decoration: InputDecoration(
             hintText: widget.hintTxt,
+            hintStyle: TextStyle(color: Colors.grey[400]),
             border: const OutlineInputBorder(),
             helperText: widget.helperTxt,
+            helperStyle: TextStyle(color: Colors.grey[400], fontSize: 13.sp),
             prefixIcon: Icon(widget.iconData),
             suffixIcon: Ink(
               decoration: const ShapeDecoration(
@@ -107,7 +110,8 @@ class _ScannerInputFormState extends State<ScannerInputForm> {
                 onPressed: () {
                   _navigateAndDisplayToScanner(context);
                 },
-                icon: const Icon(Icons.qr_code_scanner_outlined),
+                icon: const Icon(FontAwesomeIcons.barcode,
+                    size: 30, color: Colors.black),
                 iconSize: 40,
               ),
             ),
@@ -159,7 +163,7 @@ class _DatePickerState extends State<DatePicker> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.selectedDate != null) {
+    if (widget.selectedDate != null && widget.selectedDate!.isNotEmpty) {
       String dateString = widget.selectedDate!;
       print(dateString);
       try {

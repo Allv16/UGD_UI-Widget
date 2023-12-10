@@ -9,9 +9,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:ugd_ui_widget/View/home.dart';
 
-//testing
-import 'package:ugd_ui_widget/utils/custom_formatter.dart';
-
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
 
@@ -23,6 +20,7 @@ class _LoginViewState extends State<LoginView> {
   final _formKey = GlobalKey<FormState>();
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  bool _isLoading = false;
 
   void initState() {
     super.initState();
@@ -108,6 +106,9 @@ class _LoginViewState extends State<LoginView> {
                                   minimumSize: Size(100.w, 6.h)),
                               onPressed: () async {
                                 if (_formKey.currentState!.validate()) {
+                                  setState(() {
+                                    _isLoading = true;
+                                  });
                                   String email = emailController.text;
                                   String password = passwordController.text;
                                   User? loginResult =
@@ -132,25 +133,33 @@ class _LoginViewState extends State<LoginView> {
                                         "Login Successful", Colors.green[400]);
 
                                     // Continue to the home page or another screen
-                                    Navigator.push(
+                                    Navigator.pushAndRemoveUntil(
                                       context,
                                       MaterialPageRoute(
                                         builder: (_) => const HomeView(),
                                       ),
+                                      (route) => false,
                                     );
                                   } else {
                                     // Login failed
+                                    setState(() {
+                                      _isLoading = false;
+                                    });
                                     showToastMessage(
                                         "Email or password are incorrect.\nPlease try again.",
                                         Colors.red[400]);
                                   }
                                 }
                               },
-                              child: Text("Login",
-                                  style: TextStyle(
-                                      fontSize: 16,
+                              child: _isLoading
+                                  ? const CircularProgressIndicator(
                                       color: Colors.white,
-                                      fontWeight: FontWeight.bold)),
+                                    )
+                                  : const Text("Login",
+                                      style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.bold)),
                             ),
                             SizedBox(
                               height: 2.h,

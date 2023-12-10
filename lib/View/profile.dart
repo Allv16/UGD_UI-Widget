@@ -3,6 +3,8 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart';
+import 'package:ugd_ui_widget/View/bpjs_form.dart';
 import 'package:ugd_ui_widget/View/profileEdit.dart';
 import 'home.dart';
 import 'my_reservation.dart';
@@ -12,6 +14,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:ugd_ui_widget/client/userClient.dart';
 import 'package:ugd_ui_widget/utils/custom_formatter.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 
 class ProfileView extends StatefulWidget {
   const ProfileView({Key? key}) : super(key: key);
@@ -26,6 +29,7 @@ class _ProfileViewState extends State<ProfileView> {
   String noTelp = '';
   String tglLahir = '';
   String profilePath = '';
+  String bpjs = '';
   @override
   void initState() {
     loadUserData();
@@ -33,8 +37,10 @@ class _ProfileViewState extends State<ProfileView> {
   }
 
   Future<Image> getImage() async {
+    String cacheScrewer = DateTime.now().millisecondsSinceEpoch.toString();
+    await Future.delayed(const Duration(milliseconds: 500));
     var image = Image.network(
-      "http://52.185.188.129:8000/profiles/$profilePath",
+      "http://52.185.188.129:8000/profiles/$profilePath?$cacheScrewer",
       headers: const {
         HttpHeaders.connectionHeader: "keep-alive",
         HttpHeaders.cacheControlHeader: "max-age=0",
@@ -49,8 +55,10 @@ class _ProfileViewState extends State<ProfileView> {
       username = prefs.getString('username')!;
       email = prefs.getString('email')!;
       noTelp = prefs.getString('noTelp')!;
-      tglLahir = prefs.getString('tglLahir')!;
+      DateTime parsedDate = DateTime.parse(prefs.getString('tglLahir')!);
+      tglLahir = DateFormat('dd MMM yyyy').format(parsedDate);
       profilePath = prefs.getString('profilePath') ?? '-1';
+      bpjs = prefs.getString('bpjs')!;
     });
   }
 
@@ -93,51 +101,82 @@ class _ProfileViewState extends State<ProfileView> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 mainAxisSize: MainAxisSize.max,
                 children: [
-                  Stack(children: [
-                    profilePath == '-1'
-                        ? const CircleAvatar(
-                            radius: 50,
-                            backgroundImage: AssetImage('images/kucheng.jpeg'),
-                          )
-                        : FutureBuilder(
-                            future: getImage(),
-                            builder: (context, snapshot) {
-                              if (snapshot.connectionState ==
-                                  ConnectionState.waiting) {
-                                return const Center(
-                                  child: CircleAvatar(),
-                                );
-                              } else if (snapshot.data == null) {
-                                return const CircleAvatar(
-                                    radius: 50,
-                                    backgroundImage:
-                                        AssetImage('images/kucheng.jpeg'));
-                              } else {
-                                return CircleAvatar(
+                  profilePath == '-1'
+                      ? Stack(children: [
+                          const CircleAvatar(
+                              radius: 50,
+                              backgroundImage:
+                                  AssetImage('images/kucheng.jpeg')),
+                          Positioned(
+                              bottom: 0,
+                              right: 0,
+                              child: GestureDetector(
+                                onTap: () {
+                                  _displayBottomSheet();
+                                },
+                                child: Container(
+                                  width: 6.w,
+                                  height: 3.h,
+                                  decoration: BoxDecoration(
+                                      borderRadius: BorderRadius.circular(100),
+                                      color: Theme.of(context)
+                                          .colorScheme
+                                          .primary),
+                                  child: Icon(Icons.edit,
+                                      color: Colors.white, size: 15.sp),
+                                ),
+                              ))
+                        ])
+                      : FutureBuilder(
+                          future: getImage(),
+                          initialData: null,
+                          builder: (context, snapshot) {
+                            if (snapshot.connectionState ==
+                                    ConnectionState.waiting ||
+                                snapshot.data == null) {
+                              return const CircleAvatar(
+                                radius: 50,
+                                backgroundColor: Colors.transparent,
+                                child: CircularProgressIndicator(),
+                              );
+                            } else if (snapshot.data == null) {
+                              return const CircleAvatar(
                                   radius: 50,
                                   backgroundImage:
-                                      snapshot.data!.image as ImageProvider,
-                                );
-                              }
-                            }),
-                    Positioned(
-                        bottom: 0,
-                        right: 0,
-                        child: GestureDetector(
-                          onTap: () {
-                            _displayBottomSheet();
-                          },
-                          child: Container(
-                            width: 6.w,
-                            height: 3.h,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(100),
-                                color: Theme.of(context).colorScheme.primary),
-                            child: Icon(Icons.edit,
-                                color: Colors.white, size: 15.sp),
-                          ),
-                        ))
-                  ]),
+                                      AssetImage('images/kucheng.jpeg'));
+                            } else {
+                              return Stack(
+                                children: [
+                                  CircleAvatar(
+                                    radius: 50,
+                                    backgroundImage:
+                                        snapshot.data!.image as ImageProvider,
+                                    backgroundColor: Colors.grey[100],
+                                  ),
+                                  Positioned(
+                                      bottom: 0,
+                                      right: 0,
+                                      child: GestureDetector(
+                                        onTap: () {
+                                          _displayBottomSheet();
+                                        },
+                                        child: Container(
+                                          width: 6.w,
+                                          height: 3.h,
+                                          decoration: BoxDecoration(
+                                              borderRadius:
+                                                  BorderRadius.circular(100),
+                                              color: Theme.of(context)
+                                                  .colorScheme
+                                                  .primary),
+                                          child: Icon(Icons.edit,
+                                              color: Colors.white, size: 15.sp),
+                                        ),
+                                      ))
+                                ],
+                              );
+                            }
+                          }),
                   SizedBox(
                     width: 3.w,
                   ),
@@ -152,7 +191,7 @@ class _ProfileViewState extends State<ProfileView> {
                                 color: Theme.of(context).colorScheme.primary),
                             softWrap: true),
                         SizedBox(
-                          height: 4.px,
+                          height: 2.px,
                         ),
                         Row(
                           mainAxisSize: MainAxisSize.min,
@@ -169,7 +208,7 @@ class _ProfileViewState extends State<ProfileView> {
                           ],
                         ),
                         SizedBox(
-                          height: 4.px,
+                          height: 2.px,
                         ),
                         Row(
                           mainAxisSize: MainAxisSize.min,
@@ -186,7 +225,7 @@ class _ProfileViewState extends State<ProfileView> {
                           ],
                         ),
                         SizedBox(
-                          height: 4.px,
+                          height: 2.px,
                         ),
                         Row(
                           mainAxisSize: MainAxisSize.min,
@@ -222,7 +261,7 @@ class _ProfileViewState extends State<ProfileView> {
                 contentPadding: const EdgeInsets.all(0),
                 trailing: Icon(Icons.arrow_forward_ios_rounded,
                     size: 16.sp, color: Colors.grey),
-                horizontalTitleGap: 0,
+                horizontalTitleGap: 11,
                 shape: const Border(
                     bottom: BorderSide(color: Colors.grey, width: 1)),
                 onTap: () => {
@@ -230,6 +269,34 @@ class _ProfileViewState extends State<ProfileView> {
                     context,
                     MaterialPageRoute(
                       builder: (context) => ProfileEditView(),
+                    ),
+                  ).then((_) => loadUserData())
+                },
+              ),
+              ListTile(
+                leading: const FaIcon(
+                  FontAwesomeIcons.idCard,
+                  size: 20,
+                ),
+                title: Text(
+                  "Manage BPJS",
+                  textAlign: TextAlign.left,
+                ),
+                contentPadding: const EdgeInsets.all(0),
+                trailing: Icon(Icons.arrow_forward_ios_rounded,
+                    size: 16.sp, color: Colors.grey),
+                horizontalTitleGap: 10,
+                shape: const Border(
+                    bottom: BorderSide(color: Colors.grey, width: 1)),
+                onTap: () => {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => BPJSForm(
+                        bpjs: bpjs,
+                        email: email,
+                        username: username,
+                      ),
                     ),
                   ).then((_) => loadUserData())
                 },
@@ -244,14 +311,15 @@ class _ProfileViewState extends State<ProfileView> {
                   contentPadding: const EdgeInsets.all(0),
                   trailing: Icon(Icons.arrow_forward_ios_rounded,
                       size: 16.sp, color: Colors.grey),
-                  horizontalTitleGap: 0,
+                  horizontalTitleGap: 11,
                   shape: const Border(bottom: BorderSide(color: Colors.grey)),
                   onTap: () => {
-                        Navigator.push(
+                        Navigator.pushAndRemoveUntil(
                           context,
                           MaterialPageRoute(
                             builder: (context) => const LoginView(),
                           ),
+                          (route) => false,
                         )
                       }),
             ],
@@ -352,10 +420,11 @@ class _ProfileViewState extends State<ProfileView> {
           await picker.pickImage(source: ImageSource.gallery, imageQuality: 50);
       if (pickedFile != null) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        await UserClient.updateProfilePicture(email, pickedFile.path);
-        prefs.setString('profilePath', pickedFile.path);
+        String newPath =
+            await UserClient.updateProfilePicture(email, pickedFile);
+        prefs.setString('profilePath', newPath);
         setState(() {
-          profilePath = pickedFile.path;
+          profilePath = newPath;
         });
       }
     } on PlatformException catch (e) {
@@ -370,10 +439,12 @@ class _ProfileViewState extends State<ProfileView> {
           await picker.pickImage(source: ImageSource.camera, imageQuality: 50);
       if (pickedFile != null) {
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        await UserClient.updateProfilePicture(email, pickedFile.path);
-        prefs.setString('profilePath', pickedFile.path);
+        String newPath =
+            await UserClient.updateProfilePicture(email, pickedFile);
+
+        prefs.setString('profilePath', newPath);
         setState(() {
-          profilePath = pickedFile.path;
+          profilePath = newPath;
         });
       }
     } on PlatformException catch (e) {

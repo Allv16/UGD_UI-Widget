@@ -22,6 +22,7 @@ class _ProfileEditViewState extends State<ProfileEditView> {
   TextEditingController passwordController = TextEditingController();
 
   String emailUser = "";
+  bool _isLoading = false;
 
   Future<void> loadUserData() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -119,49 +120,57 @@ class _ProfileEditViewState extends State<ProfileEditView> {
                   DatePicker(
                     key: const Key('tglLahirField'),
                     validasi: ((String? selectedDate) {
-                      DateTime now = DateTime.now();
                       if (selectedDate == null || selectedDate.isEmpty) {
-                        return "Pilih tanggal lahir!";
-                      }
-                      DateFormat inputFormat =
-                          DateFormat('yyyy-MM-dd', 'en_US');
-                      DateTime selectedDateTime =
-                          inputFormat.parse(selectedDate);
-                      if (selectedDateTime.isAfter(now)) {
-                        return "Tanggal tidak bisa setelah hari ini";
+                        return "Select birth date";
                       }
                       return null;
                     }),
                     controller: tglLahirController,
-                    hintTxt: "Tanggal Lahir",
-                    helperTxt: "ex: 2022-06-12",
+                    hintTxt: "Birth date",
+                    helperTxt: "ex: 05 Dec 2001",
                     iconData: Icons.calendar_today,
                     selectedDate: tglLahirController.text,
                   ),
+                  SizedBox(
+                    height: 2.h,
+                  ),
+                  ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        backgroundColor: Theme.of(context).colorScheme.primary,
+                        shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(8)),
+                        minimumSize: Size(100.w, 6.h)),
+                    onPressed: () async {
+                      if (_formKey.currentState!.validate()) {
+                        setState(() {
+                          _isLoading = true;
+                        });
+                        await saveEditedData();
+
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => ProfileView()));
+                      }
+                    },
+                    child: _isLoading
+                        ? const CircularProgressIndicator(
+                            color: Colors.white,
+                          )
+                        : const Text(
+                            'Save',
+                            style: TextStyle(
+                                fontSize: 16,
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold),
+                          ),
+                  )
                 ],
               ),
             ),
           ),
         ),
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          if (_formKey.currentState!.validate()) {
-            try {
-              saveEditedData();
-              Navigator.pop(context, true);
-              final result = await Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => ProfileView()),
-              );
-            } catch (e) {
-              print('Error: $e');
-            }
-          }
-        },
-        child: Icon(Icons.save),
-      ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 
@@ -169,7 +178,8 @@ class _ProfileEditViewState extends State<ProfileEditView> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final username = usernameController.text;
     final noTelp = notelpController.text;
-    final tanggalLahir = tglLahirController.text;
+    DateTime parsedDate = DateTime.parse(tglLahirController.text);
+    final tanggalLahir = DateFormat('yyyy-MM-dd').format(parsedDate);
     final password = passwordController.text;
 
     try {
