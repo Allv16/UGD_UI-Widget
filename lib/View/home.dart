@@ -1,6 +1,7 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:ugd_ui_widget/View/profile.dart';
+import 'package:ugd_ui_widget/View/payment/bookingSuccess.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'my_reservation.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
@@ -80,6 +81,14 @@ class _HomeViewState extends State<HomeView> {
         context,
         MaterialPageRoute(
           builder: (context) => ProfileView(),
+        ),
+      );
+    }else if (index == 3) {
+      _selectedIndex = 2;
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => bookingSuccessPage(),
         ),
       );
     } else {
@@ -300,6 +309,10 @@ class _HomeViewState extends State<HomeView> {
           BottomNavigationBarItem(
             icon: Icon(Icons.account_circle),
             label: 'Profile',
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.money),
+            label: 'payment',
           ),
         ],
         currentIndex: _selectedIndex,
