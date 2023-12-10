@@ -22,6 +22,8 @@ class MyReservation extends StatefulWidget {
 class _MyReservationState extends State<MyReservation> {
   String profilePath = '';
 
+  bool _isLoadingForCancle = false;
+
   //for bottom nav
   int _selectedIndex = 1;
   String _userEmail = '';
@@ -59,8 +61,8 @@ class _MyReservationState extends State<MyReservation> {
 
   @override
   void initState() {
-    super.initState();
     _reservation = fetchData();
+    super.initState();
   }
 
   @override
@@ -71,11 +73,12 @@ class _MyReservationState extends State<MyReservation> {
             style: TextStyle(
                 fontSize: 20.sp,
                 fontWeight: FontWeight.bold,
-                color: Theme.of(context).colorScheme.inversePrimary)),
+                color: Theme.of(context).colorScheme.primary)),
         centerTitle: true,
+        automaticallyImplyLeading: false,
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => {
+        onPressed: () async {
           Navigator.push(
               context,
               MaterialPageRoute(
@@ -84,7 +87,11 @@ class _MyReservationState extends State<MyReservation> {
                   id: -1,
                   time: null,
                 ),
-              )).then((_) => fetchData())
+              )).then((_) {
+            setState(() {
+              _reservation = fetchData();
+            });
+          });
         },
         child: Icon(Icons.add),
         backgroundColor: Colors.lightBlue,
@@ -97,12 +104,9 @@ class _MyReservationState extends State<MyReservation> {
         ),
         child: Column(
           children: [
-            SizedBox(
-              height: 2.h,
-            ),
             Expanded(
               child: FutureBuilder<List<Reservation>>(
-                future: fetchData(),
+                future: _reservation,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return const Center(child: CircularProgressIndicator());
@@ -281,13 +285,23 @@ class _MyReservationState extends State<MyReservation> {
                         minimumSize: Size(40.w, 5.h),
                       ),
                       onPressed: () {
-                        ReservationClient.destroy(reservation.id)
-                            .then((_) => fetchData());
+                        setState(() {
+                          _isLoadingForCancle = true;
+                        });
+                        ReservationClient.destroy(reservation.id).then((_) {
+                          setState(() {
+                            _reservation = fetchData();
+                            _isLoadingForCancle = false;
+                          });
+                        });
                       },
-                      child: Text(
-                        'Cancle',
-                        style: TextStyle(color: Colors.grey[600], fontSize: 16),
-                      )),
+                      child: _isLoadingForCancle
+                          ? const CircularProgressIndicator()
+                          : Text(
+                              'Cancle',
+                              style: TextStyle(
+                                  color: Colors.grey[600], fontSize: 16),
+                            )),
                   ElevatedButton(
                       style: OutlinedButton.styleFrom(
                         shape: RoundedRectangleBorder(
@@ -306,7 +320,11 @@ class _MyReservationState extends State<MyReservation> {
                                 bpjs: reservation.hasBPJS.toString(),
                               ),
                             ),
-                          ).then((_) => fetchData());
+                          ).then((_) {
+                            setState(() {
+                              _reservation = fetchData();
+                            });
+                          });
                         } else {
                           Navigator.push(
                             context,
@@ -318,7 +336,11 @@ class _MyReservationState extends State<MyReservation> {
                                 bpjs: '',
                               ),
                             ),
-                          ).then((_) => fetchData());
+                          ).then((_) {
+                            setState(() {
+                              _reservation = fetchData();
+                            });
+                          });
                         }
                       },
                       child: const Text(

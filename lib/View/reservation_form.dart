@@ -63,7 +63,7 @@ class ReservationFormState extends State<ReservationForm> {
 
   @override
   Widget build(BuildContext context) {
-    if (widget.id != null) {
+    if (widget.id != null && widget.id != -1) {
       dateController.text = widget.date!;
       timeController.text = widget.time!;
       isEmpty = false;
@@ -77,11 +77,9 @@ class ReservationFormState extends State<ReservationForm> {
 
       try {
         if (widget.id == -1) {
-          await ReservationClient.create(
-              emailUser, dateController.text, true, 1);
+          await ReservationClient.create(emailUser, dateController.text);
         } else {
-          await ReservationClient.update(
-              widget.id, emailUser, dateController.text, true, 1);
+          await ReservationClient.update(widget.id, dateController.text);
         }
         showSnackBar(context, 'Success', Colors.green);
         Navigator.pop(context);
@@ -119,31 +117,6 @@ class ReservationFormState extends State<ReservationForm> {
                   helperTxt: "",
                   iconData: Icons.date_range_rounded,
                   selectedDate: isEmpty ? null : dateController.text,
-                ),
-                TimePicker(
-                  validasi: (value) {
-                    if (value == null || value.isEmpty) {
-                      return "Select the desired time";
-                    }
-                  },
-                  controller: timeController,
-                  hintTxt: "Select desired time",
-                  helperTxt: "",
-                  iconData: Icons.access_time,
-                  startTime: isEmpty ? null : timeController.text,
-                ),
-                ScannerInputForm(
-                    validasi: (value) {
-                      if (value?.length != 13 && value!.isNotEmpty) {
-                        return "Nomer kartu BPJS harus 13 digit. sekarang hanya ada ${value.length}";
-                      }
-                    },
-                    controller: bpjsController,
-                    hintTxt: "Masukkan nomor BPJS Anda",
-                    helperTxt: "",
-                    iconData: Icons.credit_card),
-                SizedBox(
-                  height: 377.px,
                 ),
               ],
             ),

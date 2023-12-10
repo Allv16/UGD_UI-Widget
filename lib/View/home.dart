@@ -19,9 +19,11 @@ class _HomeViewState extends State<HomeView> {
   String username1 = "";
   String profilePath = '';
   late ShakeDetector detector;
+
   Future<Image> getImage() async {
+    await Future.delayed(const Duration(milliseconds: 500));
     var image = Image.network(
-      "http://52.185.188.129:8000/profiles/$profilePath",
+      "http://52.185.188.129:8000/profiles/$profilePath?${DateTime.now().millisecondsSinceEpoch.toString()}",
       headers: const {
         HttpHeaders.connectionHeader: "keep-alive",
         HttpHeaders.cacheControlHeader: "max-age=0",
@@ -31,8 +33,8 @@ class _HomeViewState extends State<HomeView> {
   }
 
   void initState() {
-    super.initState();
     loadUserData();
+    super.initState();
 
     detector = ShakeDetector.autoStart(onPhoneShake: () async {
       final Uri url = Uri(
@@ -194,11 +196,17 @@ class _HomeViewState extends State<HomeView> {
                                       )
                                     : FutureBuilder(
                                         future: getImage(),
+                                        initialData: null,
                                         builder: (context, snapshot) {
                                           if (snapshot.connectionState ==
-                                              ConnectionState.waiting) {
-                                            return const Center(
-                                              child: CircleAvatar(),
+                                                  ConnectionState.waiting ||
+                                              snapshot.data == null) {
+                                            return const CircleAvatar(
+                                              radius: 50,
+                                              backgroundColor:
+                                                  Colors.transparent,
+                                              child:
+                                                  CircularProgressIndicator(),
                                             );
                                           } else if (snapshot.data == null) {
                                             return const CircleAvatar(
@@ -208,6 +216,7 @@ class _HomeViewState extends State<HomeView> {
                                           } else {
                                             return CircleAvatar(
                                               radius: 50,
+                                              backgroundColor: Colors.grey[100],
                                               backgroundImage: snapshot
                                                   .data!.image as ImageProvider,
                                             );

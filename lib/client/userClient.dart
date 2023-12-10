@@ -1,7 +1,11 @@
+import 'dart:io';
+
+import 'package:image_picker/image_picker.dart';
 import 'package:ugd_ui_widget/model/user.dart';
 
 import 'dart:convert';
 import 'package:http/http.dart';
+import 'package:http/http.dart' as http;
 
 class UserClient {
   static final String url = '10.0.2.2:8000';
@@ -53,7 +57,7 @@ class UserClient {
     }
   }
 
-  static Future<void> updateProfilePicture(String email, String path) async {
+  static Future<void> updateProfilePictureOld(String email, String path) async {
     try {
       var response = await put(Uri.http(url, '$endpoint/$email/profile'),
           headers: {'Content-Type': 'application/json'},
@@ -66,11 +70,41 @@ class UserClient {
     }
   }
 
+  static Future<String> updateProfilePicture(
+      String email, XFile imageFile) async {
+    try {
+      var request = http.MultipartRequest(
+          "POST", Uri.parse("http://$url$endpoint/$email/profile"));
+      var pict = await http.MultipartFile.fromPath("image", imageFile.path);
+      request.files.add(pict);
+      var response = await request.send();
+
+      var responseData = await response.stream.toBytes();
+      var responseString = String.fromCharCodes(responseData);
+      return jsonDecode(responseString)['data'];
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
   static Future<void> updateProfile(User user) async {
     try {
       var response = await put(Uri.http(url, '$endpoint/${user.email}'),
           headers: {'Content-Type': 'application/json'},
           body: user.toRawJson());
+      if (response.statusCode != 200) {
+        throw Exception(response.reasonPhrase);
+      }
+    } catch (e) {
+      throw Exception(e.toString());
+    }
+  }
+
+  static Future<void> updateBPJS(String email, String bpjs) async {
+    try {
+      var response = await put(Uri.http(url, '$endpoint/$email/bpjs'),
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode({'bpjs': bpjs}));
       if (response.statusCode != 200) {
         throw Exception(response.reasonPhrase);
       }
