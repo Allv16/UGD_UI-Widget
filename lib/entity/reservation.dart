@@ -1,14 +1,14 @@
 import 'dart:convert';
 
-class User{
+class Reservation{
 
   final int? id;
   String? date, time, doctorName,userEmail,bpjs;
-  User({this.id, this.date, this.time, this.doctorName, this.userEmail, this.bpjs});
+  Reservation({this.id, this.date, this.time, this.doctorName, this.userEmail, this.bpjs});
 
   //untuk membuat objek barang dari data json yang diterima dari API
-  factory User.fromRawJson(String str) => User.fromJson(json.decode(str));
-  factory User.fromJson(Map<String, dynamic> json) => User(
+  factory Reservation.fromRawJson(String str) => Reservation.fromJson(json.decode(str));
+  factory Reservation.fromJson(Map<String, dynamic> json) => Reservation(
     id: json["id"],
     date: json["date"],
     time: json["time"],
