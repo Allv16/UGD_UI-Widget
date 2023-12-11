@@ -50,18 +50,16 @@ class ReservationClient {
   }
 
   //ini masih TEMPORARY!!!
-  static Future<Response> create(String user_email, String date) async {
-    print("create reservation------");
-    print("$user_email, $date");
-    print("$url$endpoint");
+  static Future<Response> create(
+      String user_email, String date, bool hasBpjs, String idPraktek) async {
     try {
       var response = await post(Uri.http(url, endpoint),
           headers: {'Content-Type': 'application/json'},
           body: jsonEncode({
             "user_email": user_email,
             "date": date,
-            "has_bpjs": true,
-            "id_praktek": "5"
+            "has_bpjs": hasBpjs,
+            "id_praktek": idPraktek
           }));
       print(response.body);
       if (response.statusCode != 200) {
@@ -76,11 +74,11 @@ class ReservationClient {
   }
 
   //mengubah data barang sesuai ID
-  static Future<Response> update(int id, String date) async {
+  static Future<Response> update(int id, String date, String idPraktek) async {
     try {
       var response = await put(Uri.http(url, '$endpoint/$id'),
           headers: {'Content-Type': 'application/json'},
-          body: jsonEncode({"date": date, "id_praktek": "8"}));
+          body: jsonEncode({"date": date, "id_praktek": idPraktek}));
       // print(response.body);
       if (response.statusCode != 200) throw Exception(response.reasonPhrase);
 

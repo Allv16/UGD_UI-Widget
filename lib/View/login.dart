@@ -132,7 +132,8 @@ class _LoginViewState extends State<LoginView> {
                                     showToastMessage(
                                         "Login Successful", Colors.green[400]);
 
-                                    // Continue to the home page or another screen
+                                    print("Moving to HomeView-------------");
+
                                     Navigator.pushAndRemoveUntil(
                                       context,
                                       MaterialPageRoute(

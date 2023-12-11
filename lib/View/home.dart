@@ -1,5 +1,6 @@
 import 'dart:io';
 import 'package:flutter/material.dart';
+import 'package:ugd_ui_widget/View/doctor_list.dart';
 import 'package:ugd_ui_widget/View/profile.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'my_reservation.dart';
@@ -18,6 +19,7 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   String username1 = "";
   String profilePath = '';
+  String bpjsNumber = '';
   late ShakeDetector detector;
 
   Future<Image> getImage() async {
@@ -59,9 +61,11 @@ class _HomeViewState extends State<HomeView> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     String? username = prefs.getString('username');
     String? newPath = prefs.getString('profilePath');
+    String? bpjs = prefs.getString('bpjs');
     setState(() {
       username1 = username!;
       profilePath = newPath!;
+      bpjsNumber = bpjs!;
     });
   }
 
@@ -91,14 +95,24 @@ class _HomeViewState extends State<HomeView> {
     }
   }
 
-  Material menuBox(String gambar, String text, int color) {
-    return Material(
-      color: Colors.white,
-      elevation: 15.0,
-      borderRadius: BorderRadius.circular(24.0),
-      child: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(2.0),
+  Widget menuBox(String gambar, String text) {
+    return GestureDetector(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => DoctorList(
+              poly: text,
+              bpjsNumber: bpjsNumber,
+            ),
+          ),
+        );
+      },
+      child: Material(
+        color: Colors.white,
+        elevation: 15.0,
+        borderRadius: BorderRadius.circular(24.0),
+        child: Center(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
@@ -107,21 +121,16 @@ class _HomeViewState extends State<HomeView> {
                 children: <Widget>[
                   Material(
                       borderRadius: BorderRadius.circular(24.0),
-                      child: Padding(
-                        padding: const EdgeInsets.all(5.0),
-                        child: Image.asset(
-                          gambar,
-                          width: 45,
-                          height: 45,
-                        ),
+                      child: Image.asset(
+                        gambar,
+                        width: 90,
+                        height: 90,
                       )),
-                  Padding(
-                      padding: const EdgeInsets.all(8.0),
-                      child: Text(text,
-                          style: TextStyle(
-                            color: Color(color),
-                            fontSize: 15.0,
-                          )))
+                  Text(text,
+                      style: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 12.0,
+                      ))
                 ],
               )
             ],
@@ -268,8 +277,14 @@ class _HomeViewState extends State<HomeView> {
                         fontWeight: FontWeight.w900,
                         color: Color(0xFF00ACC1)),
                   ),
-                  const SizedBox(
-                    height: 30,
+                  const Text(
+                      "Make your reservation now by choosing the menu below",
+                      style: TextStyle(
+                          fontSize: 14,
+                          fontWeight: FontWeight.w400,
+                          color: Colors.grey)),
+                  SizedBox(
+                    height: 3.h,
                   ),
                   GridView.count(
                     physics: const NeverScrollableScrollPhysics(),
@@ -278,16 +293,24 @@ class _HomeViewState extends State<HomeView> {
                     mainAxisSpacing: 10.0,
                     shrinkWrap: true,
                     children: [
-                      menuBox("images/medicine.png", "Medecine", 0xFF00ACC1),
-                      menuBox("images/medicine.png", "Diagnostic", 0xFF00ACC1),
                       menuBox(
-                          "images/medicine.png", "Consultation", 0xFF00ACC1),
-                      menuBox("images/medicine.png", "Ambulance", 0xFF00ACC1),
-                      menuBox("images/medicine.png", "Nurse", 0xFF00ACC1),
-                      menuBox("images/medicine.png", "First Aid", 0xFF00ACC1),
-                      menuBox("images/medicine.png", "First Aid", 0xFF00ACC1),
-                      menuBox("images/medicine.png", "First Aid", 0xFF00ACC1),
-                      menuBox("images/medicine.png", "First Aid", 0xFF00ACC1),
+                        "images/poly/DentalCare.png",
+                        "Dentist",
+                      ),
+                      menuBox(
+                        "images/poly/orthopedics(2).png",
+                        "Orthopedic",
+                      ),
+                      menuBox(
+                        "images/poly/pediatrics.png",
+                        "Pediatric",
+                      ),
+                      menuBox(
+                        "images/poly/Pulmonologist.png",
+                        "Pulmonology",
+                      ),
+                      menuBox("images/poly/PlasticSurgery.png", "Dermatology"),
+                      menuBox("images/poly/ENT.png", "ENT"),
                     ],
                   ),
                 ],
