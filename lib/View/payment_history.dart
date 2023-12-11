@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:ugd_ui_widget/client/pembayaranClient.dart';
 import 'package:ugd_ui_widget/model/payment.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:ugd_ui_widget/View/my_reservation.dart';
 
 class PaymentHistoryPage extends StatefulWidget {
   @override
@@ -153,7 +154,7 @@ Widget paymentCard(Payment p, bool isOnProgress, context, ref) {
             children: [
               Icon(Icons.medical_services, color: Colors.grey),
               SizedBox(width: 8.0),
-              Text('Dr. ${p.reservation!.doctorName}',
+              Text('Dr. ${p.reservation != null && p.reservation!.doctorName != null ? p.reservation!.doctorName : doctor[0]}',
                   style: TextStyle(color: Colors.black)),
             ],
           ),
