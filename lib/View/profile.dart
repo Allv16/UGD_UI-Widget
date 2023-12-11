@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:ugd_ui_widget/View/bpjs_form.dart';
+import 'package:ugd_ui_widget/View/payment_history.dart';
 import 'package:ugd_ui_widget/View/profileEdit.dart';
 import 'home.dart';
 import 'my_reservation.dart';
@@ -248,6 +249,31 @@ class _ProfileViewState extends State<ProfileView> {
               ),
               SizedBox(
                 height: 3.h,
+              ),
+              Text('Transaction',
+                  style: GoogleFonts.lato(
+                      fontSize: 16.sp, fontWeight: FontWeight.w600)),
+              ListTile(
+                leading: const Icon(FontAwesomeIcons.receipt, size: 20),
+                title: const Text(
+                  'Payment History',
+                  textAlign: TextAlign.left,
+                ),
+                contentPadding: const EdgeInsets.all(0),
+                trailing: Icon(Icons.arrow_forward_ios_rounded,
+                    size: 16.sp, color: Colors.grey),
+                horizontalTitleGap: 11,
+                onTap: () => {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => PaymentHistoryPage(),
+                    ),
+                  ).then((_) => loadUserData())
+                },
+              ),
+              SizedBox(
+                height: 2.h,
               ),
               Text('Account Settings',
                   style: GoogleFonts.lato(

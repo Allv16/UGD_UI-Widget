@@ -33,6 +33,7 @@ class _ReservationFormState extends State<ReservationForm> {
   String? selectedDate;
   String? selectedTime;
   String? selectedIdPraktek;
+  int? idPayment;
   int idReservation = -1;
   List<Map<String, dynamic>>? availableTime;
   Future<List<Praktek>>? _praktekList;
