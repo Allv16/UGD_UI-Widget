@@ -27,7 +27,7 @@ class _bcaViewState extends State<bcaView> {
   int _selectedIndex = 1;
 
   final List<Item> _data = List<Item>.generate(
-    10,
+    3,
     (int index) {
       return Item(
         headerText: 'Item $index',

@@ -7,8 +7,8 @@ import 'package:ugd_ui_widget/View/profile.dart';
 import 'package:ugd_ui_widget/View/my_reservation.dart';
 import 'package:ugd_ui_widget/View/payment/payment.dart';
 
-class bookingSuccessPage extends StatefulWidget {
-  const bookingSuccessPage(
+class bookingSuccessBPJSPage extends StatefulWidget {
+  const bookingSuccessBPJSPage(
     {Key? key,
     required bool this.has_bpjs,
     required String this.doctor_name,
@@ -22,10 +22,10 @@ class bookingSuccessPage extends StatefulWidget {
   final String jam_praktek;
 
   @override
-  _bookingSuccessPageState createState() => _bookingSuccessPageState();
+  _bookingSuccessBPJSPageState createState() => _bookingSuccessBPJSPageState();
 }
 
-class _bookingSuccessPageState extends State<bookingSuccessPage> {
+class _bookingSuccessBPJSPageState extends State<bookingSuccessBPJSPage> {
   int _selectedIndex = 0;
 
   @override
@@ -90,42 +90,17 @@ class _bookingSuccessPageState extends State<bookingSuccessPage> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) {
-                          return const PaymentView();
+                          return const MyReservation();
                         }),
                       );
                     },
                     child: const Text(
-                      'PAY NOW',
+                      'Back to Your Reservation',
                       style: TextStyle(
                         color: Colors.white,
                         fontWeight: FontWeight.bold,
                         fontSize: 16,
                       ),
-                    ),
-                  ),
-                ),
-                SizedBox(height: 10),
-                Text(
-                  "Don't want to pay right now?",
-                  style: TextStyle(
-                    color: Colors.grey[600],
-                    fontSize: 14,
-                  ),
-                ),
-                InkWell(
-                  onTap: () {
-                    Navigator.push(context,
-                        MaterialPageRoute(builder: (context) {
-                      return HomeView();
-                    }));
-                  },
-                  child: Text(
-                    "Pay Later",
-                    style: TextStyle(
-                      color: Colors.blue,
-                      fontSize: 14,
-                      fontWeight: FontWeight.bold,
-                      decoration: TextDecoration.underline,
                     ),
                   ),
                 ),
@@ -177,7 +152,7 @@ class _bookingSuccessPageState extends State<bookingSuccessPage> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => bookingSuccessPage(has_bpjs: true,doctor_name: "Alvian" ,reservation_date: DateTime.now() ,jam_praktek: "17:00" ),
+            builder: (context) => bookingSuccessBPJSPage(has_bpjs: true,doctor_name: "Alvian" ,reservation_date: DateTime.now() ,jam_praktek: "17:00"),
           ),
         );
       }

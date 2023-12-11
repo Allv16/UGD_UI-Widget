@@ -90,7 +90,7 @@ class _HomeViewState extends State<HomeView> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => bookingSuccessPage(),
+          builder: (context) => bookingSuccessPage(has_bpjs: true,doctor_name: "Alvian" ,reservation_date: DateTime.now(), jam_praktek: "17:00"),
         ),
       );
     } else {

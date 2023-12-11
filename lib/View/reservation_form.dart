@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:ugd_ui_widget/View/payment/bookingSuccess.dart';
+import 'package:ugd_ui_widget/View/payment/bookingSuccessBPJS.dart';
 import 'package:ugd_ui_widget/component/form_component.dart';
 // import 'package:ugd_ui_widget/database/sql_helper_reservation.dart';
 import 'dart:math';
@@ -81,8 +83,21 @@ class ReservationFormState extends State<ReservationForm> {
         } else {
           await ReservationClient.update(widget.id, dateController.text);
         }
+        Reservation cek = await ReservationClient.find(widget.id);
+        print(widget.bpjs);
         showSnackBar(context, 'Success', Colors.green);
-        Navigator.pop(context);
+        if(widget.bpjs != "-1") {
+           Navigator.pop(context);
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => bookingSuccessBPJSPage(has_bpjs: true,doctor_name: "Alvian" ,reservation_date: DateTime.now() ,jam_praktek: "17:00")), 
+          ); 
+        } else{
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => bookingSuccessPage(has_bpjs: false,doctor_name: "Alvian" ,reservation_date: DateTime.now() ,jam_praktek: "17:00")), 
+          );
+        }
       } catch (err) {
         showSnackBar(context, err.toString(), Colors.red);
         Navigator.pop(context);
