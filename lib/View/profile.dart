@@ -106,7 +106,8 @@ class _ProfileViewState extends State<ProfileView> {
                       ? Stack(children: [
                           const CircleAvatar(
                               radius: 50,
-                              backgroundImage: AssetImage('images/pp.jpg')),
+                              backgroundImage:
+                                  AssetImage('images/kucheng.jpeg')),
                           Positioned(
                               bottom: 0,
                               right: 0,
@@ -142,7 +143,8 @@ class _ProfileViewState extends State<ProfileView> {
                             } else if (snapshot.data == null) {
                               return const CircleAvatar(
                                   radius: 50,
-                                  backgroundImage: AssetImage('images/pp.jpg'));
+                                  backgroundImage:
+                                      AssetImage('images/kucheng.jpeg'));
                             } else {
                               return Stack(
                                 children: [
@@ -358,7 +360,7 @@ class _ProfileViewState extends State<ProfileView> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.book),
-            label: 'Reservation',
+            label: 'Booking',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_circle),
