@@ -2,13 +2,12 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:ugd_ui_widget/View/doctor_list.dart';
 import 'package:ugd_ui_widget/View/profile.dart';
-import 'package:ugd_ui_widget/View/payment/bookingSuccess.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'my_reservation.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shake/shake.dart';
-import 'package:ugd_ui_widget/constant/app_constant.dart';
+import 'package:carousel_slider/carousel_slider.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({Key? key}) : super(key: key);
@@ -18,6 +17,16 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  final carouselContent = [
+    "Engaging in laughter doesn't just uplift your mood; it also has immune-boosting effects.",
+    "Blueberries are packed with antioxidants, particularly anthocyanins, which have been linked to improved cognitive function.",
+    "Quality sleep is crucial for overall health. During sleep, the body repairs cells and tissues, consolidates memories.",
+    "Staying properly hydrated not only supports bodily functions but also has a direct impact on cognitive performance. ",
+    "Regular walking is a simple yet effective way to maintain cardiovascular health. Aim for at least 30 minutes of brisk walking most days of the week.",
+    "Incorporating mindfulness meditation into your routine has been shown to reduce stress and improve mental well-being.",
+    "Maintaining strong social connections is associated with a longer and healthier life. "
+  ];
+
   String username1 = "";
   String profilePath = '';
   String bpjsNumber = '';
@@ -239,45 +248,25 @@ class _HomeViewState extends State<HomeView> {
                       ],
                     ),
                   ),
-                  const SizedBox(
-                    height: 20,
+                  SizedBox(
+                    height: 3.h,
                   ),
-                  Container(
-                    padding: const EdgeInsets.all(25.0),
-                    decoration: BoxDecoration(
-                        color: Colors.cyan[600],
-                        borderRadius: BorderRadius.circular(15)),
-                    child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          Text(
-                            "Health Fact",
-                            style: TextStyle(
-                              fontSize: 20.sp,
-                              fontWeight: FontWeight.w400,
-                              color: Colors.white,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 10,
-                          ),
-                          Text(
-                            "Dalam istilah Kedokteran, istilah penyakit panas dalam tidak pernah ada.",
-                            style: TextStyle(
-                                color: Colors.grey[200], fontSize: 20),
-                          )
-                        ]),
+                  CarouselSlider.builder(
+                      itemCount: carouselContent.length,
+                      options: CarouselOptions(
+                          height: 25.h, autoPlay: true, viewportFraction: 1),
+                      itemBuilder: (context, index, realIndex) {
+                        return healthFactItem(carouselContent[index]);
+                      }),
+                  SizedBox(
+                    height: 5.h,
                   ),
-                  const SizedBox(
-                    height: 50,
-                  ),
-                  const Text(
-                    "What do you need?",
-                    style: TextStyle(
+                  Text("What do you need?",
+                      style: TextStyle(
                         fontSize: 25,
                         fontWeight: FontWeight.w900,
-                        color: Color(0xFF00ACC1)),
-                  ),
+                        color: Theme.of(context).primaryColor,
+                      )),
                   const Text(
                       "Make your reservation now by choosing the menu below",
                       style: TextStyle(
@@ -328,7 +317,7 @@ class _HomeViewState extends State<HomeView> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.book),
-            label: 'Booking',
+            label: 'Reservation',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_circle),
@@ -339,6 +328,33 @@ class _HomeViewState extends State<HomeView> {
         selectedItemColor: Colors.cyan[600],
         onTap: _onItemTapped,
       ),
+    );
+  }
+
+  Widget healthFactItem(String text) {
+    return Container(
+      margin: EdgeInsets.symmetric(horizontal: 1.h, vertical: 1.h),
+      padding: const EdgeInsets.all(15.0),
+      decoration: BoxDecoration(
+          color: Theme.of(context).primaryColor,
+          borderRadius: BorderRadius.circular(15)),
+      child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+        Text(
+          "Health Fact",
+          style: TextStyle(
+              fontSize: 18.sp,
+              fontWeight: FontWeight.w700,
+              color: Colors.white,
+              overflow: TextOverflow.fade),
+        ),
+        const SizedBox(
+          height: 10,
+        ),
+        Text(
+          text,
+          style: TextStyle(color: Colors.grey[200], fontSize: 15),
+        )
+      ]),
     );
   }
 }

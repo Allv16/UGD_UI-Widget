@@ -3,7 +3,7 @@ import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:ugd_ui_widget/View/home.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:ugd_ui_widget/View/payment/transfer.dart';
-import 'package:ugd_ui_widget/client/reservationClient.dart';
+import 'package:ugd_ui_widget/client/paymentClient.dart';
 
 class PaymentView extends StatefulWidget {
   final String? image_path;
@@ -67,7 +67,7 @@ class _PaymentViewState extends State<PaymentView> {
                     () async {
                       print("BCA");
                       jenis_Pembayaran = "BCA";
-                      await ReservationClient.updateJenisPembayaran(
+                      await PaymentClient.updateJenisPembayaran(
                         widget.id_payment,
                         jenis_Pembayaran!,
                       );
@@ -88,7 +88,7 @@ class _PaymentViewState extends State<PaymentView> {
                     0xFF00ACC1,
                     () async {
                       jenis_Pembayaran = "BNI";
-                      await ReservationClient.updateJenisPembayaran(
+                      await PaymentClient.updateJenisPembayaran(
                         widget.id_payment,
                         jenis_Pembayaran!,
                       );
@@ -109,7 +109,7 @@ class _PaymentViewState extends State<PaymentView> {
                     0xFF00ACC1,
                     () async {
                       jenis_Pembayaran = "BRI";
-                      await ReservationClient.updateJenisPembayaran(
+                      await PaymentClient.updateJenisPembayaran(
                         widget.id_payment,
                         jenis_Pembayaran!,
                       );
@@ -130,7 +130,7 @@ class _PaymentViewState extends State<PaymentView> {
                     0xFF00ACC1,
                     () async {
                       jenis_Pembayaran = "CIMB NIAGA";
-                      await ReservationClient.updateJenisPembayaran(
+                      await PaymentClient.updateJenisPembayaran(
                         widget.id_payment,
                         jenis_Pembayaran!,
                       );
@@ -176,7 +176,7 @@ class _PaymentViewState extends State<PaymentView> {
                     0xFF00ACC1,
                     () async {
                       jenis_Pembayaran = "Shopee";
-                      await ReservationClient.updateJenisPembayaran(
+                      await PaymentClient.updateJenisPembayaran(
                         widget.id_payment,
                         jenis_Pembayaran!,
                       );
@@ -196,7 +196,7 @@ class _PaymentViewState extends State<PaymentView> {
                     0xFF00ACC1,
                     () async {
                       jenis_Pembayaran = "GOPAY";
-                      await ReservationClient.updateJenisPembayaran(
+                      await PaymentClient.updateJenisPembayaran(
                         widget.id_payment,
                         jenis_Pembayaran!,
                       );
@@ -216,7 +216,7 @@ class _PaymentViewState extends State<PaymentView> {
                     0xFF00ACC1,
                     () async {
                       jenis_Pembayaran = "DANA";
-                      await ReservationClient.updateJenisPembayaran(
+                      await PaymentClient.updateJenisPembayaran(
                         widget.id_payment,
                         jenis_Pembayaran!,
                       );
@@ -236,7 +236,7 @@ class _PaymentViewState extends State<PaymentView> {
                     0xFF00ACC1,
                     () async {
                       jenis_Pembayaran = "LinkAja";
-                      await ReservationClient.updateJenisPembayaran(
+                      await PaymentClient.updateJenisPembayaran(
                         widget.id_payment,
                         jenis_Pembayaran!,
                       );
@@ -256,7 +256,7 @@ class _PaymentViewState extends State<PaymentView> {
                     0xFF00ACC1,
                     () async {
                       jenis_Pembayaran = "OVO";
-                      await ReservationClient.updateJenisPembayaran(
+                      await PaymentClient.updateJenisPembayaran(
                         widget.id_payment,
                         jenis_Pembayaran!,
                       );

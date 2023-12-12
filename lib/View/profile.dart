@@ -360,7 +360,7 @@ class _ProfileViewState extends State<ProfileView> {
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.book),
-            label: 'Booking',
+            label: 'Reservation',
           ),
           BottomNavigationBarItem(
             icon: Icon(Icons.account_circle),

@@ -74,14 +74,16 @@ class PaymentHistoryTab extends ConsumerWidget {
     var listenerPaid = ref.watch(listPaid);
     return listenerPaid.when(
       data: (data) {
-        return ListView.separated(
-          itemCount: data.length, // card count
-          separatorBuilder: (BuildContext context, int index) =>
-              SizedBox(height: 16.0),
-          itemBuilder: (context, index) {
-            return paymentCard(data[index], false, context, ref);
-          },
-        );
+        return data.isEmpty
+            ? const Center(child: Text('No Payments are completed'))
+            : ListView.separated(
+                itemCount: data.length, // card count
+                separatorBuilder: (BuildContext context, int index) =>
+                    SizedBox(height: 16.0),
+                itemBuilder: (context, index) {
+                  return paymentCard(data[index], false, context, ref);
+                },
+              );
       },
       loading: () => Center(child: CircularProgressIndicator()),
       error: (e, s) => Center(child: Text(e.toString())),
@@ -100,7 +102,7 @@ class PaymentHistoryProgress extends ConsumerWidget {
   final listUnpaid = FutureProvider<List<Payments>>((ref) async {
     try {
       SharedPreferences prefs = await SharedPreferences.getInstance();
-      String email = '1@';
+      String email = prefs.getString('email')!;
       return await PaymentClient.fetchAllUnpaid(email);
     } catch (e) {
       return Future.error(e.toString());
@@ -112,17 +114,19 @@ class PaymentHistoryProgress extends ConsumerWidget {
     var listenerUnpaid = ref.watch(listUnpaid);
     return listenerUnpaid.when(
       data: (data) {
-        return Padding(
-          padding: EdgeInsets.symmetric(horizontal: 3.w),
-          child: ListView.separated(
-            itemCount: data.length, // card count
-            separatorBuilder: (BuildContext context, int index) =>
-                SizedBox(height: 0.5.h),
-            itemBuilder: (context, index) {
-              return paymentCard(data[index], true, context, ref);
-            },
-          ),
-        );
+        return data.isEmpty
+            ? const Center(child: Text('No Payments are on progress'))
+            : Padding(
+                padding: EdgeInsets.symmetric(horizontal: 3.w),
+                child: ListView.separated(
+                  itemCount: data.length, // card count
+                  separatorBuilder: (BuildContext context, int index) =>
+                      SizedBox(height: 0.5.h),
+                  itemBuilder: (context, index) {
+                    return paymentCard(data[index], true, context, ref);
+                  },
+                ),
+              );
       },
       loading: () => Center(child: CircularProgressIndicator()),
       error: (e, s) => Center(child: Text(e.toString())),
@@ -131,6 +135,7 @@ class PaymentHistoryProgress extends ConsumerWidget {
 }
 
 Widget paymentCard(Payments p, bool isOnProgress, context, ref) {
+  bool _isLoading = false;
   return Card(
     child: Container(
       decoration: BoxDecoration(
@@ -263,7 +268,15 @@ Widget paymentCard(Payments p, bool isOnProgress, context, ref) {
                                     color: Colors.grey, width: 0.8),
                                 minimumSize: Size(5.w, 3.h),
                               ),
-                              onPressed: () {},
+                              onPressed: () async {
+                                await PaymentClient.canclePayment(p.id);
+                                Navigator.of(context)
+                                    .pop(); // Pop the current screen
+                                Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            PaymentHistoryPage()));
+                              },
                               child: Text(
                                 'Cancle',
                                 style: TextStyle(
@@ -277,7 +290,15 @@ Widget paymentCard(Payments p, bool isOnProgress, context, ref) {
                                     borderRadius: BorderRadius.circular(50)),
                                 minimumSize: Size(5.w, 3.h),
                               ),
-                              onPressed: () {},
+                              onPressed: () async {
+                                await PaymentClient.payPayment(p.id);
+                                Navigator.of(context)
+                                    .pop(); // Pop the current screen
+                                Navigator.of(context).pushReplacement(
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            PaymentHistoryPage()));
+                              },
                               child: const Text(
                                 'Pay',
                                 style: TextStyle(

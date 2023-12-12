@@ -4,6 +4,7 @@ import 'package:ugd_ui_widget/View/my_reservation.dart';
 import 'package:ugd_ui_widget/View/payment/payment.dart';
 import 'package:ugd_ui_widget/View/payment/paymentSuccess.dart';
 import 'package:ugd_ui_widget/View/test.dart';
+import 'package:ugd_ui_widget/client/paymentClient.dart';
 import 'package:ugd_ui_widget/client/reservationClient.dart';
 import 'package:ugd_ui_widget/main.dart';
 
@@ -19,7 +20,9 @@ class Item {
 }
 
 class transferView extends StatefulWidget {
-  const transferView({Key? key, required String this.image_path, required int this.id_payment}) : super(key: key);
+  const transferView(
+      {Key? key, required String this.image_path, required int this.id_payment})
+      : super(key: key);
   final int id_payment;
   final String image_path;
 
@@ -28,7 +31,6 @@ class transferView extends StatefulWidget {
 }
 
 class _transferViewState extends State<transferView> {
-
   final List<Item> _data = List<Item>.generate(
     3,
     (int index) {
@@ -98,7 +100,8 @@ class _transferViewState extends State<transferView> {
                         InkWell(
                           onTap: () {
                             print(widget.id_payment);
-                            Navigator.push(context, MaterialPageRoute(builder: (context) {
+                            Navigator.push(context,
+                                MaterialPageRoute(builder: (context) {
                               return PaymentView(
                                 id_payment: widget.id_payment,
                               );
@@ -166,8 +169,10 @@ class _transferViewState extends State<transferView> {
                             padding: const EdgeInsets.all(8.0),
                             child: InkWell(
                               onTap: () {
-                                Navigator.push(context, MaterialPageRoute(builder: (context) {
-                                  return PaymentView(id_payment: widget.id_payment);
+                                Navigator.push(context,
+                                    MaterialPageRoute(builder: (context) {
+                                  return PaymentView(
+                                      id_payment: widget.id_payment);
                                 }));
                               },
                               child: Text(
@@ -257,12 +262,15 @@ class _transferViewState extends State<transferView> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: ElevatedButton(
                                   onPressed: () {
                                     Navigator.pushAndRemoveUntil(
                                       context,
-                                      MaterialPageRoute(builder: (context) => const MyReservation()),
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const MyReservation()),
                                       (route) => false,
                                     );
                                   },
@@ -273,13 +281,17 @@ class _transferViewState extends State<transferView> {
                                 ),
                               ),
                               Padding(
-                                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                                padding:
+                                    const EdgeInsets.symmetric(horizontal: 8.0),
                                 child: ElevatedButton(
                                   onPressed: () async {
-                                    await ReservationClient.updatePaid(widget.id_payment);
+                                    await PaymentClient.payPayment(
+                                        widget.id_payment);
                                     Navigator.pushAndRemoveUntil(
                                       context,
-                                      MaterialPageRoute(builder: (context) => const paymentSuccessPage()),
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const paymentSuccessPage()),
                                       (route) => false,
                                     );
                                   },

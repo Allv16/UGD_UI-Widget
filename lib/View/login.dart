@@ -132,8 +132,6 @@ class _LoginViewState extends State<LoginView> {
                                     showToastMessage(
                                         "Login Successful", Colors.green[400]);
 
-                                    print("Moving to HomeView-------------");
-
                                     Navigator.pushAndRemoveUntil(
                                       context,
                                       MaterialPageRoute(
@@ -210,7 +208,7 @@ class _LoginViewState extends State<LoginView> {
                           onPressed: () {
                             Navigator.push(context,
                                 MaterialPageRoute(builder: (context) {
-                              return RegisterView();
+                              return const RegisterView();
                             }));
                           },
                           child: Text("Register",
