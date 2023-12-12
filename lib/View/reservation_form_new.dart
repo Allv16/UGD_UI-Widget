@@ -3,6 +3,8 @@ import 'package:intl/intl.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:ugd_ui_widget/View/my_reservation.dart';
+import 'package:ugd_ui_widget/View/payment/bookingSuccess.dart';
+import 'package:ugd_ui_widget/View/payment/bookingSuccessBPJS.dart';
 import 'package:ugd_ui_widget/client/praktek_client.dart';
 import 'package:ugd_ui_widget/client/reservationClient.dart';
 import 'package:ugd_ui_widget/entity/Praktek.dart';
@@ -11,6 +13,7 @@ class ReservationForm extends StatefulWidget {
   final String idDoctor;
   final String bpjsNumber;
   final String? date;
+  final String? doctor_name;
   final String? idPraktek;
   final bool? hasBpjs;
   final int? idReservation;
@@ -21,6 +24,7 @@ class ReservationForm extends StatefulWidget {
       required this.bpjsNumber,
       this.idReservation,
       this.date,
+      this.doctor_name,
       this.idPraktek,
       this.hasBpjs})
       : super(key: key);
@@ -30,10 +34,10 @@ class ReservationForm extends StatefulWidget {
 }
 
 class _ReservationFormState extends State<ReservationForm> {
+  int? idPayment;
   String? selectedDate;
   String? selectedTime;
   String? selectedIdPraktek;
-  int? idPayment;
   int idReservation = -1;
   List<Map<String, dynamic>>? availableTime;
   Future<List<Praktek>>? _praktekList;
@@ -198,22 +202,53 @@ class _ReservationFormState extends State<ReservationForm> {
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
                   if (idReservation == -1) {
-                    final result = await ReservationClient.create(
-                      prefs.getString("email")!,
-                      selectedDate!,
-                      isSwitched,
-                      selectedIdPraktek!,
-                    );
-                    idPayment = result['pembayaran']['id'];
+                    if (isSwitched) {
+                      await ReservationClient.create(
+                        prefs.getString("email")!,
+                        selectedDate!,
+                        isSwitched,
+                        selectedIdPraktek!,
+                      );
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => bookingSuccessBPJSPage(
+                                has_bpjs: isSwitched,
+                                doctor_name: widget.doctor_name!,
+                                reservation_date: selectedDate!,
+                                jam_praktek: selectedTime!)),
+                        (route) => false,
+                      );
+                    } else {
+                      final result = await ReservationClient.create(
+                        prefs.getString("email")!,
+                        selectedDate!,
+                        isSwitched,
+                        selectedIdPraktek!,
+                      );
+                      idPayment = result['pembayaran']['id'];
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => bookingSuccessPage(
+                                  has_bpjs: isSwitched,
+                                  doctor_name: widget.doctor_name!,
+                                  reservation_date: selectedDate!,
+                                  jam_praktek: selectedTime!,
+                                  id_payment: idPayment!,
+                                )),
+                        (route) => false,
+                      );
+                    }
                   } else {
                     await ReservationClient.update(
                         idReservation, selectedDate!, selectedIdPraktek!);
+                    Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const MyReservation()),
+                        (route) => false);
                   }
-                  Navigator.pushAndRemoveUntil(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const MyReservation()),
-                      (route) => false);
                 },
                 child: _isLoading
                     ? const CircularProgressIndicator(

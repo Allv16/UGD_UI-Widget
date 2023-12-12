@@ -83,6 +83,7 @@ class _DoctorListState extends State<DoctorList> {
             return ReservationForm(
               idDoctor: id,
               bpjsNumber: widget.bpjsNumber,
+              doctor_name: name,
             );
           }));
         });

@@ -11,6 +11,8 @@ class ReservationClient {
   // static final String url = '10.53.11.59:8000'; //base url
   // static final String url = '52.185.188.129:8000'; //base url
   static final String endpoint = '/api/reservation'; //base endpoint
+  static final String endpointPembayaran = '/api/pembayaran'; //base endpoint
+  static final String endpointPaid = '/api/paid'; //base endpoint
 
   //untuk hp
   // static final String url = '192.168.1.14';
@@ -117,6 +119,35 @@ class ReservationClient {
       Iterable list = json.decode(response.body)['data'];
 
       return list.map((e) => Reservation.fromJson(e)).toList();
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
+  static Future<Response> updateJenisPembayaran(
+      int id, String jenisPembayaran) async {
+    try {
+      var response = await put(Uri.http(url, endpointPembayaran),
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode({"jenis_pembayaran": jenisPembayaran, "id": id}));
+      // print(response.body);
+      if (response.statusCode != 200) throw Exception(response.reasonPhrase);
+
+      return response;
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
+  static Future<Response> updatePaid(int id) async {
+    try {
+      var response = await put(Uri.http(url, '$endpointPaid'),
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode({"id": id}));
+      // print(response.body);
+      if (response.statusCode != 200) throw Exception(response.reasonPhrase);
+
+      return response;
     } catch (e) {
       return Future.error(e.toString());
     }

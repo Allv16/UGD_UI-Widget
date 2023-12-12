@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:ugd_ui_widget/View/doctor_list.dart';
 import 'package:ugd_ui_widget/View/profile.dart';
+import 'package:ugd_ui_widget/View/payment/bookingSuccess.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'my_reservation.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
