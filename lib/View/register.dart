@@ -79,7 +79,7 @@ class _RegisterViewState extends State<RegisterView> {
                                 key: Key('usernameField'),
                                 validasi: (p0) {
                                   if (p0 == null || p0.isEmpty) {
-                                    return 'Username Tidak Boleh Kosong';
+                                    return 'This field must be filled';
                                   }
                                   if (p0.toLowerCase() == 'anjing') {
                                     return 'Tidak Boleh mengginakan kata kasar';
@@ -96,7 +96,7 @@ class _RegisterViewState extends State<RegisterView> {
                                   DateTime now = DateTime.now();
                                   if (selectedDate == null ||
                                       selectedDate.isEmpty) {
-                                    return "Pilih tanggal lahir!";
+                                    return "This field must be filled";
                                   }
                                   DateFormat inputFormat =
                                       DateFormat('yyyy-MM-dd');
@@ -115,10 +115,10 @@ class _RegisterViewState extends State<RegisterView> {
                                 key: Key('telpField'),
                                 validasi: ((p0) {
                                   if (p0 == null || p0.isEmpty) {
-                                    return 'Nomor Telepon tidak boleh kosong';
+                                    return 'This field must be filled';
                                   }
                                   if (p0.length < 11) {
-                                    return 'Nomor telepon harus memiliki setidaknya 11 digit!';
+                                    return 'Phone number must be 11 or more characters';
                                   }
                                   return null;
                                 }),
@@ -130,10 +130,10 @@ class _RegisterViewState extends State<RegisterView> {
                                 key: Key('emailField'),
                                 validasi: ((p0) {
                                   if (p0 == null || p0.isEmpty) {
-                                    return 'Email tidak boleh kosong';
+                                    return 'This field must be filled';
                                   }
                                   if (!p0.contains('@')) {
-                                    return 'Email harus menggunakan @';
+                                    return 'Email must be valid email address';
                                   }
                                   return null;
                                 }),
@@ -145,7 +145,7 @@ class _RegisterViewState extends State<RegisterView> {
                                 key: Key('passwordField'),
                                 validasi: (value) {
                                   if (value == null || value.isEmpty) {
-                                    return 'password kosong';
+                                    return 'This field must be filled';
                                   }
                                   if (value.length < 5) {
                                     return 'password must be 5 or more characters';

@@ -7,9 +7,9 @@ import 'package:http/http.dart';
 
 class ReservationClient {
   //untuk emulator
-  static final String url = '10.0.2.2:8000'; //base url
+  // static final String url = '10.0.2.2:8000'; //base url
   // static final String url = '10.53.11.59:8000'; //base url
-  // static final String url = '52.185.188.129:8000'; //base url
+  static final String url = '52.185.188.129:8000'; //base url
   static final String endpoint = '/api/reservation'; //base endpoint
 
   //untuk hp
@@ -23,8 +23,8 @@ class ReservationClient {
       var response = await get(Uri.http(url,
           "$endpoint/$email")); //melakukan req ke api dan menyimpan responsenya
 
+      print(response.body);
       if (response.statusCode != 200) throw Exception(response.reasonPhrase);
-      // print(response.body);
       //mengambil bagian data dari response body
       Iterable list = json.decode(response.body)['data'];
 

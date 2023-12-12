@@ -211,7 +211,7 @@ class _HomeViewState extends State<HomeView> {
                                     ? const CircleAvatar(
                                         radius: 50,
                                         backgroundImage:
-                                            AssetImage('images/kucheng.jpeg'),
+                                            AssetImage('images/pp.jpg'),
                                       )
                                     : FutureBuilder(
                                         future: getImage(),
@@ -231,7 +231,7 @@ class _HomeViewState extends State<HomeView> {
                                             return const CircleAvatar(
                                                 radius: 50,
                                                 backgroundImage: AssetImage(
-                                                    'images/kucheng.jpeg'));
+                                                    'images/pp.jpg'));
                                           } else {
                                             return CircleAvatar(
                                               radius: 50,

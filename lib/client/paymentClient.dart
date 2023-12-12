@@ -3,7 +3,8 @@ import 'package:ugd_ui_widget/model/payment.dart';
 import 'dart:convert';
 
 class PaymentClient {
-  static final String url = '10.0.2.2:8000';
+  // static final String url = '10.0.2.2:8000';
+  static final String url = '52.185.188.129:8000';
   static final String endpoint = '/api/pembayaranPaid';
   static final String endpoint2 = '/api/pembayaranUnpaid';
   static final String endpointPembayaran = '/api/pembayaran'; //base endpoint

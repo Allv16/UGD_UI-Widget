@@ -4,9 +4,9 @@ import 'dart:convert';
 import 'package:http/http.dart';
 
 class doctorClient {
-  static final String url = '10.0.2.2:8000'; //base url
+  // static final String url = '10.0.2.2:8000'; //base url
   // static final String url = '10.53.11.59:8000'; //base url
-  // static final String url = '52.185.188.129:8000'; //base url
+  static final String url = '52.185.188.129:8000'; //base url
   static final String endpoint = '/api/praktek';
 
   static Future<List<Praktek>> fetchPraktekByDoctor(String id) async {

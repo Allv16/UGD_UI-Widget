@@ -106,8 +106,7 @@ class _ProfileViewState extends State<ProfileView> {
                       ? Stack(children: [
                           const CircleAvatar(
                               radius: 50,
-                              backgroundImage:
-                                  AssetImage('images/kucheng.jpeg')),
+                              backgroundImage: AssetImage('images/pp.jpg')),
                           Positioned(
                               bottom: 0,
                               right: 0,
@@ -143,8 +142,7 @@ class _ProfileViewState extends State<ProfileView> {
                             } else if (snapshot.data == null) {
                               return const CircleAvatar(
                                   radius: 50,
-                                  backgroundImage:
-                                      AssetImage('images/kucheng.jpeg'));
+                                  backgroundImage: AssetImage('images/pp.jpg'));
                             } else {
                               return Stack(
                                 children: [
