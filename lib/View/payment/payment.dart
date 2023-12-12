@@ -10,16 +10,15 @@ class PaymentView extends StatefulWidget {
   // final String? jenis_pembayaran;
   final int id_payment;
 
-  const PaymentView({Key? key, 
-  this.image_path,
-  required this.id_payment}) : super(key: key);
+  const PaymentView({Key? key, this.image_path, required this.id_payment})
+      : super(key: key);
 
   @override
   _PaymentViewState createState() => _PaymentViewState();
 }
 
 class _PaymentViewState extends State<PaymentView> {
-String? jenis_Pembayaran;
+  String? jenis_Pembayaran;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -34,10 +33,9 @@ String? jenis_Pembayaran;
         ),
         centerTitle: true,
       ),
-      body:
-        Card(
+      body: Card(
         elevation: 5.0,
-        margin: EdgeInsets.all(16.0), 
+        margin: EdgeInsets.all(16.0),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(8.0),
         ),
@@ -70,10 +68,9 @@ String? jenis_Pembayaran;
                       print("BCA");
                       jenis_Pembayaran = "BCA";
                       await ReservationClient.updateJenisPembayaran(
-                            widget.id_payment,
-                            jenis_Pembayaran!,
-                            "Pending"
-                          );
+                        widget.id_payment,
+                        jenis_Pembayaran!,
+                      );
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) {
@@ -81,7 +78,7 @@ String? jenis_Pembayaran;
                             image_path: "images/bca.png",
                             id_payment: widget.id_payment,
                           );
-                          }),
+                        }),
                       );
                     },
                   ),
@@ -92,10 +89,9 @@ String? jenis_Pembayaran;
                     () async {
                       jenis_Pembayaran = "BNI";
                       await ReservationClient.updateJenisPembayaran(
-                            widget.id_payment,
-                            jenis_Pembayaran!,
-                            "Pending"
-                          );
+                        widget.id_payment,
+                        jenis_Pembayaran!,
+                      );
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) {
@@ -103,7 +99,7 @@ String? jenis_Pembayaran;
                             image_path: "images/bni.png",
                             id_payment: widget.id_payment,
                           );
-                          }),
+                        }),
                       );
                     },
                   ),
@@ -114,10 +110,9 @@ String? jenis_Pembayaran;
                     () async {
                       jenis_Pembayaran = "BRI";
                       await ReservationClient.updateJenisPembayaran(
-                            widget.id_payment,
-                            jenis_Pembayaran!,
-                            "Pending"
-                          );
+                        widget.id_payment,
+                        jenis_Pembayaran!,
+                      );
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) {
@@ -125,7 +120,7 @@ String? jenis_Pembayaran;
                             image_path: "images/bri.png",
                             id_payment: widget.id_payment,
                           );
-                          }),
+                        }),
                       );
                     },
                   ),
@@ -136,10 +131,9 @@ String? jenis_Pembayaran;
                     () async {
                       jenis_Pembayaran = "CIMB NIAGA";
                       await ReservationClient.updateJenisPembayaran(
-                            widget.id_payment,
-                            jenis_Pembayaran!,
-                            "Pending"
-                          );
+                        widget.id_payment,
+                        jenis_Pembayaran!,
+                      );
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) {
@@ -147,7 +141,7 @@ String? jenis_Pembayaran;
                             image_path: "images/cimb.png",
                             id_payment: widget.id_payment,
                           );
-                          }),
+                        }),
                       );
                     },
                   ),
@@ -183,10 +177,9 @@ String? jenis_Pembayaran;
                     () async {
                       jenis_Pembayaran = "Shopee";
                       await ReservationClient.updateJenisPembayaran(
-                            widget.id_payment,
-                            jenis_Pembayaran!,
-                            "Pending"
-                          );
+                        widget.id_payment,
+                        jenis_Pembayaran!,
+                      );
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) {
@@ -194,7 +187,7 @@ String? jenis_Pembayaran;
                             image_path: "images/shopee.png",
                             id_payment: widget.id_payment,
                           );
-                          }),
+                        }),
                       );
                     },
                   ),
@@ -204,10 +197,9 @@ String? jenis_Pembayaran;
                     () async {
                       jenis_Pembayaran = "GOPAY";
                       await ReservationClient.updateJenisPembayaran(
-                            widget.id_payment,
-                            jenis_Pembayaran!,
-                            "Pending"
-                          );
+                        widget.id_payment,
+                        jenis_Pembayaran!,
+                      );
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) {
@@ -215,7 +207,7 @@ String? jenis_Pembayaran;
                             image_path: "images/gopay.png",
                             id_payment: widget.id_payment,
                           );
-                          }),
+                        }),
                       );
                     },
                   ),
@@ -225,10 +217,9 @@ String? jenis_Pembayaran;
                     () async {
                       jenis_Pembayaran = "DANA";
                       await ReservationClient.updateJenisPembayaran(
-                            widget.id_payment,
-                            jenis_Pembayaran!,
-                            "Pending"
-                          );
+                        widget.id_payment,
+                        jenis_Pembayaran!,
+                      );
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) {
@@ -236,7 +227,7 @@ String? jenis_Pembayaran;
                             image_path: "images/dana.png",
                             id_payment: widget.id_payment,
                           );
-                          }),
+                        }),
                       );
                     },
                   ),
@@ -246,10 +237,9 @@ String? jenis_Pembayaran;
                     () async {
                       jenis_Pembayaran = "LinkAja";
                       await ReservationClient.updateJenisPembayaran(
-                            widget.id_payment,
-                            jenis_Pembayaran!,
-                            "Pending"
-                          );
+                        widget.id_payment,
+                        jenis_Pembayaran!,
+                      );
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) {
@@ -257,7 +247,7 @@ String? jenis_Pembayaran;
                             image_path: "images/linkaja.png",
                             id_payment: widget.id_payment,
                           );
-                          }),
+                        }),
                       );
                     },
                   ),
@@ -267,10 +257,9 @@ String? jenis_Pembayaran;
                     () async {
                       jenis_Pembayaran = "OVO";
                       await ReservationClient.updateJenisPembayaran(
-                            widget.id_payment,
-                            jenis_Pembayaran!,
-                            "Pending"
-                          );
+                        widget.id_payment,
+                        jenis_Pembayaran!,
+                      );
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) {
@@ -278,7 +267,7 @@ String? jenis_Pembayaran;
                             image_path: "images/ovo.png",
                             id_payment: widget.id_payment,
                           );
-                          }),
+                        }),
                       );
                     },
                   ),
@@ -288,7 +277,6 @@ String? jenis_Pembayaran;
           ),
         ),
       ),
-
     );
   }
 

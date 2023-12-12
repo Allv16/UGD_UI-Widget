@@ -52,7 +52,7 @@ class ReservationClient {
   }
 
   //ini masih TEMPORARY!!!
-static Future<Map<String, dynamic>> create(
+  static Future<Map<String, dynamic>> create(
       String user_email, String date, bool hasBpjs, String idPraktek) async {
     try {
       var response = await post(Uri.http(url, endpoint),
@@ -81,6 +81,7 @@ static Future<Map<String, dynamic>> create(
       return Future.error(e.toString());
     }
   }
+
   //mengubah data barang sesuai ID
   static Future<Response> update(int id, String date, String idPraktek) async {
     try {
@@ -123,11 +124,12 @@ static Future<Map<String, dynamic>> create(
     }
   }
 
-  static Future<Response> updateJenisPembayaran(int id, String jenisPembayaran, String status) async {
+  static Future<Response> updateJenisPembayaran(
+      int id, String jenisPembayaran) async {
     try {
-      var response = await put(Uri.http(url, '$endpointPembayaran/$id'),
+      var response = await put(Uri.http(url, endpointPembayaran),
           headers: {'Content-Type': 'application/json'},
-          body: jsonEncode({"jenis_pembayaran": jenisPembayaran,"status": status}));
+          body: jsonEncode({"jenis_pembayaran": jenisPembayaran, "id": id}));
       // print(response.body);
       if (response.statusCode != 200) throw Exception(response.reasonPhrase);
 
@@ -139,9 +141,9 @@ static Future<Map<String, dynamic>> create(
 
   static Future<Response> updatePaid(int id) async {
     try {
-      var response = await put(Uri.http(url, '$endpointPaid/$id'),
+      var response = await put(Uri.http(url, '$endpointPaid'),
           headers: {'Content-Type': 'application/json'},
-      );
+          body: jsonEncode({"id": id}));
       // print(response.body);
       if (response.statusCode != 200) throw Exception(response.reasonPhrase);
 
