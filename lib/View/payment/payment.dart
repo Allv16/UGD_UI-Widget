@@ -1,41 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
-import 'package:ugd_ui_widget/View/payment/detail/bca.dart';
 import 'package:ugd_ui_widget/View/home.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:ugd_ui_widget/View/payment/detail/bni.dart';
-import 'package:ugd_ui_widget/View/payment/detail/bri.dart';
-import 'package:ugd_ui_widget/View/payment/detail/cimbNiaga.dart';
-import 'package:ugd_ui_widget/View/payment/detail/dana.dart';
-import 'package:ugd_ui_widget/View/payment/detail/gopay.dart';
-import 'package:ugd_ui_widget/View/payment/detail/linkaja.dart';
-import 'package:ugd_ui_widget/View/payment/detail/ovo.dart';
-import 'package:ugd_ui_widget/View/payment/detail/shopee.dart';
+import 'package:ugd_ui_widget/View/payment/transfer.dart';
+import 'package:ugd_ui_widget/client/reservationClient.dart';
 
 class PaymentView extends StatefulWidget {
-  const PaymentView({Key? key}) : super(key: key);
+  final String? image_path;
+  // final String? jenis_pembayaran;
+  final int id_payment;
+
+  const PaymentView({Key? key, 
+  this.image_path,
+  required this.id_payment}) : super(key: key);
 
   @override
   _PaymentViewState createState() => _PaymentViewState();
 }
 
 class _PaymentViewState extends State<PaymentView> {
-  int _selectedIndex = 1;
-
-  void _onItemTapped(int index) {
-    if (index == 0) {
-      _selectedIndex = 0;
-      // Handle navigation to the DetailView or another desired screen
-    } else if (index == 2) {
-      _selectedIndex = 2;
-      // Handle navigation to the ProfileView or another desired screen
-    } else {
-      setState(() {
-        _selectedIndex = index;
-      });
-    }
-  }
-
+String? jenis_Pembayaran;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,10 +66,22 @@ class _PaymentViewState extends State<PaymentView> {
                     "images/bca.png",
                     "BCA",
                     0xFF00ACC1,
-                    () {
+                    () async {
+                      print("BCA");
+                      jenis_Pembayaran = "BCA";
+                      await ReservationClient.updateJenisPembayaran(
+                            widget.id_payment,
+                            jenis_Pembayaran!,
+                            "Pending"
+                          );
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => bcaView()),
+                        MaterialPageRoute(builder: (context) {
+                          return transferView(
+                            image_path: "images/bca.png",
+                            id_payment: widget.id_payment,
+                          );
+                          }),
                       );
                     },
                   ),
@@ -93,10 +89,21 @@ class _PaymentViewState extends State<PaymentView> {
                     "images/bni.png",
                     "BNI",
                     0xFF00ACC1,
-                    () {
+                    () async {
+                      jenis_Pembayaran = "BNI";
+                      await ReservationClient.updateJenisPembayaran(
+                            widget.id_payment,
+                            jenis_Pembayaran!,
+                            "Pending"
+                          );
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => bniView()),
+                        MaterialPageRoute(builder: (context) {
+                          return transferView(
+                            image_path: "images/bni.png",
+                            id_payment: widget.id_payment,
+                          );
+                          }),
                       );
                     },
                   ),
@@ -104,10 +111,21 @@ class _PaymentViewState extends State<PaymentView> {
                     "images/bri.png",
                     "BRI",
                     0xFF00ACC1,
-                    () {
+                    () async {
+                      jenis_Pembayaran = "BRI";
+                      await ReservationClient.updateJenisPembayaran(
+                            widget.id_payment,
+                            jenis_Pembayaran!,
+                            "Pending"
+                          );
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => briView()),
+                        MaterialPageRoute(builder: (context) {
+                          return transferView(
+                            image_path: "images/bri.png",
+                            id_payment: widget.id_payment,
+                          );
+                          }),
                       );
                     },
                   ),
@@ -115,10 +133,21 @@ class _PaymentViewState extends State<PaymentView> {
                     "images/cimb.png",
                     "CIMB NIAGA",
                     0xFF00ACC1,
-                    () {
+                    () async {
+                      jenis_Pembayaran = "CIMB NIAGA";
+                      await ReservationClient.updateJenisPembayaran(
+                            widget.id_payment,
+                            jenis_Pembayaran!,
+                            "Pending"
+                          );
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => cimbNiagaView()),
+                        MaterialPageRoute(builder: (context) {
+                          return transferView(
+                            image_path: "images/cimb.png",
+                            id_payment: widget.id_payment,
+                          );
+                          }),
                       );
                     },
                   ),
@@ -151,50 +180,105 @@ class _PaymentViewState extends State<PaymentView> {
                   menuBox2(
                     "images/shopee.png",
                     0xFF00ACC1,
-                    () {
+                    () async {
+                      jenis_Pembayaran = "Shopee";
+                      await ReservationClient.updateJenisPembayaran(
+                            widget.id_payment,
+                            jenis_Pembayaran!,
+                            "Pending"
+                          );
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => shopeeView()),
+                        MaterialPageRoute(builder: (context) {
+                          return transferView(
+                            image_path: "images/shopee.png",
+                            id_payment: widget.id_payment,
+                          );
+                          }),
                       );
                     },
                   ),
                   menuBox2(
                     "images/gopay.png",
                     0xFF00ACC1,
-                    () {
+                    () async {
+                      jenis_Pembayaran = "GOPAY";
+                      await ReservationClient.updateJenisPembayaran(
+                            widget.id_payment,
+                            jenis_Pembayaran!,
+                            "Pending"
+                          );
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => gopayView()),
+                        MaterialPageRoute(builder: (context) {
+                          return transferView(
+                            image_path: "images/gopay.png",
+                            id_payment: widget.id_payment,
+                          );
+                          }),
                       );
                     },
                   ),
                   menuBox2(
                     "images/dana.png",
                     0xFF00ACC1,
-                    () {
+                    () async {
+                      jenis_Pembayaran = "DANA";
+                      await ReservationClient.updateJenisPembayaran(
+                            widget.id_payment,
+                            jenis_Pembayaran!,
+                            "Pending"
+                          );
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => danaView()),
+                        MaterialPageRoute(builder: (context) {
+                          return transferView(
+                            image_path: "images/dana.png",
+                            id_payment: widget.id_payment,
+                          );
+                          }),
                       );
                     },
                   ),
                   menuBox2(
                     "images/linkaja.png",
                     0xFF00ACC1,
-                    () {
+                    () async {
+                      jenis_Pembayaran = "LinkAja";
+                      await ReservationClient.updateJenisPembayaran(
+                            widget.id_payment,
+                            jenis_Pembayaran!,
+                            "Pending"
+                          );
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => linkajaView()),
+                        MaterialPageRoute(builder: (context) {
+                          return transferView(
+                            image_path: "images/linkaja.png",
+                            id_payment: widget.id_payment,
+                          );
+                          }),
                       );
                     },
                   ),
                   menuBox2(
                     "images/ovo.png",
                     0xFF00ACC1,
-                    () {
+                    () async {
+                      jenis_Pembayaran = "OVO";
+                      await ReservationClient.updateJenisPembayaran(
+                            widget.id_payment,
+                            jenis_Pembayaran!,
+                            "Pending"
+                          );
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => ovoView()),
+                        MaterialPageRoute(builder: (context) {
+                          return transferView(
+                            image_path: "images/ovo.png",
+                            id_payment: widget.id_payment,
+                          );
+                          }),
                       );
                     },
                   ),
@@ -205,25 +289,6 @@ class _PaymentViewState extends State<PaymentView> {
         ),
       ),
 
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.book),
-            label: 'Reservation',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
-            label: 'Profile',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.cyan[600],
-        onTap: _onItemTapped,
-      ),
     );
   }
 

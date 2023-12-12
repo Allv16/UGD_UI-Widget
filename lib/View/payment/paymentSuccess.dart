@@ -7,7 +7,8 @@ import 'package:ugd_ui_widget/View/my_reservation.dart';
 import 'package:ugd_ui_widget/View/payment/payment.dart';
 
 class paymentSuccessPage extends StatefulWidget {
-  const paymentSuccessPage({Key? key}) : super(key: key);
+  
+  const paymentSuccessPage({Key? key,}) : super(key: key);
 
   @override
   _paymentSuccessPageState createState() => _paymentSuccessPageState();

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:ugd_ui_widget/View/pdf_view.dart';
-import 'package:ugd_ui_widget/View/reservation_form.dart';
+import 'package:ugd_ui_widget/View/reservation_form_new.dart';
 import 'package:ugd_ui_widget/database/sql_helper_reservation.dart';
 import 'package:ugd_ui_widget/entity/Reservation.dart';
 import 'home.dart';
@@ -21,7 +21,7 @@ class MyReservation extends StatefulWidget {
 
 class _MyReservationState extends State<MyReservation> {
   String profilePath = '';
-
+  String _bpjs = '';
   bool _isLoadingForCancle = false;
 
   //for bottom nav
@@ -56,6 +56,7 @@ class _MyReservationState extends State<MyReservation> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final data = await ReservationClient.fetchAll(prefs.getString('email')!);
     _userEmail = prefs.getString('email') ?? prefs.getString('email')!;
+    _bpjs = prefs.getString('bpjs')!;
     return data;
   }
 
@@ -76,26 +77,6 @@ class _MyReservationState extends State<MyReservation> {
                 color: Theme.of(context).colorScheme.primary)),
         centerTitle: true,
         automaticallyImplyLeading: false,
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () async {
-          Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => const ReservationForm(
-                  date: null,
-                  id: -1,
-                  time: null,
-                ),
-              )).then((_) {
-            setState(() {
-              _reservation = fetchData();
-            });
-          });
-        },
-        child: Icon(Icons.add),
-        backgroundColor: Colors.lightBlue,
-        foregroundColor: Colors.white,
       ),
       body: Padding(
         padding: EdgeInsets.symmetric(
@@ -174,7 +155,8 @@ class _MyReservationState extends State<MyReservation> {
                     child: ClipRRect(
                       borderRadius: BorderRadius.circular(100),
                       child: Image(
-                          image: AssetImage('images/Aji.jpg'),
+                          image: AssetImage(
+                              'images/doctors/${reservation.praktek.dokter.profileDokter}'),
                           fit: BoxFit.cover),
                     ),
                   ),
@@ -245,7 +227,7 @@ class _MyReservationState extends State<MyReservation> {
                           formatDate(reservation.date),
                           style: TextStyle(
                               fontWeight: FontWeight.w600,
-                              fontSize: 16.sp,
+                              fontSize: 15.sp,
                               wordSpacing: -1,
                               color:
                                   Theme.of(context).colorScheme.inversePrimary),
@@ -260,7 +242,7 @@ class _MyReservationState extends State<MyReservation> {
                           "${reservation.praktek.jamPraktek} - ${addOneHour(reservation.praktek.jamPraktek)} WIB",
                           style: TextStyle(
                               fontWeight: FontWeight.w600,
-                              fontSize: 16.sp,
+                              fontSize: 15.sp,
                               wordSpacing: -1,
                               color:
                                   Theme.of(context).colorScheme.inversePrimary),
@@ -309,39 +291,23 @@ class _MyReservationState extends State<MyReservation> {
                         minimumSize: Size(40.w, 5.h),
                       ),
                       onPressed: () {
-                        if (reservation.hasBPJS) {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ReservationForm(
-                                date: reservation.date,
-                                id: reservation.id,
-                                time: reservation.praktek.jamPraktek,
-                                bpjs: reservation.hasBPJS.toString(),
-                              ),
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => ReservationForm(
+                              date: reservation.date,
+                              bpjsNumber: _bpjs,
+                              idDoctor:
+                                  reservation.praktek.dokter.id.toString(),
+                              hasBpjs: reservation.hasBPJS,
+                              idReservation: reservation.id,
                             ),
-                          ).then((_) {
-                            setState(() {
-                              _reservation = fetchData();
-                            });
+                          ),
+                        ).then((_) {
+                          setState(() {
+                            _reservation = fetchData();
                           });
-                        } else {
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => ReservationForm(
-                                date: reservation.date,
-                                id: reservation.id,
-                                time: reservation.praktek.jamPraktek,
-                                bpjs: '',
-                              ),
-                            ),
-                          ).then((_) {
-                            setState(() {
-                              _reservation = fetchData();
-                            });
-                          });
-                        }
+                        });
                       },
                       child: const Text(
                         'Reschedule',

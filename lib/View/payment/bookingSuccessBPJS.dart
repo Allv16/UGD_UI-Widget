@@ -12,13 +12,13 @@ class bookingSuccessBPJSPage extends StatefulWidget {
     {Key? key,
     required bool this.has_bpjs,
     required String this.doctor_name,
-    required DateTime this.reservation_date,
+    required String this.reservation_date,
     required String this.jam_praktek,
     }) : super(key: key);
 
   final bool has_bpjs;
   final String doctor_name;
-  final DateTime reservation_date;
+  final String reservation_date;
   final String jam_praktek;
 
   @override
@@ -58,7 +58,7 @@ class _bookingSuccessBPJSPageState extends State<bookingSuccessBPJSPage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 40.0),
                       child: Text(
-                        "You booked an appointment with ${widget.doctor_name} on ${formatDateTime(widget.reservation_date)} at ${widget.jam_praktek} - ${addOneHour(widget.jam_praktek)}",
+                        "You booked an appointment with ${widget.doctor_name} on ${formatDate(widget.reservation_date)} at ${widget.jam_praktek} - ${addOneHour(widget.jam_praktek)}",
                         style: GoogleFonts.workSans(
                           fontSize: 14,
                           fontWeight: FontWeight.normal,
@@ -148,21 +148,25 @@ class _bookingSuccessBPJSPageState extends State<bookingSuccessBPJSPage> {
             builder: (context) => ProfileView(),
           ),
         );
-      } else if (index == 3) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => bookingSuccessBPJSPage(has_bpjs: true,doctor_name: "Alvian" ,reservation_date: DateTime.now() ,jam_praktek: "17:00"),
-          ),
-        );
-      }
+      } 
+      // else if (index == 3) {
+      //   Navigator.push(
+      //     context,
+      //     MaterialPageRoute(
+      //       builder: (context) => bookingSuccessBPJSPage(has_bpjs: true,doctor_name: "Alvian" ,reservation_date: DateTime.now() ,jam_praktek: "17:00"),
+      //     ),
+      //   );
+      // }
     });
   }
 }
 
-String formatDateTime(DateTime dateTime) {
-  final outputFormat = DateFormat('EEEE, d MMMM y');
-  return outputFormat.format(dateTime);
+String formatDate(String date) {
+  final inputFormat = DateFormat('yyyy-MM-dd');
+  final inputDate = inputFormat.parse(date);
+
+  final outputFormat = DateFormat('EEEE, MMM d');
+  return outputFormat.format(inputDate);
 }
 
 

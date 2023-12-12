@@ -6,20 +6,23 @@ import 'package:ugd_ui_widget/View/login.dart';
 import 'package:ugd_ui_widget/View/profile.dart';
 import 'package:ugd_ui_widget/View/my_reservation.dart';
 import 'package:ugd_ui_widget/View/payment/payment.dart';
+import 'package:ugd_ui_widget/client/reservationClient.dart';
 
 class bookingSuccessPage extends StatefulWidget {
   const bookingSuccessPage(
     {Key? key,
     required bool this.has_bpjs,
     required String this.doctor_name,
-    required DateTime this.reservation_date,
+    required String this.reservation_date,
     required String this.jam_praktek,
+    required int this.id_payment,
     }) : super(key: key);
 
   final bool has_bpjs;
   final String doctor_name;
-  final DateTime reservation_date;
+  final String reservation_date;
   final String jam_praktek;
+  final int id_payment;
 
   @override
   _bookingSuccessPageState createState() => _bookingSuccessPageState();
@@ -58,7 +61,7 @@ class _bookingSuccessPageState extends State<bookingSuccessPage> {
                     Padding(
                       padding: const EdgeInsets.symmetric(horizontal: 40.0),
                       child: Text(
-                        "You booked an appointment with ${widget.doctor_name} on ${formatDateTime(widget.reservation_date)} at ${widget.jam_praktek} - ${addOneHour(widget.jam_praktek)}",
+                        "You booked an appointment with ${widget.doctor_name} on ${formatDate(widget.reservation_date)} at ${widget.jam_praktek} - ${addOneHour(widget.jam_praktek)}",
                         style: GoogleFonts.workSans(
                           fontSize: 14,
                           fontWeight: FontWeight.normal,
@@ -85,12 +88,13 @@ class _bookingSuccessPageState extends State<bookingSuccessPage> {
                         vertical: 15.0,
                       ),
                     ),
-                    onPressed: () {
-                      // Handle button click
+                    onPressed:  () async {
                       Navigator.push(
                         context,
                         MaterialPageRoute(builder: (context) {
-                          return const PaymentView();
+                          return PaymentView(
+                            id_payment: widget.id_payment,
+                          );
                         }),
                       );
                     },
@@ -134,60 +138,17 @@ class _bookingSuccessPageState extends State<bookingSuccessPage> {
           ],
         ),
       ),
-      bottomNavigationBar: BottomNavigationBar(
-        items: const <BottomNavigationBarItem>[
-          BottomNavigationBarItem(
-            icon: Icon(Icons.home),
-            label: 'Home',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.book),
-            label: 'Booking',
-          ),
-          BottomNavigationBarItem(
-            icon: Icon(Icons.account_circle),
-            label: 'Profile',
-          ),
-        ],
-        currentIndex: _selectedIndex,
-        selectedItemColor: Colors.cyan[600],
-        onTap: _onItemTapped,
-      ),
     );
   }
 
-  void _onItemTapped(int index) {
-    setState(() {
-      _selectedIndex = index;
-      if (index == 1) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => MyReservation(),
-          ),
-        );
-      } else if (index == 2) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => ProfileView(),
-          ),
-        );
-      } else if (index == 3) {
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => bookingSuccessPage(has_bpjs: true,doctor_name: "Alvian" ,reservation_date: DateTime.now() ,jam_praktek: "17:00" ),
-          ),
-        );
-      }
-    });
-  }
 }
 
-String formatDateTime(DateTime dateTime) {
-  final outputFormat = DateFormat('EEEE, d MMMM y');
-  return outputFormat.format(dateTime);
+String formatDate(String date) {
+  final inputFormat = DateFormat('yyyy-MM-dd');
+  final inputDate = inputFormat.parse(date);
+
+  final outputFormat = DateFormat('EEEE, MMM d');
+  return outputFormat.format(inputDate);
 }
 
 

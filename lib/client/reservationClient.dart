@@ -11,6 +11,8 @@ class ReservationClient {
   // static final String url = '10.53.11.59:8000'; //base url
   // static final String url = '52.185.188.129:8000'; //base url
   static final String endpoint = '/api/reservation'; //base endpoint
+  static final String endpointPembayaran = '/api/pembayaran'; //base endpoint
+  static final String endpointPaid = '/api/paid'; //base endpoint
 
   //untuk hp
   // static final String url = '192.168.1.14';
@@ -50,18 +52,16 @@ class ReservationClient {
   }
 
   //ini masih TEMPORARY!!!
-  static Future<Response> create(String user_email, String date) async {
-    print("create reservation------");
-    print("$user_email, $date");
-    print("$url$endpoint");
+static Future<Map<String, dynamic>> create(
+      String user_email, String date, bool hasBpjs, String idPraktek) async {
     try {
       var response = await post(Uri.http(url, endpoint),
           headers: {'Content-Type': 'application/json'},
           body: jsonEncode({
             "user_email": user_email,
             "date": date,
-            "has_bpjs": true,
-            "id_praktek": "5"
+            "has_bpjs": hasBpjs,
+            "id_praktek": idPraktek
           }));
       print(response.body);
       if (response.statusCode != 200) {
@@ -69,18 +69,24 @@ class ReservationClient {
         print('Body: ${response.body}');
         throw Exception(response.reasonPhrase);
       }
-      return response;
+      final responseBody = jsonDecode(response.body);
+
+      final Map<String, dynamic> reservationsData =
+          responseBody['data']['reservations'];
+      final Map<String, dynamic> pembayaranData =
+          responseBody['data']['pembayaran'];
+
+      return {"reservations": reservationsData, "pembayaran": pembayaranData};
     } catch (e) {
       return Future.error(e.toString());
     }
   }
-
   //mengubah data barang sesuai ID
-  static Future<Response> update(int id, String date) async {
+  static Future<Response> update(int id, String date, String idPraktek) async {
     try {
       var response = await put(Uri.http(url, '$endpoint/$id'),
           headers: {'Content-Type': 'application/json'},
-          body: jsonEncode({"date": date, "id_praktek": "8"}));
+          body: jsonEncode({"date": date, "id_praktek": idPraktek}));
       // print(response.body);
       if (response.statusCode != 200) throw Exception(response.reasonPhrase);
 
@@ -112,6 +118,34 @@ class ReservationClient {
       Iterable list = json.decode(response.body)['data'];
 
       return list.map((e) => Reservation.fromJson(e)).toList();
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
+  static Future<Response> updateJenisPembayaran(int id, String jenisPembayaran, String status) async {
+    try {
+      var response = await put(Uri.http(url, '$endpointPembayaran/$id'),
+          headers: {'Content-Type': 'application/json'},
+          body: jsonEncode({"jenis_pembayaran": jenisPembayaran,"status": status}));
+      // print(response.body);
+      if (response.statusCode != 200) throw Exception(response.reasonPhrase);
+
+      return response;
+    } catch (e) {
+      return Future.error(e.toString());
+    }
+  }
+
+  static Future<Response> updatePaid(int id) async {
+    try {
+      var response = await put(Uri.http(url, '$endpointPaid/$id'),
+          headers: {'Content-Type': 'application/json'},
+      );
+      // print(response.body);
+      if (response.statusCode != 200) throw Exception(response.reasonPhrase);
+
+      return response;
     } catch (e) {
       return Future.error(e.toString());
     }
