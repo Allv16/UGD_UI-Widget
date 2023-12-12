@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:responsive_sizer/responsive_sizer.dart';
+import 'package:ugd_ui_widget/View/pdf_view.dart';
 import 'package:ugd_ui_widget/client/paymentClient.dart';
 import 'package:ugd_ui_widget/model/payment.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -245,7 +246,9 @@ Widget paymentCard(Payments p, bool isOnProgress, context, ref) {
                               borderRadius: BorderRadius.circular(5)),
                           minimumSize: const Size(25, 25),
                         ),
-                        onPressed: () {},
+                        onPressed: () {
+                          createPdf(p, context);
+                        },
                         child: Icon(Icons.print,
                             size: 16.sp, color: Colors.black.withOpacity(0.5)))
                     : Row(

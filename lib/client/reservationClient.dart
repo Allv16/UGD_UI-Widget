@@ -50,7 +50,7 @@ class ReservationClient {
   }
 
   //ini masih TEMPORARY!!!
-  static Future<Response> create(
+  static Future<Map<String, dynamic>> create(
       String user_email, String date, bool hasBpjs, String idPraktek) async {
     try {
       var response = await post(Uri.http(url, endpoint),
@@ -67,7 +67,14 @@ class ReservationClient {
         print('Body: ${response.body}');
         throw Exception(response.reasonPhrase);
       }
-      return response;
+      final responseBody = jsonDecode(response.body);
+
+      final Map<String, dynamic> reservationsData =
+          responseBody['data']['reservations'];
+      final Map<String, dynamic> pembayaranData =
+          responseBody['data']['pembayaran'];
+
+      return {"reservations": reservationsData, "pembayaran": pembayaranData};
     } catch (e) {
       return Future.error(e.toString());
     }

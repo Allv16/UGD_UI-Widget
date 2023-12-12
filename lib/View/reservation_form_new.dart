@@ -197,15 +197,18 @@ class _ReservationFormState extends State<ReservationForm> {
                   });
                   SharedPreferences prefs =
                       await SharedPreferences.getInstance();
-                  idReservation == -1
-                      ? await ReservationClient.create(
-                          prefs.getString("email")!,
-                          selectedDate!,
-                          isSwitched,
-                          selectedIdPraktek!,
-                        )
-                      : await ReservationClient.update(
-                          idReservation, selectedDate!, selectedIdPraktek!);
+                  if (idReservation == -1) {
+                    final result = await ReservationClient.create(
+                      prefs.getString("email")!,
+                      selectedDate!,
+                      isSwitched,
+                      selectedIdPraktek!,
+                    );
+                    idPayment = result['pembayaran']['id'];
+                  } else {
+                    await ReservationClient.update(
+                        idReservation, selectedDate!, selectedIdPraktek!);
+                  }
                   Navigator.pushAndRemoveUntil(
                       context,
                       MaterialPageRoute(

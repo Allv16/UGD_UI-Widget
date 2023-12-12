@@ -5,24 +5,14 @@ import 'package:pdf/widgets.dart' as pw;
 import 'package:intl/intl.dart';
 import 'package:ugd_ui_widget/View/preview_screen.dart';
 import 'package:barcode_widget/barcode_widget.dart';
+import 'package:ugd_ui_widget/model/payment.dart';
 
-Future<void> createPdf(
-    String id,
-    String doctor,
-    String date,
-    String bpjs,
-    String jam,
-    String username,
-    String email,
-    String noTelp,
-    String tanggal,
-    BuildContext context) async {
+Future<void> createPdf(Payments payment, BuildContext context) async {
   final doc = pw.Document();
   final now = DateTime.now();
   final formattedDate = DateFormat('yyyy-MM-dd HH:mm:ss').format(now);
   final imageLogo =
       (await rootBundle.load("images/banner.png")).buffer.asUint8List();
-  String processedBpjs = bpjs.trim().isEmpty ? '-' : bpjs;
 
   doc.addPage(
     pw.MultiPage(
@@ -49,79 +39,44 @@ Future<void> createPdf(
               ),
               pw.SizedBox(height: 1 * PdfPageFormat.cm),
               pw.Text(
-                '    Data Customer ',
+                '    Detail Payment',
                 style:
                     pw.TextStyle(fontSize: 20, fontWeight: pw.FontWeight.bold),
               ),
               pw.SizedBox(height: 0.2 * PdfPageFormat.cm),
               pw.Text(
-                '        Nama     :   $username',
+                '        Doctor     :   ${payment.reservation.praktek.dokter.nama}',
                 style: pw.TextStyle(
                     fontSize: 15, fontWeight: pw.FontWeight.normal),
               ),
               pw.SizedBox(height: 0.1 * PdfPageFormat.cm),
               pw.Text(
-                '        Email      :   $email',
+                '        Visit Time      :   ${payment.reservation.praktek.jamPraktek} WIB',
                 style: pw.TextStyle(
                     fontSize: 15, fontWeight: pw.FontWeight.normal),
               ),
               pw.SizedBox(height: 0.1 * PdfPageFormat.cm),
               pw.Text(
-                '        Tanggal Lahir      :   $tanggal',
+                '        Reservation Date      :   ${payment.reservation.date}',
                 style: pw.TextStyle(
                     fontSize: 15, fontWeight: pw.FontWeight.normal),
               ),
               pw.SizedBox(height: 0.1 * PdfPageFormat.cm),
               pw.Text(
-                '        Nomor Telepon      :   $noTelp',
+                '        Total amount      :   ${payment.amount}',
                 style: pw.TextStyle(
                     fontSize: 15, fontWeight: pw.FontWeight.normal),
               ),
               pw.SizedBox(height: 0.1 * PdfPageFormat.cm),
               pw.Text(
-                '        id pemesanan     :   $id',
-                style: pw.TextStyle(
-                    fontSize: 15, fontWeight: pw.FontWeight.normal),
-              ),
-              pw.SizedBox(height: 0.5 * PdfPageFormat.cm),
-
-              pw.Text(
-                '    Detail Pemesanan ',
-                style:
-                    pw.TextStyle(fontSize: 20, fontWeight: pw.FontWeight.bold),
-              ),
-              pw.SizedBox(height: 0.2 * PdfPageFormat.cm),
-              pw.Text(
-                '        Dokter     :   $doctor',
+                '        Payment Type      :   ${payment.jenisPembayaran}',
                 style: pw.TextStyle(
                     fontSize: 15, fontWeight: pw.FontWeight.normal),
               ),
               pw.SizedBox(height: 0.1 * PdfPageFormat.cm),
-              pw.Text(
-                '        Jam Kunjungan      :   $jam WIB',
-                style: pw.TextStyle(
-                    fontSize: 15, fontWeight: pw.FontWeight.normal),
-              ),
-              pw.SizedBox(height: 0.1 * PdfPageFormat.cm),
-              pw.Text(
-                '        Tanggal Kunjungan      :   $date',
-                style: pw.TextStyle(
-                    fontSize: 15, fontWeight: pw.FontWeight.normal),
-              ),
-              pw.SizedBox(height: 0.1 * PdfPageFormat.cm),
-              pw.Text(
-                '        BPJS     :   $processedBpjs',
-                style: pw.TextStyle(
-                    fontSize: 15, fontWeight: pw.FontWeight.normal),
-              ),
-              pw.SizedBox(
-                  height: 1 *
-                      PdfPageFormat
-                          .cm), // Tinggi dari barcode ke konten sebelumnya
-
               pw.Container(
                 alignment: pw.Alignment.center,
-                child: barcodeGaris(id),
+                child: barcodeGaris(payment.reservation.id.toString()),
               ),
             ],
           )
